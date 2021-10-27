@@ -15,37 +15,36 @@ class UserSeeder extends Seeder
     public function run()
     {
         //notactive
-        $admin = User::create([
-            'name' => 'Agus Cholid',
-            'email' => 'agus.jakut@gmail.com',
+        $checker = User::create([
+            'name' => 'Checker',
+            'email' => 'checker@gmail.com',
             'password' => bcrypt('ekanuri2021')
         ]);
 
-        $admin->assignRole('notactive');
+        $checker->assignRole('checker');
 
-        // superuser
-        $superuser = User::create([
-            'name' => 'Nurdiansah',
-            'email' => 'nurdiansah@ekanuri.com',
+        // admin_ops
+        $admin_ops = User::create([
+            'name' => 'Admin Operational',
+            'email' => 'admin.ops@gmail.com',
             'password' => bcrypt('ekanuri2021')
         ]);
 
-        $superuser->assignRole('superuser');
+        $admin_ops->assignRole('admin_ops');
 
-        // Costcontrol
-        $costcontrol = User::create([
-            'name' => 'E Hodijeh',
-            'email' => 'admin.it@ekanuri.com',
+        // Supervisor Ops
+        $spv_ops = User::create([
+            'name' => 'Supervisor Operational',
+            'email' => 'spv.ops@gmail.com',
             'password' => bcrypt('ekanuri2021')
         ]);
 
-        $costcontrol->assignRole('costcontrol');
-
+        $spv_ops->assignRole('spv_ops');
 
         // Asisten Manger OPS
         $asmen_ops = User::create([
-            'name' => 'Agus Priyanto',
-            'email' => 'agus@ekanuri.com',
+            'name' => 'Supervisor Operational',
+            'email' => 'spv.ops@gmail.com',
             'password' => bcrypt('ekanuri2021')
         ]);
 
@@ -54,29 +53,29 @@ class UserSeeder extends Seeder
 
         // Manger OPS
         $manager_ops = User::create([
-            'name' => 'Ari Pratama',
-            'email' => 'ari@ekanuri.com',
+            'name' => 'Manager Operational',
+            'email' => 'manager.ops@gmail.com',
             'password' => bcrypt('ekanuri2021')
         ]);
 
         $manager_ops->assignRole('manager_ops');
 
-        //manager_finance
-        $manager_finance = User::create([
-            'name' => 'Rozak',
-            'email' => 'rozak@ekanuri.com',
-            'password' => bcrypt('ekanuri2021')
-        ]);
-
-        $manager_finance->assignRole('manager_finance');
-
         // direksi
         $direksi = User::create([
-            'name' => 'ia',
-            'email' => 'ia@ekanuri.com',
+            'name' => 'Direksi',
+            'email' => 'direksi@gmail.com',
             'password' => bcrypt('ekanuri2021')
         ]);
 
         $direksi->assignRole('direksi');
+
+        //client
+        $client = User::create([
+            'name' => 'Client',
+            'email' => 'client@gmail.com',
+            'password' => bcrypt('ekanuri2021')
+        ]);
+
+        $client->assignRole('client');
     }
 }

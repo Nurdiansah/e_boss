@@ -15,17 +15,17 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::create([
-            'name' => 'notactive',
+            'name' => 'checker',
             'guard_name' => 'web'
         ]);
 
         Role::create([
-            'name' => 'superuser',
+            'name' => 'admin_ops',
             'guard_name' => 'web'
         ]);
 
         Role::create([
-            'name' => 'costcontrol',
+            'name' => 'spv_ops',
             'guard_name' => 'web'
         ]);
 
@@ -40,12 +40,12 @@ class RoleSeeder extends Seeder
         ]);
 
         Role::create([
-            'name' => 'manager_finance',
+            'name' => 'direksi',
             'guard_name' => 'web'
         ]);
 
         Role::create([
-            'name' => 'direksi',
+            'name' => 'client',
             'guard_name' => 'web'
         ]);
     }
