@@ -43,8 +43,8 @@ class UserSeeder extends Seeder
 
         // Asisten Manger OPS
         $asmen_ops = User::create([
-            'name' => 'Supervisor Operational',
-            'email' => 'spv.ops@gmail.com',
+            'name' => 'Asisten Manager Operational',
+            'email' => 'asmen.ops@gmail.com',
             'password' => bcrypt('ekanuri2021')
         ]);
 
