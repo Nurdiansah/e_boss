@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Jetty;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PortSeeder::class);
         $this->call(StevedoringCategorySeeder::class);
         $this->call(CheckerSeeder::class);
+        $this->call(JettySeeder::class);
     }
 }
