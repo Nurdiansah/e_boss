@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\PermohonanDanaController;
 use App\Http\Controllers\PermohonanDanaSubOneController;
+use App\Http\Controllers\StevedoringController;
 use App\Models\Permohonandana;
+use App\Models\Stevedoring;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +27,11 @@ Route::middleware(['auth'])->group(function () {
     })->name('home');
 
 
-    Route::group(['middleware' => ['role:superuser|costcontrol']], function () {
+    Route::group(['middleware' => ['role:superuser|admin_ops']], function () {
+        // Stevedoring
+        Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
+        Route::post('/stevedoring', [StevedoringController::class, 'store'])->name('stevedoring.store');
+
         // Permohonan dana
         Route::get('/form-permohonan-dana', [PermohonanDanaController::class, 'create'])->name('dana.create');
         Route::post('/permohonan-dana', [PermohonanDanaController::class, 'store'])->name('dana.store');

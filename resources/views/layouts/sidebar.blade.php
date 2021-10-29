@@ -39,44 +39,36 @@
             </div>
             <ul class="nav nav-primary">
                 <li class="nav-item active">
-                    <a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                    <a href="{{route('home')}}" class="collapsed" aria-expanded="false">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="dashboard">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="../demo1/index.html">
-                                    <span class="sub-item">Dashboard 1</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="../demo2/index.html">
-                                    <span class="sub-item">Dashboard 2</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
-                    <h4 class="text-section">Components</h4>
+                    <h4 class="text-section">Stevedoring</h4>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.create')}}">
+                        <i class="fas fas fa-file"></i>
+                        <p>Create</p>
+                        <!-- <span class="badge badge-success">4</span> -->
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#forms">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <p>Permohonan Dana</p>
+                        <i class="fas fas fa-ship"></i>
+                        <p>Stevedoring</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="forms">
                         <ul class="nav nav-collapse">
-                            @hasrole('superuser|costcontrol')
+                            @hasrole('superuser|admin_ops')
 
                             <li>
-                                <a href="{{route('dana.create')}}">
+                                <a href="{{route('stevedoring.create')}}">
                                     <i class="fas fa-pen-square"></i>Buat
                                 </a>
                             </li>

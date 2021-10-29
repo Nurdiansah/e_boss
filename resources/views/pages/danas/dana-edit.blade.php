@@ -49,6 +49,16 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 col-lg-12">
+                                <div class="form-group form-floating-label">
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="area_id" required>
+                                        <option value="">&nbsp;</option>
+                                        @foreach($areas as $key => $area)
+                                        <option value="{{$area->id}}" <?php echo $area->id == $stevedoring->area_id ? "selected='selected'" : ''; ?>>{{$area->name}}</option>
+                                        @endforeach
+
+                                    </select>
+                                    <label for="selectFloatingLabel" class="placeholder">Pilih area</label>
+                                </div>
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Order No</label>
                                     <input id="inputFloatingLabel" <?php echo ($permohonandana->status == '0') ? '' : 'readonly'; ?> name="order_no" value="{{$permohonandana->order_no}}" type="text" class="form-control input-border-bottom">
