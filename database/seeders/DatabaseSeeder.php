@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ClientSeeder::class);
         $this->call(PortSeeder::class);
         $this->call(StevedoringCategorySeeder::class);
+        $this->call(CheckerSeeder::class);
     }
 }
