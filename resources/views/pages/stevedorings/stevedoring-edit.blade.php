@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<?php
+$jumlahData = count($stevedoringmanifests);
+?>
 
 <div class="page-inner">
     <div class="page-header">
@@ -38,6 +41,13 @@
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Cargo Manifest</h4>
 
+                        @if($jumlahData>0)
+                        <button class="btn btn-warning btn-round float-right ml-2" data-toggle="modal" data-target="#btnRelease">
+                            <i class="fa fa-rocket"></i>
+                            Release
+                        </button>
+                        @endif
+
                         @if($stevedoring->status == '0')
 
                         <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
@@ -45,9 +55,59 @@
                             Tambah
                         </button>
                         @endif
+
                     </div>
                 </div>
                 <div class="card-body">
+                    <!-- Modal Release -->
+                    <div class="modal fade" id="btnRelease" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header no-bd bg-warning">
+                                    <h5 class="modal-title">
+                                        <span class="fw-mediumbold">
+                                            Release</span>
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{{ route('stevedoring.release') }}" name="form" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$stevedoring->id}}">
+                                    <div class="modal-body">
+                                        <p class="small">Silahkan pilih checker untuk melakukan update kegiatan</p>
+                                    </div>
+                                    <!-- area -->
+                                    <div class="col-sm-12">
+                                        <div class="form-group form-floating-label">
+                                            <select class="form-control input-border-bottom" id="selectFloatingLabel" name="checker_id" required>
+                                                <option value="">&nbsp;</option>
+                                                @foreach($checkers as $key => $checker)
+
+                                                @if (old('checker_id') == $checker->id )
+                                                <option value="{{ $checker->id }}" selected>{{ $checker->name }}</option>
+                                                @else
+                                                <option value="{{ $checker->id }}">{{ $checker->name }}</option>
+                                                @endif
+
+                                                @endforeach
+
+                                            </select>
+                                            <label for="selectFloatingLabel" class="placeholder">Select Checker</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer ">
+                                        <button type="submit" id="addRowButton" class="btn btn-warning"><i class="fa fa-rocket"></i> Release</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Modal Release -->
+
                     <!-- Modal Tambah -->
                     <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -124,7 +184,7 @@
                                         </div>
                                         <div class="modal-footer ">
                                             <button type="submit" id="addRowButton" class="btn btn-primary"><i class="fa fa-save"></i> Tambah</button>
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
                                         </div>
                                     </div>
                                 </form>
@@ -135,7 +195,8 @@
                     <!-- Modal Tambah -->
 
                     <div class="table-responsive">
-                        <table id="add-row" class="display table table-striped table-hover">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
+                            <!-- <table id="add-row" class="display table table-striped table-hover"> -->
                             <thead>
                                 <tr>
                                     <th rowspan="2" class="align-top">DOC NO</th>
@@ -254,7 +315,7 @@
                                                     </div>
                                                     <div class="modal-footer ">
                                                         <button type="submit" id="addRowButton" class="btn btn-success"><i class="fa fa-save"></i> Update</button>
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -265,6 +326,12 @@
                                 <!-- Modal Edit -->
 
                                 @endforeach
+
+                                @if($jumlahData == 0)
+                                <tr>
+                                    <td colspan="11"><i class="fas fa-exclamation"></i> Tidak ada data tersedia</td>
+                                </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -519,3 +586,11 @@
 
 
 @endsection
+
+@push('js-footer')
+<script>
+    $(document).ready(function() {
+        $('#basic-datatables').DataTable({});
+    });
+</script>
+@endpush

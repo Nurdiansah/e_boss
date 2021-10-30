@@ -34,10 +34,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/stevedoring/{stevedoring:id}/edit', [StevedoringController::class, 'edit'])->name('stevedoring.edit');
         Route::put('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'update'])->name('stevedoring.update');
         Route::get('/stevedoring/draft', [StevedoringController::class, 'draft'])->name('stevedoring.draft');
+        Route::post('/stevedoring/release', [StevedoringController::class, 'release'])->name('stevedoring.release');
 
         // Manifest stevedoring
         Route::post('/stevedoring-manifest', [StevedoringManifestController::class, 'store'])->name('stevedoring.manifest.store');
         Route::put('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'update'])->name('stevedoring.manifest.update');
+
 
         // Permohonan dana
         Route::get('/form-permohonan-dana', [PermohonanDanaController::class, 'create'])->name('dana.create');

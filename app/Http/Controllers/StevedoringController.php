@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent;
 use App\Models\Area;
+use App\Models\Checker;
 use App\Models\Client;
 use App\Models\ItemMaster;
 use App\Models\Jetty;
@@ -132,6 +133,7 @@ class StevedoringController extends Controller
             'jetties' => Jetty::all(),
             'stevedoringcategories' => StevedoringCategory::all(),
             'itemmasters' => ItemMaster::all(),
+            'checkers' => Checker::all()
         ]);
     }
 
@@ -219,6 +221,31 @@ class StevedoringController extends Controller
             toast('Data gagal di update!', 'error');
         }
         return back();
+    }
+
+    public function release(Request $request)
+    {
+        // dd($request);
+        $validated = $request->validate([
+            'id' => 'required',
+            'checker_id' => 'required',
+        ]);
+
+
+        $result = Stevedoring::find($request->id)->update([
+            "status" => '1',
+            'checker_id' => $request->checker_id,
+        ]);
+
+        if ($result) {
+            # code...
+            toast('Data berhasil di Release!', 'success');
+        } else {
+            # code...
+            toast('Data gagal di Release!', 'error');
+        }
+
+        return redirect('/stevedoring/draft');
     }
 
     /**
