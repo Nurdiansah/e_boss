@@ -26,11 +26,14 @@ Route::middleware(['auth'])->group(function () {
         return view('home');
     })->name('home');
 
+    Route::get('/storage/{id}')->name('link');
 
     Route::group(['middleware' => ['role:superuser|admin_ops']], function () {
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
         Route::post('/stevedoring', [StevedoringController::class, 'store'])->name('stevedoring.store');
+        Route::get('/stevedoring/{stevedoring:id}/edit', [StevedoringController::class, 'edit'])->name('stevedoring.edit');
+        Route::put('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'update'])->name('stevedoring.update');
         Route::get('/stevedoring/draft', [StevedoringController::class, 'draft'])->name('stevedoring.draft');
 
         // Permohonan dana

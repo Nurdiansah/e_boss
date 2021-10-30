@@ -11,6 +11,7 @@ use App\Models\Stevedoring;
 use App\Models\StevedoringCategory;
 use App\Models\Vessel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StevedoringController extends Controller
 {
@@ -118,7 +119,16 @@ class StevedoringController extends Controller
      */
     public function edit(Stevedoring $stevedoring)
     {
-        //
+        return view('pages.stevedorings.stevedoring-edit', [
+            'stevedoring' => $stevedoring,
+            'areas' => Area::all(),
+            'clients' => Client::all(),
+            'vessels' => Vessel::all(),
+            'agents' => Agent::all(),
+            'ports' => Port::all(),
+            'jetties' => Jetty::all(),
+            'stevedoringcategories' => StevedoringCategory::all(),
+        ]);
     }
 
     /**
@@ -130,7 +140,81 @@ class StevedoringController extends Controller
      */
     public function update(Request $request, Stevedoring $stevedoring)
     {
-        //
+        // dd($request);
+        $validated = $request->validate([
+            'area_id' => 'required',
+            'client_id' => 'required',
+            'vessel_id' => 'required',
+            'agent_id' => 'required',
+            'jetty_id' => 'required',
+            'stevedoringcategory_id' => 'required',
+            'orign_port' => 'required',
+            'destination_port' => 'required',
+            'entry_date' => 'required',
+            'command_document' => 'required',
+            'wo_number' => 'required',
+            'doc_ptw' => 'file|max:10240',
+            'doc_pjsm' => 'file|max:10240',
+            'doc_lsap' => 'file|max:10240',
+        ]);
+
+        // doc_ptw
+        $path_doc_ptw = $stevedoring->doc_ptw;
+        if ($request->doc_ptw != null) {
+            $path_doc_ptw = Storage::putFileAs(
+                '',
+                $request->file('doc_ptw'),
+                $path_doc_ptw
+            );
+        }
+
+        // doc_pjsm
+        $path_doc_pjsm = $stevedoring->doc_pjsm;
+        if ($request->doc_pjsm != null) {
+            $path_doc_pjsm = Storage::putFileAs(
+                '',
+                $request->file('doc_pjsm'),
+                $path_doc_pjsm
+            );
+        }
+
+        // doc_lsap
+        $path_doc_lsap = $stevedoring->doc_lsap;
+        if ($request->doc_lsap != null) {
+            $path_doc_lsap = Storage::putFileAs(
+                '',
+                $request->file('doc_lsap'),
+                $path_doc_lsap
+            );
+        }
+
+
+        $result = Stevedoring::find($stevedoring->id)->update([
+            "area_id" => $request->area_id,
+            "client_id" => $request->client_id,
+            "vessel_id" => $request->vessel_id,
+            "agent_id" => $request->agent_id,
+            "jetty_id" => $request->jetty_id,
+            "stevedoringcategory_id" => $request->stevedoringcategory_id,
+            "orign_port" => $request->orign_port,
+            "destination_port" => $request->destination_port,
+            "entry_date" => $request->entry_date,
+            "exit_date" => $request->exit_date,
+            "command_document" => $request->command_document,
+            "wo_number" => $request->wo_number,
+            "doc_ptw" => $path_doc_ptw,
+            "doc_pjsm" => $path_doc_pjsm,
+            "doc_lsap" => $path_doc_lsap,
+        ]);
+
+        if ($result) {
+            # code...
+            toast('Data berhasil di update!', 'success');
+        } else {
+            # code...
+            toast('Data gagal di update!', 'error');
+        }
+        return back();
     }
 
     /**

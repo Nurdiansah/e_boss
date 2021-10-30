@@ -40,7 +40,6 @@
                         <table id="add-row" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Number</th>
                                     <th>Tanggal Masuk</th>
                                     <th>Area</th>
                                     <th>Kapal</th>
@@ -56,8 +55,7 @@
                                 {{-- <tr data-href="{{}}" style="cursor: pointer;" title="Klik untuk detail"> --}}
                                 <a href="{{route('dana.create')}}">
                                     <tr>
-                                        <td>{{$stevedoring->id}}</td>
-                                        <td>{{date('Y-m-d H:i', strtotime($stevedoring->entry_date))}}</td>
+                                        <td>{{tanggalWaktu($stevedoring->entry_date)}}</td>
                                         <td>{{$stevedoring->area->name}}</td>
                                         <td>{{$stevedoring->vessel->name}}</td>
                                         <td>{{$stevedoring->client->name}}</td>
@@ -70,7 +68,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{route('dana.edit', $stevedoring->id)}}">
+                                            <a href="{{route('stevedoring.edit', $stevedoring->id)}}">
                                                 <button class="btn btn-dark">Detail</button>
                                             </a>
                                         </td>
@@ -79,10 +77,11 @@
                                 @endforeach
                             <tfoot>
                                 <tr>
-                                    <th>No Permohonan</th>
-                                    <th>Order No</th>
-                                    <th>Tanggal Pengajuan</th>
-                                    <th>Tanggal Transfer</th>
+                                    <th>Tanggal Masuk</th>
+                                    <th>Area</th>
+                                    <th>Kapal</th>
+                                    <th>Client</th>
+                                    <th>Kegiatan</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
