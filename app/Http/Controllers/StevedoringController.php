@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use App\Models\Area;
 use App\Models\Client;
+use App\Models\ItemMaster;
 use App\Models\Jetty;
 use App\Models\Port;
 use App\Models\Stevedoring;
@@ -128,6 +129,7 @@ class StevedoringController extends Controller
             'ports' => Port::all(),
             'jetties' => Jetty::all(),
             'stevedoringcategories' => StevedoringCategory::all(),
+            'itemmasters' => ItemMaster::all(),
         ]);
     }
 

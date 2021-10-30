@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(StevedoringCategorySeeder::class);
         $this->call(CheckerSeeder::class);
         $this->call(JettySeeder::class);
+        $this->call(StevedoringSeeder::class);
     }
 }

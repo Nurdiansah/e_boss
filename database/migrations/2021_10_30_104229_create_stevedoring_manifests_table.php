@@ -19,7 +19,7 @@ class CreateStevedoringManifestsTable extends Migration
             $table->bigInteger('itemmaster_id');
             $table->string('description');
             $table->string('doc_no');
-            $table->intiger('qty');
+            $table->integer('qty');
             $table->decimal('m3', $precision = 6, $scale = 2);
             $table->decimal('ton', $precision = 6, $scale = 2);
             $table->decimal('revton', $precision = 6, $scale = 2)->nullable();

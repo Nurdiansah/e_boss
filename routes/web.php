@@ -3,8 +3,7 @@
 use App\Http\Controllers\PermohonanDanaController;
 use App\Http\Controllers\PermohonanDanaSubOneController;
 use App\Http\Controllers\StevedoringController;
-use App\Models\Permohonandana;
-use App\Models\Stevedoring;
+use App\Http\Controllers\StevedoringManifestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/stevedoring/{stevedoring:id}/edit', [StevedoringController::class, 'edit'])->name('stevedoring.edit');
         Route::put('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'update'])->name('stevedoring.update');
         Route::get('/stevedoring/draft', [StevedoringController::class, 'draft'])->name('stevedoring.draft');
+
+        // Manifest stevedoring
+        Route::post('/stevedoring-manifest', [StevedoringManifestController::class, 'store'])->name('stevedoring.manifest.store');
 
         // Permohonan dana
         Route::get('/form-permohonan-dana', [PermohonanDanaController::class, 'create'])->name('dana.create');

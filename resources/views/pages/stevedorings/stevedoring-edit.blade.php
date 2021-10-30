@@ -64,47 +64,60 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action="{{ route('subdanaone.store') }}" name="form" method="POST">
+                                <form action="{{ route('stevedoring.manifest.store') }}" name="form" method="POST">
                                     @csrf
-                                    <input type="hidden" name="permohonandana_id" value="{{$stevedoring->id}}">
+                                    <input type="hidden" name="stevedoring_id" value="{{$stevedoring->id}}">
                                     <div class="perhitungan">
                                         <div class="modal-body">
-                                            <p class="small">Tambahkan rincian permohonan dana, pada kolom di bawah ini</p>
+                                            <p class="small">Tambahkan data cargo manifest, pada kolom di bawah ini</p>
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="form-group form-group-default">
-                                                        <label>Keterangan</label>
-                                                        <textarea id="addDeskripsi" name="deskripsi" type="text" class="form-control" placeholder="Pengiriman Barang Premier Oil, Biaya Pengiriman Barang Premier Oil Mobil CDE Tujuan Kalijapat 5 - Tanggerang"></textarea>
+                                                        <label>Description</label>
+                                                        <textarea id="addDescription" name="description" type="text" class="form-control" placeholder="Container 20 ft Premier Oil"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- area -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-floating-label">
+                                                        <select class="form-control input-border-bottom" id="selectFloatingLabel" name="itemmaster_id" required>
+                                                            <option value="">&nbsp;</option>
+                                                            @foreach($itemmasters as $key => $itemmaster)
+
+                                                            @if (old('itemmaster_id') == $itemmaster->id )
+                                                            <option value="{{ $itemmaster->id }}" selected>{{ $itemmaster->name }}</option>
+                                                            @else
+                                                            <option value="{{ $itemmaster->id }}">{{ $itemmaster->name }}</option>
+                                                            @endif
+
+                                                            @endforeach
+
+                                                        </select>
+                                                        <label for="selectFloatingLabel" class="placeholder">Select Item</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <div class="form-group form-group-default">
-                                                        <label>Dasar Harga</label>
-                                                        <input id="addDasarHarga" name="dasar_harga" value="0" type="text" class="form-control" placeholder="1.000.000">
+                                                        <label>Doc No</label>
+                                                        <input id="addDocno" name="doc_no" value="" type="text" class="form-control" placeholder="23870">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 pr-0">
                                                     <div class="form-group form-group-default">
-                                                        <label>PPN</label>
-                                                        <input id="addPPn" name="ppn" value="0" type="text" class="form-control">
+                                                        <label>QTY</label>
+                                                        <input id="addQty" name="qty" min="0" value="0" type="number" class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group form-group-default">
-                                                        <label>PPh</label>
-                                                        <input id="addPPh" name="pph" value="0" type="text" class="form-control">
+                                                        <label>TON</label>
+                                                        <input id="addTon" name="ton" min="0" step="any" value="0" type="number" class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <div class="form-group form-group-default">
-                                                        <label>Pengajuan</label>
-                                                        <input id="addPengajuan" readonly name="pengajuan" type="text" class="form-control text-bold" placeholder="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <div class="form-group form-group-default">
-                                                        <label>Kode Transaksi</label>
-                                                        <input id="addKdTransaksi" name="kd_transaksi" type="text" class="form-control" placeholder="5-211">
+                                                        <label>Remarks</label>
+                                                        <textarea id="addRemarks" name="remarks" type="text" class="form-control" placeholder="Haliburton"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
