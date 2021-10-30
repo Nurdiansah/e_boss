@@ -51,13 +51,6 @@
                     <h4 class="text-section">Stevedoring</h4>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('stevedoring.create')}}">
-                        <i class="fas fas fa-file"></i>
-                        <p>Create</p>
-                        <!-- <span class="badge badge-success">4</span> -->
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a data-toggle="collapse" href="#forms">
                         <i class="fas fas fa-ship"></i>
                         <p>Stevedoring</p>
@@ -67,9 +60,16 @@
                         <ul class="nav nav-collapse">
                             @hasrole('superuser|admin_ops')
 
-                            <li>
+                            <li class="nav-item">
                                 <a href="{{route('stevedoring.create')}}">
-                                    <i class="fas fa-pen-square"></i>Buat
+                                    <i class="fas fas fa-file"></i>Create
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{route('stevedoring.draft')}}">
+                                    <i class="fas fas fa-folder"></i>Draft
+                                    <span class="badge badge-success">4</span>
                                 </a>
                             </li>
 

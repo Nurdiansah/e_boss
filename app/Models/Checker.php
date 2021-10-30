@@ -13,4 +13,9 @@ class Checker extends Model
         'area_id',
         'name'
     ];
+
+    public function stevedoring()
+    {
+        return $this->hasMany(Stevedoring::class);
+    }
 }

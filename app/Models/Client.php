@@ -13,4 +13,9 @@ class Client extends Model
         'name',
         'code'
     ];
+
+    public function stevedoring()
+    {
+        return $this->hasMany(Stevedoring::class);
+    }
 }

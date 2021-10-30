@@ -37,4 +37,39 @@ class Stevedoring extends Model
         'komentar',
         'status',
     ];
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function vessel()
+    {
+        return $this->belongsTo(Vessel::class);
+    }
+
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
+
+    public function jetty()
+    {
+        return $this->belongsTo(Jetty::class);
+    }
+
+    public function stevedoringcategory()
+    {
+        return $this->belongsTo(StevedoringCategory::class);
+    }
+
+    public function checker()
+    {
+        return $this->belongsTo(Checker::class);
+    }
 }

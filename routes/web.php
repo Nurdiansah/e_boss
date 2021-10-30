@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
         Route::post('/stevedoring', [StevedoringController::class, 'store'])->name('stevedoring.store');
+        Route::get('/stevedoring/draft', [StevedoringController::class, 'draft'])->name('stevedoring.draft');
 
         // Permohonan dana
         Route::get('/form-permohonan-dana', [PermohonanDanaController::class, 'create'])->name('dana.create');

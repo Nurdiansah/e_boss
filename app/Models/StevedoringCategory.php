@@ -12,4 +12,9 @@ class StevedoringCategory extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function stevedoring()
+    {
+        return $this->hasMany(Stevedoring::class);
+    }
 }

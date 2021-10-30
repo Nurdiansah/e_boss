@@ -42,6 +42,15 @@ class StevedoringController extends Controller
         ]);
     }
 
+    public function draft()
+    {
+        return view('pages.stevedorings.stevedoring-draft', [
+            'stevedorings' => Stevedoring::where([
+                'status' => '0'
+            ])->get()
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

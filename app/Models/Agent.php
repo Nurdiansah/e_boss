@@ -12,4 +12,9 @@ class Agent extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function stevedoring()
+    {
+        return $this->hasMany(Stevedoring::class);
+    }
 }

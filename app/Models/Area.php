@@ -13,4 +13,9 @@ class Area extends Model
         'code_area',
         'name',
     ];
+
+    public function stevedoring()
+    {
+        return $this->hasMany(Stevedoring::class);
+    }
 }
