@@ -158,8 +158,18 @@ class StevedoringManifestController extends Controller
      * @param  \App\Models\StevedoringManifest  $stevedoringManifest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(StevedoringManifest $stevedoringManifest)
+    public function destroy(StevedoringManifest $stevedoringmanifest)
     {
-        //
+        $result = StevedoringManifest::find($stevedoringmanifest->id)->delete();
+
+        if ($result) {
+            # code...
+            toast('Data berhasil di Hapus!', 'success');
+        } else {
+            # code...
+            toast('Data gagal di Hapus!', 'error');
+        }
+
+        return back();
     }
 }

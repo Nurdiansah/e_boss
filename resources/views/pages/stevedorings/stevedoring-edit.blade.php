@@ -233,7 +233,11 @@ $jumlahData = count($stevedoringmanifests);
                                     <td>
                                         <button class="btn btn-success btn-round ml-auto" data-toggle="modal" data-target="#addRowModal&id={{$stevedoringmanifest->id}}">
                                             <i class="fa fa-edit"></i>
-                                            Edit
+
+                                        </button>
+                                        <button class="btn btn-danger btn-round ml-auto" data-toggle="modal" data-target="#modalHapus&id={{$stevedoringmanifest->id}}">
+                                            <i class="fa fa-trash"></i>
+
                                         </button>
                                     </td>
                                 </tr>
@@ -324,6 +328,42 @@ $jumlahData = count($stevedoringmanifests);
 
                                 </div>
                                 <!-- Modal Edit -->
+
+                                <!-- Modal Hapus -->
+                                <div class="modal fade" id="modalHapus&id={{$stevedoringmanifest->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header no-bd bg danger">
+                                                <h5 class="modal-title">
+                                                    <span class="fw-mediumbold">
+                                                        Hapus</span>
+                                                    <span class="fw-light">
+                                                        Data
+                                                    </span>
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{ route('stevedoring.manifest.update', $stevedoringmanifest->id ) }}" name="form" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <input type="hidden" name="stevedoring_id" value="{{$stevedoring->id}}">
+                                                <div class="perhitungan">
+                                                    <div class="modal-body">
+                                                        <p class="small">Apa anda yakin ingin menghapus cargo {{$stevedoringmanifest->description}}?</p>
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <button type="submit" id="addRowButton" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Modal Hapus -->
 
                                 @endforeach
 
