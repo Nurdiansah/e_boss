@@ -4,7 +4,7 @@
 
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title">Form</h4>
+        <h4 class="page-title">Form Detail</h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="#">
@@ -26,12 +26,138 @@
 
         </ul>
     </div>
+
+
+
+    <!-- Form Manifest -->
+    <!--  -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Cargo Manifest</h4>
+
+                        @if($stevedoring->status == '0')
+
+                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
+                            <i class="fa fa-plus"></i>
+                            Tambah
+                        </button>
+                        @endif
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Modal -->
+                    <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header no-bd">
+                                    <h5 class="modal-title">
+                                        <span class="fw-mediumbold">
+                                            Data</span>
+                                        <span class="fw-light">
+                                            Baru
+                                        </span>
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{{ route('subdanaone.store') }}" name="form" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="permohonandana_id" value="{{$stevedoring->id}}">
+                                    <div class="perhitungan">
+                                        <div class="modal-body">
+                                            <p class="small">Tambahkan rincian permohonan dana, pada kolom di bawah ini</p>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label>Keterangan</label>
+                                                        <textarea id="addDeskripsi" name="deskripsi" type="text" class="form-control" placeholder="Pengiriman Barang Premier Oil, Biaya Pengiriman Barang Premier Oil Mobil CDE Tujuan Kalijapat 5 - Tanggerang"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label>Dasar Harga</label>
+                                                        <input id="addDasarHarga" name="dasar_harga" value="0" type="text" class="form-control" placeholder="1.000.000">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 pr-0">
+                                                    <div class="form-group form-group-default">
+                                                        <label>PPN</label>
+                                                        <input id="addPPn" name="ppn" value="0" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group form-group-default">
+                                                        <label>PPh</label>
+                                                        <input id="addPPh" name="pph" value="0" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label>Pengajuan</label>
+                                                        <input id="addPengajuan" readonly name="pengajuan" type="text" class="form-control text-bold" placeholder="0">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-group-default">
+                                                        <label>Kode Transaksi</label>
+                                                        <input id="addKdTransaksi" name="kd_transaksi" type="text" class="form-control" placeholder="5-211">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer ">
+                                            <button type="submit" id="addRowButton" class="btn btn-primary"><i class="fa fa-save"></i> Tambah</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="add-row" class="display table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">DOC NO</th>
+                                    <th>QTY</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>REMARKS</th>
+                                    <th>DIMENTION</th>
+                                    <th>M<sup>3</sup></th>
+                                    <th>TON</th>
+                                    <th>TON/M<sup>3</sup></th>
+                                    <!-- <th style="width: 10%">Action</th> -->
+                                </tr>
+                            </thead>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+
     <!-- Detail Stevedoring -->
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Form Stevedoring</div>
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Detail Stevedoring</h4>
+                        <!-- <a href="{{route('stevedoring.create')}}" class="ml-auto "> -->
+                        <span class="ml-auto  ">
+                            <i class="fa fa-window-minimize"></i>
+                        </span>
+                        <!-- </a> -->
+                    </div>
                 </div>
                 <form action="{{ route('stevedoring.update',$stevedoring->id) }}" method="POST" enctype="multipart/form-data">
                     @method('PUT')
@@ -187,8 +313,6 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
 
-                            </div>
-                            <div class="col-md-6 col-lg-6">
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Entry Date</label>
                                     <input id="inputFloatingLabel" value="{{ datetimeLocal($stevedoring->entry_date) }}" name="entry_date" type="datetime-local" class="form-control input-border-bottom" required>
@@ -204,6 +328,9 @@
                                 @error('exit_date')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
+
+                            </div>
+                            <div class="col-md-6 col-lg-6">
 
                                 <div class="form-group form-floating-label">
                                     <input id="inputFloatingLabel" name="command_document" value="{{ $stevedoring->command_document }}" type="text" class="form-control input-border-bottom" required>
@@ -225,18 +352,21 @@
                                 <div class="form-group">
                                     <label for="inputFloatingLabel" class="placeholder">Dokumen PTW</label>
                                     <input id="inputFloatingLabel" name="doc_ptw" type="file" class="form-control input-border-bottom">
+                                    <p class="text-danger"><i>* Kosongkan jika tidak ingin dirubah</i></p>
                                     <a href="{{route('link',$stevedoring->doc_ptw)}}" target="_blank" class="link-success">Preview Dokumen PTW</a>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputFloatingLabel" class="placeholder">Dokumen PJSM</label>
                                     <input id="inputFloatingLabel" name="doc_pjsm" type="file" class="form-control input-border-bottom">
+                                    <p class="text-danger"><i>* Kosongkan jika tidak ingin dirubah</i></p>
                                     <a href="{{route('link',$stevedoring->doc_pjsm)}}" target="_blank" class="link-primary">Preview Dokumen PJSM</a>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputFloatingLabel" class="placeholder">Dokumen LSAP</label>
                                     <input id="inputFloatingLabel" name="doc_lsap" type="file" class="form-control input-border-bottom">
+                                    <p class="text-danger"><i>* Kosongkan jika tidak ingin dirubah</i></p>
                                     <a href="{{route('link',$stevedoring->doc_lsap)}}" target="_blank" class="link-primary">Preview Dokumen LSAP</a>
                                 </div>
 
@@ -256,118 +386,6 @@
         </div>
     </div>
 
-    <!-- Form Manifest -->
-    <!--  -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex align-items-center">
-                        <h4 class="card-title">Deskripsi</h4>
-
-                        @if($stevedoring->status == '0')
-
-                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
-                            <i class="fa fa-plus"></i>
-                            Tambah
-                        </button>
-                        @endif
-                    </div>
-                </div>
-                <div class="card-body">
-                    <!-- Modal -->
-                    <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header no-bd">
-                                    <h5 class="modal-title">
-                                        <span class="fw-mediumbold">
-                                            Data</span>
-                                        <span class="fw-light">
-                                            Baru
-                                        </span>
-                                    </h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form action="{{ route('subdanaone.store') }}" name="form" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="permohonandana_id" value="{{$stevedoring->id}}">
-                                    <div class="perhitungan">
-                                        <div class="modal-body">
-                                            <p class="small">Tambahkan rincian permohonan dana, pada kolom di bawah ini</p>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="form-group form-group-default">
-                                                        <label>Keterangan</label>
-                                                        <textarea id="addDeskripsi" name="deskripsi" type="text" class="form-control" placeholder="Pengiriman Barang Premier Oil, Biaya Pengiriman Barang Premier Oil Mobil CDE Tujuan Kalijapat 5 - Tanggerang"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <div class="form-group form-group-default">
-                                                        <label>Dasar Harga</label>
-                                                        <input id="addDasarHarga" name="dasar_harga" value="0" type="text" class="form-control" placeholder="1.000.000">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 pr-0">
-                                                    <div class="form-group form-group-default">
-                                                        <label>PPN</label>
-                                                        <input id="addPPn" name="ppn" value="0" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group form-group-default">
-                                                        <label>PPh</label>
-                                                        <input id="addPPh" name="pph" value="0" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <div class="form-group form-group-default">
-                                                        <label>Pengajuan</label>
-                                                        <input id="addPengajuan" readonly name="pengajuan" type="text" class="form-control text-bold" placeholder="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <div class="form-group form-group-default">
-                                                        <label>Kode Transaksi</label>
-                                                        <input id="addKdTransaksi" name="kd_transaksi" type="text" class="form-control" placeholder="5-211">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer ">
-                                            <button type="submit" id="addRowButton" class="btn btn-primary"><i class="fa fa-save"></i> Tambah</button>
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="table-responsive">
-                        <table id="add-row" class="display table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th colspan="3">KETERANGAN</th>
-                                    <th>DASAR HARGA</th>
-                                    <th>PPN</th>
-                                    <th>PPh</th>
-                                    <th>PENGAJUAN</th>
-                                    <th>KODE TRANSAKSI</th>
-                                    <!-- <th style="width: 10%">Action</th> -->
-                                </tr>
-                            </thead>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 

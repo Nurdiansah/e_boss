@@ -36,7 +36,7 @@
 <body>
     @include('sweetalert::alert')
 
-    <div class="wrapper">
+    <div class="wrapper sidebar_minimize">
 
         @include('layouts.header')
         @include('layouts.sidebar')
