@@ -48,16 +48,16 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <!-- Modal -->
+                    <!-- Modal Tambah -->
                     <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header no-bd">
                                     <h5 class="modal-title">
                                         <span class="fw-mediumbold">
-                                            Data</span>
+                                            Tambah</span>
                                         <span class="fw-light">
-                                            Baru
+                                            Data
                                         </span>
                                     </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -132,23 +132,139 @@
                         </div>
 
                     </div>
+                    <!-- Modal Tambah -->
 
                     <div class="table-responsive">
                         <table id="add-row" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th colspan="3">DOC NO</th>
-                                    <th>QTY</th>
-                                    <th>DESCRIPTION</th>
-                                    <th>REMARKS</th>
-                                    <th>DIMENTION</th>
-                                    <th>M<sup>3</sup></th>
-                                    <th>TON</th>
-                                    <th>TON/M<sup>3</sup></th>
+                                    <th rowspan="2" class="align-top">DOC NO</th>
+                                    <th rowspan="2">QTY</th>
+                                    <th rowspan="2">DESCRIPTION</th>
+                                    <th rowspan="2">REMARKS</th>
+                                    <th colspan="3" class="text-center">DIMENTION</th>
+                                    <th rowspan="2">M<sup>3</sup></th>
+                                    <th rowspan="2">TON</th>
+                                    <th rowspan="2">TON/M<sup>3</sup></th>
+                                    <th rowspan="2">Action</th>
                                     <!-- <th style="width: 10%">Action</th> -->
                                 </tr>
+                                <tr>
+                                    <th>P</th>
+                                    <th>L</th>
+                                    <th>T</th>
+                                </tr>
                             </thead>
+                            <tbody>
+                                @foreach ($stevedoringmanifests as $key => $stevedoringmanifest)
 
+                                <tr>
+                                    <td>{{$stevedoringmanifest->doc_no}}</td>
+                                    <td>{{$stevedoringmanifest->qty}}</td>
+                                    <td>{{$stevedoringmanifest->description}}</td>
+                                    <td>{{$stevedoringmanifest->remarks}}</td>
+                                    <td>{{$stevedoringmanifest->itemmaster->long}}</td>
+                                    <td>{{$stevedoringmanifest->itemmaster->widht}}</td>
+                                    <td>{{$stevedoringmanifest->itemmaster->height}}</td>
+                                    <td>{{$stevedoringmanifest->m3}}</td>
+                                    <td>{{$stevedoringmanifest->ton}}</td>
+                                    <td>{{$stevedoringmanifest->revton}}</td>
+                                    <td>
+                                        <button class="btn btn-success btn-round ml-auto" data-toggle="modal" data-target="#addRowModal&id={{$stevedoringmanifest->id}}">
+                                            <i class="fa fa-edit"></i>
+                                            Edit
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Modal Edit -->
+                                <div class="modal fade" id="addRowModal&id={{$stevedoringmanifest->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header no-bd">
+                                                <h5 class="modal-title">
+                                                    <span class="fw-mediumbold">
+                                                        Edit</span>
+                                                    <span class="fw-light">
+                                                        Data
+                                                    </span>
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{ route('stevedoring.manifest.update', $stevedoringmanifest->id ) }}" name="form" method="POST">
+                                                @method('PUT')
+                                                @csrf
+                                                <input type="hidden" name="stevedoring_id" value="{{$stevedoring->id}}">
+                                                <div class="perhitungan">
+                                                    <div class="modal-body">
+                                                        <p class="small">Tambahkan data cargo manifest, pada kolom di bawah ini</p>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Description</label>
+                                                                    <textarea id="addDescription" name="description" type="text" class="form-control" placeholder="Container 20 ft Premier Oil">{{$stevedoringmanifest->description}}</textarea>
+                                                                </div>
+                                                            </div>
+                                                            <!-- area -->
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-floating-label">
+                                                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="itemmaster_id" required>
+                                                                        <option value="">&nbsp;</option>
+                                                                        @foreach($itemmasters as $key => $itemmaster)
+
+                                                                        @if (old('itemmaster_id') == $itemmaster->id || $stevedoringmanifest->itemmaster_id == $itemmaster->id )
+                                                                        <option value="{{ $itemmaster->id }}" selected>{{ $itemmaster->name }}</option>
+                                                                        @else
+                                                                        <option value="{{ $itemmaster->id }}">{{ $itemmaster->name }}</option>
+                                                                        @endif
+
+                                                                        @endforeach
+
+                                                                    </select>
+                                                                    <label for="selectFloatingLabel" class="placeholder">Select Item</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Doc No</label>
+                                                                    <input id="addDocno" name="doc_no" value="{{$stevedoringmanifest->doc_no}}" type="text" class="form-control" placeholder="23870">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 pr-0">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>QTY</label>
+                                                                    <input id="addQty" name="qty" min="0" value="{{$stevedoringmanifest->qty}}" type="number" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>TON</label>
+                                                                    <input id="addTon" name="ton" min="0" step="any" value="{{$stevedoringmanifest->ton}}" type="number" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Remarks</label>
+                                                                    <textarea id="addRemarks" name="remarks" value="{{$stevedoringmanifest->remarks}}" type="text" class="form-control" placeholder="Haliburton">{{$stevedoringmanifest->remarks}}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <button type="submit" id="addRowButton" class="btn btn-success"><i class="fa fa-save"></i> Update</button>
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Modal Edit -->
+
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

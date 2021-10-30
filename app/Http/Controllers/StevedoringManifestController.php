@@ -108,9 +108,48 @@ class StevedoringManifestController extends Controller
      * @param  \App\Models\StevedoringManifest  $stevedoringManifest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StevedoringManifest $stevedoringManifest)
+    public function update(Request $request, StevedoringManifest $stevedoringmanifest)
     {
-        //
+        $validated = $request->validate([
+            'stevedoring_id' => 'required',
+            'description' => 'required',
+            'itemmaster_id' => 'required',
+            'doc_no' => 'required',
+            'qty' => 'required',
+            'ton' => 'required',
+            'remarks' => 'required',
+        ]);
+
+        $item = ItemMaster::find($request->itemmaster_id);
+
+        $m3 = round($request->qty * $item->volume, 2);
+
+        if ($m3 >= $request->ton) {
+            $revton = $m3;
+        } else {
+            $revton = $request->ton;
+        }
+
+        $result = StevedoringManifest::where('id', $stevedoringmanifest->id)->update([
+            'stevedoring_id' => $request->stevedoring_id,
+            'description' => $request->description,
+            'itemmaster_id' => $request->itemmaster_id,
+            'doc_no' => $request->doc_no,
+            'qty' => $request->qty,
+            'm3' => $m3,
+            'ton' => $request->ton,
+            'revton' => $revton,
+            'remarks' => $request->remarks
+        ]);
+
+        if ($result) {
+            # code...
+            toast('Data berhasil di update!', 'success');
+        } else {
+            # code...
+            toast('Data gagal di update!', 'error');
+        }
+        return back();
     }
 
     /**

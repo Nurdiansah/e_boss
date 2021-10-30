@@ -18,4 +18,9 @@ class ItemMaster extends Model
         'unit',
         'volume'
     ];
+
+    public function stevedoringmanifest()
+    {
+        return $this->hasMany(StevedoringManifest::class);
+    }
 }

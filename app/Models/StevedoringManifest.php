@@ -23,4 +23,9 @@ class StevedoringManifest extends Model
         'cargo_final',
         'row_version',
     ];
+
+    public function itemmaster()
+    {
+        return $this->belongsTo(ItemMaster::class);
+    }
 }

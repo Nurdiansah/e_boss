@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Manifest stevedoring
         Route::post('/stevedoring-manifest', [StevedoringManifestController::class, 'store'])->name('stevedoring.manifest.store');
+        Route::put('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'update'])->name('stevedoring.manifest.update');
 
         // Permohonan dana
         Route::get('/form-permohonan-dana', [PermohonanDanaController::class, 'create'])->name('dana.create');

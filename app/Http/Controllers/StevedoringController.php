@@ -10,6 +10,7 @@ use App\Models\Jetty;
 use App\Models\Port;
 use App\Models\Stevedoring;
 use App\Models\StevedoringCategory;
+use App\Models\StevedoringManifest;
 use App\Models\Vessel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -122,6 +123,7 @@ class StevedoringController extends Controller
     {
         return view('pages.stevedorings.stevedoring-edit', [
             'stevedoring' => $stevedoring,
+            'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
             'areas' => Area::all(),
             'clients' => Client::all(),
             'vessels' => Vessel::all(),
