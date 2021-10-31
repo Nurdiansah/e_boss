@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\StevedoringApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth'])->group(function () {
+
+    Route::group(['middleware' => ['role:checker']], function () {
+        Route::get('/stevedoring', [StevedoringApiController::class, 'index'])->name('stevedoring');
+        Route::get('/stevedoring/{stevedoring:id}', [StevedoringApiController::class, 'show'])->name('stevedoring.show');
+    });
 });
