@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\StevedoringApiController;
+use App\Http\Controllers\Api\StevedoringManifestApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth'])->group(function () {
 
-    Route::group(['middleware' => ['role:checker']], function () {
-        Route::get('/stevedoring', [StevedoringApiController::class, 'index'])->name('stevedoring');
-        Route::get('/stevedoring/{stevedoring:id}', [StevedoringApiController::class, 'show'])->name('stevedoring.show');
-    });
-});
+//     Route::group(['middleware' => ['role:checker']], function () {
+// Stevedoring 
+Route::get('/stevedoring', [StevedoringApiController::class, 'index']);
+Route::get('/stevedoring/{stevedoring:id}', [StevedoringApiController::class, 'show']);
+Route::put('/stevedoring/{stevedoring:id}/start', [StevedoringApiController::class, 'start']);
+
+// Stevedoring Manifest
+Route::get('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestApiController::class, 'show']);
+//     });
+// });

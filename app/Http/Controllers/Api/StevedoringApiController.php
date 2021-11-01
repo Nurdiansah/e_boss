@@ -66,6 +66,46 @@ class StevedoringApiController extends Controller
         //
     }
 
+    public function start(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'id' => 'required',
+        ]);
+
+        $result = Stevedoring::where('id', $id)->update([
+            "start_activity" => now()
+        ]);
+
+        if ($result) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Kegiatan di mulai'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal'
+            ]);
+        }
+    }
+
+    public function stop(Request $request, $id)
+    {
+
+        $result = Stevedoring::where('id', $id)->update([
+            "status" => '3'
+        ]);
+
+
+
+        // $query = mysqli_query($koneksi, "INSERT INTO timeline_joborder ( id_joborder, waktu_stop, keterangan_jeda ) VALUES 
+        // 								( '$id_joborder', '$tanggal', '$alasan');
+        //     ");
+
+        // $queryJ = mysqli_query($koneksi, "UPDATE job_order SET status_jo='3' WHERE id_joborder='$id_joborder' ");		
+    }
+
+
     /**
      * Remove the specified resource from storage.
      *
