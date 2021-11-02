@@ -66,6 +66,13 @@ class StevedoringManifestApiController extends Controller
 
         $manifest = StevedoringManifest::find($request->id);
 
+        if ($manifest->qty == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Cargo tersebut sudah berjumlah 0 di manifest!'
+            ]);
+        }
+
         // tonase actual
         $m3_lolo = ($request->qty / $manifest->qty) * $manifest->m3;
         $ton_lolo = ($request->qty / $manifest->qty) * $manifest->ton;
@@ -76,6 +83,13 @@ class StevedoringManifestApiController extends Controller
         $m3_stok = $manifest->m3 - $m3_lolo;
         $ton_stok = $manifest->ton - $ton_lolo;
         $revton_stok = $manifest->revton - $revton_lolo;
+
+        if ($qty_stok < 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal QTY yang anda inputkan melebihi qty yang ada di manifest!, qty cargo ini di manifest ' . $manifest->qty
+            ]);
+        }
 
 
         DB::beginTransaction();

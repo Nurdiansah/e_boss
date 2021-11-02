@@ -24,6 +24,7 @@ Route::get('/stevedoring/{stevedoring:id}', [StevedoringApiController::class, 's
 Route::put('/stevedoring/{stevedoring:id}/start', [StevedoringApiController::class, 'start']);
 Route::put('/stevedoring/{stevedoring:id}/stop', [StevedoringApiController::class, 'stop']);
 Route::put('/stevedoring/{stevedoring:id}/continue', [StevedoringApiController::class, 'continue']);
+Route::put('/stevedoring/{stevedoring:id}/finish', [StevedoringApiController::class, 'finish']);
 
 // Stevedoring Manifest
 Route::get('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestApiController::class, 'show']);

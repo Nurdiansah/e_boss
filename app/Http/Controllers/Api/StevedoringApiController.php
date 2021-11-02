@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\StevedoringDetailResource;
 use App\Http\Resources\StevedoringResource;
 use App\Models\Stevedoring;
+use App\Models\StevedoringManifest;
+use App\Models\StevedoringTallysheet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -163,43 +165,72 @@ class StevedoringApiController extends Controller
         }
     }
 
-    public function lolo(Request $request)
+    public function finish(Request $request)
     {
 
-        return $request;
-        // DB::beginTransaction();
+        $sumManifest = StevedoringManifest::where('stevedoring_id', $request->id)->sum('qty');
 
-        // $stevedoringtimeline_id = DB::table('stevedoring_timelines')
-        //     ->where('stevedoring_id', $request->id)->max('id');
-
-        // $updateT = DB::table('stevedoring_timelines')
-        //     ->where('id', $stevedoringtimeline_id)
-        //     ->update(['time_start_again' => now()]);
-
-        // $updateS = DB::table('stevedorings')
-        //     ->where('id', $request->id)
-        //     ->update(['status' => 2]);
+        // Validasi dulu 
+        if ($sumManifest > 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Cargo ada yang belum di update'
+            ]);
+        }
 
 
-        // if ($updateT && $updateS) {
+        // Cari Revton akhir
+        $revtonTally = StevedoringTallysheet::where('stevedoring_id', $request->id)
+            ->where('origin_destination', '!=', 'Not Available')
+            ->sum('revton');
 
-        //     DB::commit();
+        $stevedoring = Stevedoring::find($request->id);
 
-        //     return response()->json([
-        //         'success' => true,
-        //         'message' => 'Kegiatan Berlanjut Kembali'
-        //     ]);
-        // } else {
 
-        //     DB::rollBack();
+        $awalK  = date_create($stevedoring->start_activity);
+        $akhirK = date_create(now()); // waktu sekarang
+        $diffK  = date_diff($awalK, $akhirK);
 
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Gagal'
-        //     ]);
-        // }
+
+        if ($diffK->d == 0) {
+            if ($diffK->h >= 1) {
+                $selisihK = $diffK->h . ' jam ' . $diffK->i . ' menit ';
+            } else {
+                $selisihK = $diffK->i . ' menit ';
+            }
+        } else {
+            $selisihK = $diffK->d . ' hari ' . $diffK->h . ' jam ' . $diffK->i . ' menit ';
+        }
+        // 
+
+
+        $awalan  = strtotime($stevedoring->start_activity);
+        $akhiran  = strtotime(now());
+
+        $time = $akhiran - $awalan;
+
+        $updateStv = Stevedoring::where('id', $request->id)->update([
+            'finish_activity' => now(),
+            'status' => '4',
+            'final_amount' => $revtonTally,
+            'text_duration' => $selisihK,
+            'number_duration' => $time,
+        ]);
+
+        if ($updateStv) {
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Kegiatan Berhasil diselesaikan'
+            ]);
+        } else {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal di finish'
+            ]);
+        }
     }
-
 
     /**
      * Remove the specified resource from storage.
