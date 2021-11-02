@@ -163,6 +163,43 @@ class StevedoringApiController extends Controller
         }
     }
 
+    public function lolo(Request $request)
+    {
+
+        return $request;
+        // DB::beginTransaction();
+
+        // $stevedoringtimeline_id = DB::table('stevedoring_timelines')
+        //     ->where('stevedoring_id', $request->id)->max('id');
+
+        // $updateT = DB::table('stevedoring_timelines')
+        //     ->where('id', $stevedoringtimeline_id)
+        //     ->update(['time_start_again' => now()]);
+
+        // $updateS = DB::table('stevedorings')
+        //     ->where('id', $request->id)
+        //     ->update(['status' => 2]);
+
+
+        // if ($updateT && $updateS) {
+
+        //     DB::commit();
+
+        //     return response()->json([
+        //         'success' => true,
+        //         'message' => 'Kegiatan Berlanjut Kembali'
+        //     ]);
+        // } else {
+
+        //     DB::rollBack();
+
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal'
+        //     ]);
+        // }
+    }
+
 
     /**
      * Remove the specified resource from storage.

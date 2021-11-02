@@ -27,5 +27,6 @@ Route::put('/stevedoring/{stevedoring:id}/continue', [StevedoringApiController::
 
 // Stevedoring Manifest
 Route::get('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestApiController::class, 'show']);
+Route::put('/stevedoring-manifest/{stevedoring:id}/lolo', [StevedoringManifestApiController::class, 'lolo']);
 //     });
 // });
