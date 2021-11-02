@@ -7,6 +7,7 @@ use App\Http\Resources\StevedoringDetailResource;
 use App\Http\Resources\StevedoringResource;
 use App\Models\Stevedoring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StevedoringApiController extends Controller
 {
@@ -91,18 +92,75 @@ class StevedoringApiController extends Controller
 
     public function stop(Request $request, $id)
     {
+        // return $request;
 
-        $result = Stevedoring::where('id', $id)->update([
-            "status" => '3'
+        DB::beginTransaction();
+
+        $update = DB::table('stevedorings')
+            ->where('id', $request->id)
+            ->update(['status' => 3]);
+
+        $insert = DB::table('stevedoring_timelines')->insert([
+            'stevedoring_id' => $request->id,
+            'time_stop' => now(),
+            'description' => $request->description,
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
 
+        if ($update && $insert) {
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Kegiatan Berhenti'
+            ]);
+        } else {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal'
+            ]);
+        }
+    }
+
+    public function continue(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        $stevedoringtimeline_id = DB::table('stevedoring_timelines')
+            ->where('stevedoring_id', $request->id)->max('id');
+
+        $updateT = DB::table('stevedoring_timelines')
+            ->where('id', $stevedoringtimeline_id)
+            ->update(['time_start_again' => now()]);
+
+        $updateS = DB::table('stevedorings')
+            ->where('id', $request->id)
+            ->update(['status' => 2]);
 
 
-        // $query = mysqli_query($koneksi, "INSERT INTO timeline_joborder ( id_joborder, waktu_stop, keterangan_jeda ) VALUES 
-        // 								( '$id_joborder', '$tanggal', '$alasan');
-        //     ");
+        if ($updateT && $updateS) {
 
-        // $queryJ = mysqli_query($koneksi, "UPDATE job_order SET status_jo='3' WHERE id_joborder='$id_joborder' ");		
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Kegiatan Berlanjut Kembali'
+            ]);
+        } else {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal'
+            ]);
+        }
     }
 
 
