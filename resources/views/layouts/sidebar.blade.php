@@ -69,21 +69,17 @@
                             <li class="nav-item">
                                 <a href="{{route('stevedoring.draft')}}">
                                     <i class="fas fas fa-folder"></i>Draft
-                                    <span class="badge badge-success">4</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{route('stevedoring.proses')}}">
+                                    <i class="fas fas fa-truck-loading"></i>Proses
+                                    <!-- <span class="badge badge-success">4</span> -->
                                 </a>
                             </li>
 
                             @endhasrole
-                            <li>
-                                <a href="{{route('dana.index')}}">
-                                    <i class="fas fa-bars"></i> Daftar
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('dana.create')}}">
-                                    <span class="sub-item">Permohonan Dana</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>

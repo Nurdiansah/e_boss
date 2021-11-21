@@ -30,25 +30,19 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role:superuser|admin_ops']], function () {
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
+
         Route::post('/stevedoring', [StevedoringController::class, 'store'])->name('stevedoring.store');
         Route::get('/stevedoring/{stevedoring:id}/edit', [StevedoringController::class, 'edit'])->name('stevedoring.edit');
         Route::put('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'update'])->name('stevedoring.update');
         Route::get('/stevedoring/draft', [StevedoringController::class, 'draft'])->name('stevedoring.draft');
         Route::post('/stevedoring/release', [StevedoringController::class, 'release'])->name('stevedoring.release');
+        Route::get('/stevedoring/proses', [StevedoringController::class, 'proses'])->name('stevedoring.proses');
 
+        Route::get('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'show'])->name('stevedoring.show');
         // Manifest stevedoring
         Route::post('/stevedoring-manifest', [StevedoringManifestController::class, 'store'])->name('stevedoring.manifest.store');
         Route::put('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'update'])->name('stevedoring.manifest.update');
         Route::delete('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'destroy'])->name('stevedoring.manifest.destroy');
-
-
-        // Permohonan dana
-        Route::get('/form-permohonan-dana', [PermohonanDanaController::class, 'create'])->name('dana.create');
-        Route::post('/permohonan-dana', [PermohonanDanaController::class, 'store'])->name('dana.store');
-        Route::get('/permohonan-dana', [PermohonanDanaController::class, 'index'])->name('dana.index');
-        Route::get('/permohonan-dana/{permohonandana:id}', [PermohonanDanaController::class, 'edit'])->name('dana.edit');
-        Route::post('/permohonan-dana/{permohonandana:id}', [PermohonanDanaController::class, 'update'])->name('dana.update');
-        Route::post('/permohonan-dana-release/{permohonandana:id}', [PermohonanDanaController::class, 'release'])->name('dana.release');
     });
 
     Route::get('/permohonan-dana-cetak', [PermohonanDanaController::class, 'cetak'])->name('dana.cetak');

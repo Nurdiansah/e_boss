@@ -55,6 +55,13 @@ class StevedoringController extends Controller
         ]);
     }
 
+    public function proses()
+    {
+        return view('pages.stevedorings.stevedoring-proses', [
+            'stevedorings' => Stevedoring::Where('status', '>', 0)->get()
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -111,7 +118,19 @@ class StevedoringController extends Controller
      */
     public function show(Stevedoring $stevedoring)
     {
-        //
+        return view('pages.stevedorings.stevedoring-show', [
+            'stevedoring' => $stevedoring,
+            'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
+            'areas' => Area::all(),
+            'clients' => Client::all(),
+            'vessels' => Vessel::all(),
+            'agents' => Agent::all(),
+            'ports' => Port::all(),
+            'jetties' => Jetty::all(),
+            'stevedoringcategories' => StevedoringCategory::all(),
+            'itemmasters' => ItemMaster::all(),
+            'checkers' => Checker::all()
+        ]);
     }
 
     /**

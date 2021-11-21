@@ -4,7 +4,7 @@
 
 <div class="page-inner">
     <div class="page-header">
-        <h4 class="page-title">Draft Stevedoring</h4>
+        <h4 class="page-title">Proses Stevedoring</h4>
         <ul class="breadcrumbs">
             <li class="nav-home">
                 <a href="#">
@@ -24,13 +24,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">Daftar Draft Stevedoring</h4>
-                        <a href="{{route('stevedoring.create')}}" class="ml-auto ">
-                            <button class="btn btn-primary btn-round ">
-                                <i class="fa fa-plus"></i>
-                                Tambah
-                            </button>
-                        </a>
+                        <h4 class="card-title">Daftar Proses Stevedoring</h4>
                     </div>
                 </div>
                 <div class="card-body">
@@ -69,7 +63,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{route('stevedoring.edit', $stevedoring->id)}}">
+                                        <a href="{{route('stevedoring.show', $stevedoring->id)}}">
                                             <button class="btn btn-dark">Detail</button>
                                         </a>
                                     </td>
