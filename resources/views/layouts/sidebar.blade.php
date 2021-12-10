@@ -80,6 +80,15 @@
                             </li>
 
                             @endhasrole
+
+                            @hasrole('checker')
+                            <li class="nav-item">
+                                <a href="{{route('stevedoring.lolo')}}">
+                                    <i class="fas fas fa-truck-loading"></i>Proses
+                                    <!-- <span class="badge badge-success">4</span> -->
+                                </a>
+                            </li>
+                            @endhasrole
                         </ul>
                     </div>
                 </li>

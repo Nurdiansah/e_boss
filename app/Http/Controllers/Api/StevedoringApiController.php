@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StevedoringDetailResource;
+use App\Http\Resources\StevedoringManifestResource;
 use App\Http\Resources\StevedoringResource;
 use App\Models\Stevedoring;
 use App\Models\StevedoringManifest;
@@ -53,6 +54,18 @@ class StevedoringApiController extends Controller
         return response()->json([
             'success' => true,
             'data' => StevedoringDetailResource::collection($stevedoring),
+            'message' => 'berhasil'
+        ]);
+    }
+
+    public function showManifest($id)
+    {
+        $data =  StevedoringManifest::where('stevedoring_id', $id)->where('qty', '>', 0)->get();
+
+
+        return response()->json([
+            'success' => true,
+            'data' => StevedoringManifestResource::collection($data),
             'message' => 'berhasil'
         ]);
     }

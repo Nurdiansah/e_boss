@@ -72,3 +72,9 @@ function getHari($hari)
 
     return  $hari_ini;
 }
+
+function cookieSuccess($kondisi)
+{
+    setcookie('pesan', 'Data Berhasil di ' . $kondisi . '!', time() + (300), '/');
+    setcookie('warna', 'alert-success', time() + (300), '/');
+}

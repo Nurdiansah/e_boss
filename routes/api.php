@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 // Stevedoring 
 Route::get('/stevedoring', [StevedoringApiController::class, 'index']);
 Route::get('/stevedoring/{stevedoring:id}', [StevedoringApiController::class, 'show']);
+Route::get('/stevedoring-manifest/{stevedoring:id}', [StevedoringApiController::class, 'showManifest']);
 Route::put('/stevedoring/{stevedoring:id}/start', [StevedoringApiController::class, 'start']);
 Route::put('/stevedoring/{stevedoring:id}/stop', [StevedoringApiController::class, 'stop']);
 Route::put('/stevedoring/{stevedoring:id}/continue', [StevedoringApiController::class, 'continue']);

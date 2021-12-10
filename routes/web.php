@@ -37,12 +37,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/stevedoring/draft', [StevedoringController::class, 'draft'])->name('stevedoring.draft');
         Route::post('/stevedoring/release', [StevedoringController::class, 'release'])->name('stevedoring.release');
         Route::get('/stevedoring/proses', [StevedoringController::class, 'proses'])->name('stevedoring.proses');
-
         Route::get('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'show'])->name('stevedoring.show');
+
         // Manifest stevedoring
         Route::post('/stevedoring-manifest', [StevedoringManifestController::class, 'store'])->name('stevedoring.manifest.store');
         Route::put('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'update'])->name('stevedoring.manifest.update');
         Route::delete('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'destroy'])->name('stevedoring.manifest.destroy');
+    });
+
+    Route::group(['middleware' => ['role:checker']], function () {
+        Route::get('/stevedoring-lolo', [StevedoringController::class, 'lolo'])->name('stevedoring.lolo');
+        Route::get('/stevedoring-lolo/{stevedoring:id}', [StevedoringController::class, 'lolodetail'])->name('stevedoring.lolo.detail');
     });
 
     Route::get('/permohonan-dana-cetak', [PermohonanDanaController::class, 'cetak'])->name('dana.cetak');

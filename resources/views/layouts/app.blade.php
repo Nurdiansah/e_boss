@@ -197,6 +197,49 @@
     @stack('js-footer')
 
     <script>
+        // function setNotif(params) {
+
+        // }
+
+
+        // var state = 'danger';
+        // var body = 'Updated';
+        setNotif(state, body);
+
+        function setNotif(state, codition) {
+            var placementFrom = 'bottom';
+            var placementAlign = 'right';
+            var state = state;
+            var style = 'withicon';
+            var content = {};
+
+            if (state == 'success') {
+                content.message = 'Data Has Been Successfully ' + codition;
+                content.title = 'Success';
+                content.icon = 'fa fa-check';
+            } else {
+                content.message = 'Data Failed ' + codition;
+                content.title = 'Failed';
+                content.icon = 'fa fa-exclamation';
+            }
+
+            if (style == "withicon") {} else {}
+            content.url = 'index.html';
+            content.target = '_blank';
+
+            $.notify(content, {
+                type: state,
+                placement: {
+                    from: placementFrom,
+                    align: placementAlign
+                },
+                time: 3,
+                delay: 0,
+            });
+        }
+    </script>
+
+    <script>
         Circles.create({
             id: 'circles-1',
             radius: 45,

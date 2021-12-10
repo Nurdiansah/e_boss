@@ -55,6 +55,33 @@ class StevedoringController extends Controller
         ]);
     }
 
+    public function lolo()
+    {
+        return view('pages.stevedorings.stevedoring-lolo', [
+            'stevedorings' => Stevedoring::where([
+                'status' => '1'
+            ])->get()
+        ]);
+    }
+
+    public function lolodetail(Stevedoring $stevedoring)
+    {
+
+        return view('pages.stevedorings.stevedoring-lolo-detail', [
+            'stevedoring' => $stevedoring,
+            'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
+            'areas' => Area::all(),
+            'clients' => Client::all(),
+            'vessels' => Vessel::all(),
+            'agents' => Agent::all(),
+            'ports' => Port::all(),
+            'jetties' => Jetty::all(),
+            'stevedoringcategories' => StevedoringCategory::all(),
+            'itemmasters' => ItemMaster::all(),
+            'checkers' => Checker::all()
+        ]);
+    }
+
     public function proses()
     {
         return view('pages.stevedorings.stevedoring-proses', [
@@ -70,6 +97,7 @@ class StevedoringController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'area_id' => 'required',
             'client_id' => 'required',
@@ -108,6 +136,8 @@ class StevedoringController extends Controller
             "doc_pjsm" => $pathDocPjsm,
             "doc_lsap" => $pathDocLsap,
         ]);
+
+        return redirect('/stevedoring/draft');
     }
 
     /**
@@ -165,6 +195,18 @@ class StevedoringController extends Controller
      */
     public function update(Request $request, Stevedoring $stevedoring)
     {
+
+        // setcookie('pesan', 'Data Berhasil di Update!', time() + (3), '/');
+        // setcookie('warna', 'alert-success', time() + (3), '/');
+
+        cookieSuccess('Update');
+
+
+        dd($_COOKIE['pesan']);
+
+
+        // dd($cookie);
+
         // dd($request);
         $validated = $request->validate([
             'area_id' => 'required',
