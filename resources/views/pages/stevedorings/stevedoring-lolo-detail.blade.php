@@ -30,6 +30,57 @@ $jumlahData = count($stevedoringmanifests);
         </ul>
     </div>
 
+    <!-- Button -->
+    <div class="row mb-3">
+
+        @if($stevedoring->start_activity == null)
+        <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#modalStart">
+            <i class="fa fa-play"> Start</i>
+        </button>
+
+        <!-- Modal Tambah -->
+        <div class="modal fade" id="modalStart" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header no-bd bg-primary">
+                        <h5 class="modal-title">
+                            <span class="fw-mediumbold">
+                                Konfirmasi</span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('stevedoring.start', $stevedoring->id) }}" name="form" method="POST">
+                        @method('PATCH')
+                        @csrf
+                        <input type="hidden" name="id" value="{{$stevedoring->id}}">
+                        <div class="perhitungan">
+                            <div class="modal-body">
+                                <h5 class="text-center">Apa anda yakin ingin memulai kegiatan?</h5 class="text-center">
+                            </div>
+                            <div class="modal-footer ">
+                                <button type="submit" id="addRowButton" class="btn btn-primary"><i class="fa fa-submit"></i> Ya, saya yakin</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-window-close"></i> Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- Modal Tambah -->
+
+
+        @else
+        <button class="btn btn-primary mr-1" disabled="disabled"><i class="fa fa-play"> Start</i></button>
+        @endif
+        <button class="btn btn-danger mr-1"><i class="fa fa-stop"> Stop</i></button>
+        <button class="btn btn-warning mr-1"><i class="fa fa-play-circle"> Continue</i></button>
+        <button class="btn btn-primary"><i class="fa fa-flag-checkered"> Finish</i></button>
+    </div>
+
+
 
 
     <!-- Form Manifest -->

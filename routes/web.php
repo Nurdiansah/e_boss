@@ -48,6 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role:checker']], function () {
         Route::get('/stevedoring-lolo', [StevedoringController::class, 'lolo'])->name('stevedoring.lolo');
         Route::get('/stevedoring-lolo/{stevedoring:id}', [StevedoringController::class, 'lolodetail'])->name('stevedoring.lolo.detail');
+        Route::patch('/stevedoring-lolo/{stevedoring:id}', [StevedoringController::class, 'start'])->name('stevedoring.start');
     });
 
     Route::get('/permohonan-dana-cetak', [PermohonanDanaController::class, 'cetak'])->name('dana.cetak');

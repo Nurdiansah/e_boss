@@ -84,6 +84,10 @@ class StevedoringApiController extends Controller
 
     public function start(Request $request, $id)
     {
+
+        print_r($request);
+        die;
+
         $validated = $request->validate([
             'id' => 'required',
         ]);
@@ -92,17 +96,17 @@ class StevedoringApiController extends Controller
             "start_activity" => now()
         ]);
 
-        if ($result) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Kegiatan di mulai'
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal'
-            ]);
-        }
+        // if ($result) {
+        //     return response()->json([
+        //         'success' => true,  
+        //         'message' => 'Kegiatan di mulai'
+        //     ]);
+        // } else {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Gagal'
+        //     ]);
+        // }
     }
 
     public function stop(Request $request, $id)

@@ -16,6 +16,7 @@ use App\Models\Vessel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
 class StevedoringController extends Controller
 {
     /**
@@ -80,6 +81,30 @@ class StevedoringController extends Controller
             'itemmasters' => ItemMaster::all(),
             'checkers' => Checker::all()
         ]);
+    }
+
+    public function start(Request $request, $id)
+    {
+
+        $validated = $request->validate([
+            'id' => 'required',
+        ]);
+
+
+        $result = Stevedoring::where('id', $id)->update([
+            "start_activity" => now()
+        ]);
+
+        if ($result) {
+            // var state = 'danger';
+            // var body = 'Updated';
+            cookieSuccess('Update');
+        } else {
+            # code...
+            toast('Data gagal di mulai!', 'error');
+        }
+
+        return back();
     }
 
     public function proses()
@@ -199,15 +224,6 @@ class StevedoringController extends Controller
         // setcookie('pesan', 'Data Berhasil di Update!', time() + (3), '/');
         // setcookie('warna', 'alert-success', time() + (3), '/');
 
-        cookieSuccess('Update');
-
-
-        dd($_COOKIE['pesan']);
-
-
-        // dd($cookie);
-
-        // dd($request);
         $validated = $request->validate([
             'area_id' => 'required',
             'client_id' => 'required',

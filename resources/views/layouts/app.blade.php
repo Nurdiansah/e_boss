@@ -202,9 +202,17 @@
         // }
 
 
-        // var state = 'danger';
-        // var body = 'Updated';
-        setNotif(state, body);
+        <?php
+        if (isset($_COOKIE['status']) && $_COOKIE['message']) { ?>
+
+            var state = "<?= $_COOKIE['status'] ?>";
+            var body = "<?= $_COOKIE['message'] ?>";
+
+            setNotif(state, body);
+
+        <?php } ?>
+
+        console.log(testt);
 
         function setNotif(state, codition) {
             var placementFrom = 'bottom';
