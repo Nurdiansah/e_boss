@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<?php
-$jumlahData = count($stevedoringmanifests);
-?>
 
 <div class="page-inner">
     <div class="page-header">
@@ -75,9 +72,139 @@ $jumlahData = count($stevedoringmanifests);
         @else
         <button class="btn btn-primary mr-1" disabled="disabled"><i class="fa fa-play"> Start</i></button>
         @endif
-        <button class="btn btn-danger mr-1"><i class="fa fa-stop"> Stop</i></button>
-        <button class="btn btn-warning mr-1"><i class="fa fa-play-circle"> Continue</i></button>
-        <button class="btn btn-primary"><i class="fa fa-flag-checkered"> Finish</i></button>
+
+        <!-- Tombol Stop -->
+        @if($stevedoring->start_activity != null && $stevedoring->status == '2' )
+        <!-- <button class="btn btn-danger mr-1"><i class="fa fa-stop"> Stop</i></button> -->
+        <button class="btn btn-danger mr-1" data-toggle="modal" data-target="#modalStop">
+            <i class="fa fa-stop"> Stop</i>
+        </button>
+
+        <!-- Modal Stop -->
+        <div class="modal fade" id="modalStop" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header no-bd bg-danger">
+                        <h5 class="modal-title">
+                            <span class="fw-mediumbold">
+                                Konfirmasi</span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('stevedoring.stop', $stevedoring->id) }}" name="form" method="POST">
+                        @method('PATCH')
+                        @csrf
+                        <input type="hidden" name="id" value="{{$stevedoring->id}}">
+                        <div class="perhitungan">
+                            <div class="modal-body">
+                                <div class="form-group ">
+                                    <label for="inputFloatingLabel" class="placeholder">Keterangan Berhenti</label>
+                                    <textarea id="inputFloatingLabel" name="description" value="" type="text" class="form-control input-border-bottom" placeholder="Contoh : Istirahat" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer ">
+                                <button type="submit" id="addRowButton" class="btn btn-danger"><i class="fa fa-check"></i> Stop</button>
+                                <button type="button" class="btn btn-" data-dismiss="modal"><i class="fa fa-window-close"></i> Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- Modal Stop -->
+        @else
+        <button class="btn btn-danger mr-1" disabled="disabled"><i class="fa fa-stop"> Stop</i></button>
+        @endif
+
+        <!-- Tombol Continue -->
+        @if($stevedoring->status == '3' )
+        <button class="btn btn-warning mr-1" data-toggle="modal" data-target="#modalContinue">
+            <i class="fa fa-play-circle"> Continue</i>
+        </button>
+        <!-- Modal Continue -->
+        <div class="modal fade" id="modalContinue" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header no-bd bg-warning">
+                        <h5 class="modal-title">
+                            <span class="fw-mediumbold">
+                                Konfirmasi</span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('stevedoring.continue', $stevedoring->id) }}" name="form" method="POST">
+                        @method('PATCH')
+                        @csrf
+                        <input type="hidden" name="id" value="{{$stevedoring->id}}">
+                        <div class="perhitungan">
+                            <div class="modal-body">
+                                <h5 class="text-center">Apa anda yakin ingin melanjutkan kegiatan?</h5 class="text-center">
+                            </div>
+                            <div class="modal-footer ">
+                                <button type="submit" id="addRowButton" class="btn btn-warning"><i class="fa fa-check"></i> Ya, saya yakin</button>
+                                <button type="button" class="btn btn-" data-dismiss="modal"><i class="fa fa-window-close"></i> Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- Modal Continue -->
+        @else
+        <button class="btn btn-warning mr-1" disabled="disabled"><i class="fa fa-play-circle"> Continue</i></button>
+        @endif
+        <!-- End Tombol Continue -->
+
+
+        <!-- <button class="btn btn-primary" disabled="disabled"><i class="fa fa-flag-checkered"> Finish</i></button> -->
+        <!-- Tombol Finish -->
+        @if($cargoQuantity == '0' && $stevedoring->status == '2' )
+        <button class="btn btn-success mr-1" data-toggle="modal" data-target="#modalFinish">
+            <i class="fa fa-flag-checkered"> Finish</i>
+        </button>
+        <!-- Modal Finish -->
+        <div class="modal fade" id="modalFinish" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header no-bd bg-success">
+                        <h5 class="modal-title">
+                            <span class="fw-mediumbold">
+                                Konfirmasi</span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('stevedoring.finish', $stevedoring->id) }}" name="form" method="POST">
+                        @method('PATCH')
+                        @csrf
+                        <input type="hidden" name="id" value="{{$stevedoring->id}}">
+                        <div class="perhitungan">
+                            <div class="modal-body">
+                                <h5 class="text-center">Apa anda yakin ingin mengakhiri kegiatan?</h5 class="text-center">
+                            </div>
+                            <div class="modal-footer ">
+                                <button type="submit" id="addRowButton" class="btn btn-success"><i class="fa fa-check"></i> Ya, saya yakin</button>
+                                <button type="button" class="btn btn-" data-dismiss="modal"><i class="fa fa-window-close"></i> Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- Modal Finish -->
+        @else
+        <button class="btn btn-success mr-1" disabled="disabled"><i class="fa fa-flag-checkered"> Finish</i></button>
+        @endif
+        <!-- End Tombol Finish -->
+
     </div>
 
 
@@ -115,30 +242,6 @@ $jumlahData = count($stevedoringmanifests);
                                     <th>T</th>
                                 </tr>
                             </thead>
-                            <!-- <tbody>
-                                @foreach ($stevedoringmanifests as $key => $stevedoringmanifest)
-
-                                <tr>
-                                    <td>{{$stevedoringmanifest->doc_no}}</td>
-                                    <td>{{$stevedoringmanifest->qty}}</td>
-                                    <td>{{$stevedoringmanifest->description}}</td>
-                                    <td>{{$stevedoringmanifest->remarks}}</td>
-                                    <td>{{$stevedoringmanifest->itemmaster->long}}</td>
-                                    <td>{{$stevedoringmanifest->itemmaster->widht}}</td>
-                                    <td>{{$stevedoringmanifest->itemmaster->height}}</td>
-                                    <td>{{$stevedoringmanifest->m3}}</td>
-                                    <td>{{$stevedoringmanifest->ton}}</td>
-                                    <td>{{$stevedoringmanifest->revton}}</td>
-                                </tr>
-
-                                @endforeach
-
-                                @if($jumlahData == 0)
-                                <tr>
-                                    <td colspan="11"><i class="fas fa-exclamation"></i> Tidak ada data tersedia</td>
-                                </tr>
-                                @endif
-                            </tbody> -->
                         </table>
                     </div>
                 </div>

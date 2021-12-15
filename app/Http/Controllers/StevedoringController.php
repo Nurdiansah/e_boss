@@ -12,8 +12,10 @@ use App\Models\Port;
 use App\Models\Stevedoring;
 use App\Models\StevedoringCategory;
 use App\Models\StevedoringManifest;
+use App\Models\StevedoringTallysheet;
 use App\Models\Vessel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -59,18 +61,22 @@ class StevedoringController extends Controller
     public function lolo()
     {
         return view('pages.stevedorings.stevedoring-lolo', [
-            'stevedorings' => Stevedoring::where([
-                'status' => '1'
-            ])->get()
+            'stevedorings' => Stevedoring::whereIn('status', ['1', '2', '3'])->get()
+            // 'stevedorings' => DB::table('stevedorings')->whereBetween('status', [1, 3])
         ]);
     }
 
     public function lolodetail(Stevedoring $stevedoring)
     {
 
+        $stevedoringmanifests = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->where('qty', '>', 0)->get();
+
+        $cargoQuantity = $stevedoringmanifests->count();
+
         return view('pages.stevedorings.stevedoring-lolo-detail', [
             'stevedoring' => $stevedoring,
-            'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
+            'stevedoringmanifests' => $stevedoringmanifests,
+            'cargoQuantity' => $cargoQuantity,
             'areas' => Area::all(),
             'clients' => Client::all(),
             'vessels' => Vessel::all(),
@@ -92,7 +98,8 @@ class StevedoringController extends Controller
 
 
         $result = Stevedoring::where('id', $id)->update([
-            "start_activity" => now()
+            "start_activity" => now(),
+            "status" => '2'
         ]);
 
         if ($result) {
@@ -105,6 +112,138 @@ class StevedoringController extends Controller
         }
 
         return back();
+    }
+
+    public function stop(Request $request, $id)
+    {
+        // return $request;        
+
+        DB::beginTransaction();
+
+        $update = DB::table('stevedorings')
+            ->where('id', $request->id)
+            ->update(['status' => 3]);
+
+        $insert = DB::table('stevedoring_timelines')->insert([
+            'stevedoring_id' => $request->id,
+            'time_stop' => now(),
+            'description' => $request->description,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        if ($update && $insert) {
+
+            DB::commit();
+
+            cookieSuccess('Stop');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di stop!', 'error');
+        }
+
+        return back();
+    }
+
+    public function continue(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        $stevedoringtimeline_id = DB::table('stevedoring_timelines')
+            ->where('stevedoring_id', $request->id)->max('id');
+
+        $updateT = DB::table('stevedoring_timelines')
+            ->where('id', $stevedoringtimeline_id)
+            ->update(['time_start_again' => now()]);
+
+        $updateS = DB::table('stevedorings')
+            ->where('id', $request->id)
+            ->update(['status' => 2]);
+
+
+        if ($updateT && $updateS) {
+
+            DB::commit();
+
+            cookieSuccess('Continue');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Lanjut!', 'error');
+        }
+
+        return back();
+    }
+
+    public function finish(Request $request)
+    {
+
+        $sumManifest = StevedoringManifest::where('stevedoring_id', $request->id)->sum('qty');
+
+        // Validasi dulu 
+        if ($sumManifest > 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Cargo ada yang belum di update'
+            ]);
+        }
+
+
+        // Cari Revton akhir
+        $revtonTally = StevedoringTallysheet::where('stevedoring_id', $request->id)
+            ->where('origin_destination', '!=', 'Not Available')
+            ->sum('revton');
+
+        $stevedoring = Stevedoring::find($request->id);
+
+
+        $awalK  = date_create($stevedoring->start_activity);
+        $akhirK = date_create(now()); // waktu sekarang
+        $diffK  = date_diff($awalK, $akhirK);
+
+
+        if ($diffK->d == 0) {
+            if ($diffK->h >= 1) {
+                $selisihK = $diffK->h . ' jam ' . $diffK->i . ' menit ';
+            } else {
+                $selisihK = $diffK->i . ' menit ';
+            }
+        } else {
+            $selisihK = $diffK->d . ' hari ' . $diffK->h . ' jam ' . $diffK->i . ' menit ';
+        }
+        // 
+
+
+        $awalan  = strtotime($stevedoring->start_activity);
+        $akhiran  = strtotime(now());
+
+        $time = $akhiran - $awalan;
+
+        $updateStv = Stevedoring::where('id', $request->id)->update([
+            'finish_activity' => now(),
+            'status' => '4',
+            'final_amount' => $revtonTally,
+            'text_duration' => $selisihK,
+            'number_duration' => $time,
+        ]);
+
+        if ($updateStv) {
+
+            DB::commit();
+
+            cookieSuccess('Finish');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Selesaikan!', 'error');
+        }
+
+        return redirect('/stevedoring-lolo');
     }
 
     public function proses()

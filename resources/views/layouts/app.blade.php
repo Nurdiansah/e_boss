@@ -212,7 +212,6 @@
 
         <?php } ?>
 
-        console.log(testt);
 
         function setNotif(state, codition) {
             var placementFrom = 'bottom';
