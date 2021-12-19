@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/stevedoring-lolo/{stevedoring:id}/stop', [StevedoringController::class, 'stop'])->name('stevedoring.stop');
         Route::patch('/stevedoring-lolo/{stevedoring:id}/continue', [StevedoringController::class, 'continue'])->name('stevedoring.continue');
         Route::patch('/stevedoring-lolo/{stevedoring:id}/finish', [StevedoringController::class, 'finish'])->name('stevedoring.finish');
+        Route::patch('/stevedoring-lolo/{stevedoring:id}/updatelolo', [StevedoringController::class, 'updatelolo'])->name('stevedoring.updatelolo');
     });
 
     Route::get('/permohonan-dana-cetak', [PermohonanDanaController::class, 'cetak'])->name('dana.cetak');

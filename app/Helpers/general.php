@@ -78,3 +78,13 @@ function cookieSuccess($kondisi)
     setcookie('message', $kondisi, time() + (3), '/');
     setcookie('status', 'success', time() + (3), '/');
 }
+
+function apiLokal()
+{
+    $srv = $_SERVER['SERVER_NAME'];
+    $port = ":" .  $_SERVER['SERVER_PORT'];
+
+    $api = 'http://' . $srv .  $port . '/api/';
+
+    return $api;
+}

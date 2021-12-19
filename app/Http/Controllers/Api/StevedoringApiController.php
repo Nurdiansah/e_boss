@@ -60,7 +60,7 @@ class StevedoringApiController extends Controller
 
     public function showManifest($id)
     {
-        $data =  StevedoringManifest::where('stevedoring_id', $id)->where('qty', '>', 0)->get();
+        $data =  StevedoringManifest::where('id', $id)->where('qty', '>', 0)->get();
 
 
         return response()->json([

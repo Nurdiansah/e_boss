@@ -160,8 +160,6 @@
         <button class="btn btn-warning mr-1" disabled="disabled"><i class="fa fa-play-circle"> Continue</i></button>
         @endif
         <!-- End Tombol Continue -->
-
-
         <!-- <button class="btn btn-primary" disabled="disabled"><i class="fa fa-flag-checkered"> Finish</i></button> -->
         <!-- Tombol Finish -->
         @if($cargoQuantity == '0' && $stevedoring->status == '2' )
@@ -242,6 +240,31 @@
                                     <th>T</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                @if($stevedoringmanifests->count() == 0)
+                                <tr>
+                                    <td class="text-center" colspan='10'>Tidak ada data</td>
+                                </tr>
+                                @else
+                                @foreach($stevedoringmanifests as $stevedoringmanifest)
+                                <tr>
+                                    <td>{{$stevedoringmanifest->doc_no}}</td>
+                                    <td>{{$stevedoringmanifest->qty}}</td>
+                                    <td>{{$stevedoringmanifest->description}}</td>
+                                    <td>{{$stevedoringmanifest->remarks}}</td>
+                                    <td>{{$stevedoringmanifest->itemmaster->long}}</td>
+                                    <td>{{$stevedoringmanifest->itemmaster->widht}}</td>
+                                    <td>{{$stevedoringmanifest->itemmaster->height}}</td>
+                                    <td>{{$stevedoringmanifest->m3}}</td>
+                                    <td>{{$stevedoringmanifest->ton}}</td>
+                                    <td>{{$stevedoringmanifest->revton}}</td>
+                                    @if($stevedoring->start_activity != null && $stevedoring->status == '2' )
+                                    <td><button type='button' class='btn btn-success modalLolo' data-toggle='modal' data-id='{{$stevedoringmanifest->id}}' data-target='#loloModal'><i class='fa fa-edit'></i></button></td>
+                                    @endif
+                                </tr>
+                                @endforeach
+                                @endif
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -273,7 +296,7 @@
                                 <!-- area -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Area</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="area_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="area_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($areas as $key => $area)
 
@@ -294,7 +317,7 @@
                                 <!-- client -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Client</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="client_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="client_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($clients as $key => $client)
                                         @if (old('client_id') == $client->id || $stevedoring->client_id == $client->id)
@@ -313,7 +336,7 @@
                                 <!-- vessel -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Vessel</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="vessel_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="vessel_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($vessels as $key => $vessel)
                                         @if (old('vessel_id') == $vessel->id || $stevedoring->vessel_id == $vessel->id)
@@ -332,7 +355,7 @@
                                 <!-- agent -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Agent</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="agent_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="agent_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($agents as $key => $agent)
                                         @if (old('agent_id') == $agent->id || $stevedoring->agent_id == $agent->id)
@@ -350,7 +373,7 @@
                                 <!-- jetty -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Jetty</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="jetty_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="jetty_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($jetties as $key => $jetty)
                                         @if (old('jetty_id') == $jetty->id || $stevedoring->jetty_id == $jetty->id)
@@ -368,7 +391,7 @@
                                 <!-- stevedoringcategory -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Category</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="stevedoringcategory_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="stevedoringcategory_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($stevedoringcategories as $key => $stevedoringcategory)
                                         @if (old('stevedoringcategory_id') == $stevedoringcategory->id || $stevedoring->stevedoringcategory_id == $stevedoringcategory->id)
@@ -387,7 +410,7 @@
                                 <!-- orign port -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Orign Port</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="orign_port" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="orign_port" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($ports as $key => $port)
                                         @if (old('orign_port') == $port->name || $stevedoring->orign_port == $port->name)
@@ -406,7 +429,7 @@
                                 <!-- destination port -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Destination Port</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="destination_port" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="destination_port" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($ports as $key => $port)
                                         @if (old('destination_port') == $port->name || $stevedoring->destination_port == $port->name)
@@ -425,7 +448,7 @@
                             <div class="col-md-6 col-lg-6">
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Entry Date</label>
-                                    <input id="inputFloatingLabel" value="{{ datetimeLocal($stevedoring->entry_date) }}" name="entry_date" type="datetime-local" class="form-control input-border-bottom" required readonly>
+                                    <input id="inputFloatingLabel" value="{{ datetimeLocal($stevedoring->entry_date) }}" name="entry_date" type="datetime-local" class="form-control input-border-bottom" required disabled>
                                 </div>
                                 @error('entry_date')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -433,14 +456,14 @@
 
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Exit Date</label>
-                                    <input id="inputFloatingLabel" name="exit_date" value="{{ datetimeLocal($stevedoring->exit_date) }}" type="datetime-local" class="form-control input-border-bottom" readonly>
+                                    <input id="inputFloatingLabel" name="exit_date" value="{{ datetimeLocal($stevedoring->exit_date) }}" type="datetime-local" class="form-control input-border-bottom" disabled>
                                 </div>
                                 @error('exit_date')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Command Document</label>
-                                    <input id="inputFloatingLabel" name="command_document" value="{{ $stevedoring->command_document }}" type="text" class="form-control input-border-bottom" required readonly>
+                                    <input id="inputFloatingLabel" name="command_document" value="{{ $stevedoring->command_document }}" type="text" class="form-control input-border-bottom" required disabled>
                                 </div>
                                 @error('command_document')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -448,7 +471,7 @@
 
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">WO Number</label>
-                                    <input id="inputFloatingLabel" name="wo_number" value="{{ $stevedoring->wo_number }}" type="text" class="form-control input-border-bottom" required readonly>
+                                    <input id="inputFloatingLabel" name="wo_number" value="{{ $stevedoring->wo_number }}" type="text" class="form-control input-border-bottom" required disabled>
                                 </div>
                                 @error('wo_number')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -473,21 +496,109 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-12 ">
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- </div> -->
+
+
+<!-- Modal Tambah -->
+<div class="modal fade" id="loloModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header no-bd">
+                <h5 class="modal-title">
+                    <span class="fw-mediumbold">
+                        Update</span>
+                    <span class="fw-light">
+                        Data
+                    </span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('stevedoring.updatelolo', $stevedoring->id) }}" name="form" method="POST">
+                @method('PATCH')
+                @csrf
+                <input type="hidden" name="id" id="me_id">
+                <input type="hidden" name="stevedoring_id" id="me_stevedoring_id">
+                <div class="perhitungan">
+                    <div class="modal-body">
+                        <p class="small">Update data cargo manifest, pada kolom di bawah ini</p>
                         <div class="row">
-                            <div class="col-md-12 ">
+                            <div class="col-sm-12">
+                                <div class="form-group ">
+                                    <label>Description</label>
+                                    <textarea id="me_description" readonly name="description" type="text" class="form-control" placeholder="Container 20 ft Premier Oil"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group ">
+                                    <label>Doc No</label>
+                                    <input id="me_doc_no " readonly name="doc_no" value="" type="text" class="form-control" placeholder="23870">
+                                </div>
+                            </div>
+                            <div class="col-md-6 pr-0">
+                                <div class="form-group ">
+                                    <label>QTY</label>
+                                    <input id="me_qty" readonly name="qty" min="0" value="0" type="number" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6 pr-0">
+                                <div class="form-group ">
+                                    <label>QTY Loading/Offloading</label>
+                                    <input id="me_qty_lolo" name="qty_lolo" min="1" max="???" value="0" type="number" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group ">
+                                    <label>To/From</label>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="origin_destination" required>
+                                        <option value="">&nbsp;</option>
+                                        @if($stevedoring->stevedoringcategory->name == 'Loading')
+                                        <option value="From Jetty">From Jetty</option>
+                                        <option value="From Yard">From Yard</option>
+                                        <option value="From Trucking">From Trucking</option>
+                                        <option value="From Warehouse">From Warehouse</option>
+                                        @else
+                                        <option value="To Jetty">To Jetty</option>
+                                        <option value="To Yard">To Yard</option>
+                                        <option value="To Trucking">To Trucking</option>
+                                        <option value="To Warehouse">To Warehouse</option>
+                                        @endif
+                                        <option value="Not Available">Not Available</option>
+                                    </select>
+                                </div>
+                                @error('origin_destination')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="modal-footer ">
+                        <button type="submit" id="addRowButton" class="btn btn-success"><i class="fa fa-save"></i> Update</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
 </div>
-
+<!-- Modal Tambah -->
 
 @endsection
+
 
 @push('js-footer')
 <script>
@@ -495,59 +606,87 @@
         // $('#manifestTable').DataTable({});
 
         let id = <?= $stevedoring->id ?>;
+        let api = "<?= apiLokal() ?>";
 
-        console.log(id);
+        // Modal Edit
+        $(function() {
+            $('.modalLolo').on('click', function() {
 
-        var table = $('#manifestTable').DataTable({
-            "ajax": 'http://127.0.0.1:8000/api/stevedoring-manifest/' + id,
-            "columns": [{
-                    data: "doc_no"
-                },
-                {
-                    data: "qty"
-                },
-                {
-                    data: "description"
-                },
-                {
-                    data: "remarks"
-                },
-                {
-                    data: "long"
-                },
-                {
-                    data: "width"
-                },
-                {
-                    data: "height"
-                },
-                {
-                    data: "m3"
-                },
-                {
-                    data: "ton"
-                },
-                {
-                    data: "revton"
-                },
-                {
-                    // defaultContent: "<button type='button' class='btn btn-success' data-toggle='modal' data-id='' data-target='#addModal'><i class='fa fa-edit'></i></button>",
-                    // data: "id",
-                    // "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-                    //     $(nTd).html("<a href='/" + oData.id + "'>" + oData.id + "</a>");
-                    // }
-                    data: "id",
-                    "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<button type='button' class='btn btn-success' data-toggle='modal' data-id='" + oData.id + "' data-target='#addModal'><i class='fa fa-edit'></i></button>");
+                const id = $(this).data('id');
+
+
+                $.ajax({
+                    url: api + 'stevedoring-manifest/' + id,
+                    data: {
+                        id: id
+                    },
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                        // console.log(data.data[0].id);
+                        $('#me_id').val(data.data[0].id);
+                        $('#me_stevedoring_id').val(data.data[0].stevedoring_id);
+                        $('#me_description').val(data.data[0].description);
+                        $('#me_doc_no').val(data.data[0].doc_no);
+                        $('#me_qty').val(data.data[0].qty);
+                        $("#me_qty_lolo").attr("max", data.data[0].qty);
                     }
-                }
-            ]
+                });
+            });
         });
 
-        // Reload the table data every 30 seconds (paging retained):
-        setInterval(function() {
-            table.ajax.reload(null, false); // user paging is not reset on reload
-        }, 50000);
+        // var table = $('#manifestTable').DataTable({
+        //     "ajax": 'http://127.0.0.1:8000/api/stevedoring-manifest/' + id,
+        //     "columns": [{
+        //             data: "doc_no"
+        //         },
+        //         {
+        //             data: "qty"
+        //         },
+        //         {
+        //             data: "description"
+        //         },
+        //         {
+        //             data: "remarks"
+        //         },
+        //         {
+        //             data: "long"
+        //         },
+        //         {
+        //             data: "width"
+        //         },
+        //         {
+        //             data: "height"
+        //         },
+        //         {
+        //             data: "m3"
+        //         },
+        //         {
+        //             data: "ton"
+        //         },
+        //         {
+        //             data: "revton"
+        //         },
+        //         {
+        //             // defaultContent: "<button type='button' class='btn btn-success' data-toggle='modal' data-id='' data-target='#loloModal'><i class='fa fa-edit'></i></button>",
+        //             // data: "id",
+        //             // "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+        //             //     $(nTd).html("<a href='/" + oData.id + "'>" + oData.id + "</a>");
+        //             // }
+        //             data: "id",
+        //             "fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+        //                 $(nTd).html("<button type='button' class='btn btn-success modalLolo'  id='modalLolo' data-toggle='modal' data-id='" + oData.id + "' data-target='#loloModal'><i class='fa fa-edit'></i></button>");
+        //             }
+        //         }
+        //     ]
+        // });
+
+
+
+        // // Reload the table data every 30 seconds (paging retained):
+        // setInterval(function() {
+        //     table.ajax.reload(null, false); // user paging is not reset on reload
+        // }, 50000);
     });
 </script>
 @endpush

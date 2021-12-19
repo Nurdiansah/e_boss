@@ -155,6 +155,7 @@ class StevedoringController extends Controller
         $stevedoringtimeline_id = DB::table('stevedoring_timelines')
             ->where('stevedoring_id', $request->id)->max('id');
 
+
         $updateT = DB::table('stevedoring_timelines')
             ->where('id', $stevedoringtimeline_id)
             ->update(['time_start_again' => now()]);
@@ -162,7 +163,6 @@ class StevedoringController extends Controller
         $updateS = DB::table('stevedorings')
             ->where('id', $request->id)
             ->update(['status' => 2]);
-
 
         if ($updateT && $updateS) {
 
@@ -174,6 +174,84 @@ class StevedoringController extends Controller
             DB::rollBack();
 
             toast('Data gagal di Lanjut!', 'error');
+        }
+
+        return back();
+    }
+
+    public function updatelolo(Request $request, $id)
+    {
+
+        $manifest = StevedoringManifest::find($request->id);
+
+        if ($manifest->qty == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Cargo tersebut sudah berjumlah 0 di manifest!'
+            ]);
+        }
+
+        // tonase actual
+        $m3_lolo = ($request->qty_lolo / $manifest->qty) * $manifest->m3;
+        $ton_lolo = ($request->qty_lolo / $manifest->qty) * $manifest->ton;
+        $revton_lolo = ($request->qty_lolo / $manifest->qty) * $manifest->revton;
+
+        // sisa stok tonase di detail job order
+        $qty_stok = $manifest->qty - $request->qty_lolo;
+        $m3_stok = $manifest->m3 - $m3_lolo;
+        $ton_stok = $manifest->ton - $ton_lolo;
+        $revton_stok = $manifest->revton - $revton_lolo;
+
+        if ($qty_stok < 0) {
+
+            toast('Gagal QTY yang anda inputkan melebihi qty yang ada di manifest!, qty cargo ini di manifest ' . $manifest->qty, 'error');
+
+            return back();
+        }
+
+
+        DB::beginTransaction();
+        // update
+        $updateManifest = DB::table('stevedoring_manifests')
+            ->where('id', $manifest->id)
+            ->update([
+                'qty' => $qty_stok,
+                'm3' => $m3_stok,
+                'ton' => $ton_stok,
+                'revton' => $revton_stok,
+            ]);
+        // Insert
+
+        $updateTally = DB::table('stevedoring_tallysheets')
+            ->insert([
+                'stevedoring_id' => $manifest->stevedoring_id,
+                'stevedoringmanifest_id' => $manifest->id,
+                'itemmaster_id' => $manifest->itemmaster_id,
+                'time' => now(),
+                'doc_no' => $manifest->doc_no,
+                'qty' => $manifest->qty,
+                'description' => $manifest->description,
+                'm3' => $manifest->m3,
+                'ton' => $manifest->ton,
+                'revton' => $manifest->revton,
+                'remarks' => $manifest->remarks,
+                'row_version' => $manifest->row_version,
+                'origin_destination' => $request->origin_destination,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+
+        if ($updateTally && $updateManifest) {
+
+            DB::commit();
+
+            cookieSuccess('Update');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di mulai!', 'error');
         }
 
         return back();
