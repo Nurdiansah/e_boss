@@ -14,13 +14,13 @@ class CreateItemMastersTable extends Migration
     public function up()
     {
         Schema::create('item_masters', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('area_id');
-            $table->string('name');
+            $table->smallIncrements('id');
+            $table->tinyInteger('area_id');
+            $table->string('name', 50);
             $table->decimal('long', $precision = 6, $scale = 2);
             $table->decimal('widht', $precision = 6, $scale = 2);
             $table->decimal('height', $precision = 6, $scale = 2);
-            $table->string('unit');
+            $table->string('unit', 50);
             $table->decimal('volume', $precision = 6, $scale = 2);
             $table->timestamps();
         });

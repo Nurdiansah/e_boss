@@ -14,8 +14,8 @@ class CreateEquipmentCategoriesTable extends Migration
     public function up()
     {
         Schema::create('equipment_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->tinyIncrements('id');
+            $table->string('name', 50);
             $table->timestamps();
         });
     }

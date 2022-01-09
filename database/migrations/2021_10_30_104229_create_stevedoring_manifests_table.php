@@ -14,19 +14,19 @@ class CreateStevedoringManifestsTable extends Migration
     public function up()
     {
         Schema::create('stevedoring_manifests', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('stevedoring_id');
-            $table->bigInteger('itemmaster_id');
-            $table->string('description');
-            $table->string('doc_no');
-            $table->integer('qty');
+            $table->integerIncrements('id');
+            $table->integer('stevedoring_id');
+            $table->integer('itemmaster_id');
+            $table->string('description', 50);
+            $table->string('doc_no', 20);
+            $table->smallInteger('qty');
             $table->decimal('m3', $precision = 6, $scale = 2);
             $table->decimal('ton', $precision = 6, $scale = 2);
             $table->decimal('revton', $precision = 6, $scale = 2)->nullable();
             $table->string('remarks');
-            $table->string('status')->default('1');
-            $table->string('cargo_final')->default('0');
-            $table->string('row_version')->default('1');
+            $table->string('status', 3)->default('1');
+            $table->string('cargo_final', 3)->default('0');
+            $table->string('row_version', 3)->default('1');
             $table->timestamps();
         });
     }

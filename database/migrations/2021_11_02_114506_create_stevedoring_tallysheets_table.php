@@ -14,18 +14,18 @@ class CreateStevedoringTallysheetsTable extends Migration
     public function up()
     {
         Schema::create('stevedoring_tallysheets', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('stevedoring_id');
-            $table->bigInteger('stevedoringmanifest_id');
-            $table->bigInteger('itemmaster_id');
-            $table->string('description');
-            $table->string('doc_no');
-            $table->integer('qty');
+            $table->integerIncrements('id');
+            $table->integer('stevedoring_id');
+            $table->integer('stevedoringmanifest_id');
+            $table->smallInteger('itemmaster_id');
+            $table->string('description', 50);
+            $table->string('doc_no', 10);
+            $table->smallInteger('qty');
             $table->decimal('m3', $precision = 6, $scale = 2);
             $table->decimal('ton', $precision = 6, $scale = 2);
             $table->decimal('revton', $precision = 6, $scale = 2)->nullable();
-            $table->string('remarks');
-            $table->string('row_version')->default('1');
+            $table->string('remarks', 200);
+            $table->string('row_version', 10)->default('1');
             $table->dateTime('time');
             $table->string('origin_destination')->nullable();
             $table->timestamps();

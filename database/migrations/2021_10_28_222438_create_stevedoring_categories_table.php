@@ -14,8 +14,8 @@ class CreateStevedoringCategoriesTable extends Migration
     public function up()
     {
         Schema::create('stevedoring_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->tinyInteger('id');
+            $table->string('name', 50);
             $table->timestamps();
         });
     }

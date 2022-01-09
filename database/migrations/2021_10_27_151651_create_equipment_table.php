@@ -14,10 +14,10 @@ class CreateEquipmentTable extends Migration
     public function up()
     {
         Schema::create('equipment', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('equipmentcategory_id');
-            $table->bigInteger('area_id');
-            $table->string('name');
+            $table->smallIncrements('id');
+            $table->tinyInteger('equipmentcategory_id');
+            $table->tinyInteger('area_id');
+            $table->string('name', 50);
             $table->decimal('capacity', $precision = 6, $scale = 2)->nullable();
             $table->string('status');
             $table->timestamps();

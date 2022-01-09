@@ -14,9 +14,9 @@ class CreateStevedoringUseEquipmentTable extends Migration
     public function up()
     {
         Schema::create('stevedoring_use_equipment', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('stevedoring_id');
-            $table->bigInteger('equipment_id');
+            $table->integerIncrements('id');
+            $table->integer('stevedoring_id');
+            $table->smallInteger('equipment_id');
             $table->timestamps();
         });
     }

@@ -14,9 +14,9 @@ class CreateJettiesTable extends Migration
     public function up()
     {
         Schema::create('jetties', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('area_id');
-            $table->string('name');
+            $table->tinyIncrements('id');
+            $table->tinyInteger('area_id');
+            $table->string('name', 50);
             $table->timestamps();
         });
     }

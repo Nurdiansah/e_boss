@@ -14,11 +14,11 @@ class CreateStevedoringTimelinesTable extends Migration
     public function up()
     {
         Schema::create('stevedoring_timelines', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('stevedoring_id');
+            $table->integerIncrements('id');
+            $table->integer('stevedoring_id');
             $table->dateTime('time_stop')->nullable();
             $table->dateTime('time_start_again')->nullable();
-            $table->string('description')->nullable();
+            $table->string('description', 50)->nullable();
             $table->timestamps();
         });
     }

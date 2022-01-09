@@ -14,32 +14,32 @@ class CreateStevedoringsTable extends Migration
     public function up()
     {
         Schema::create('stevedorings', function (Blueprint $table) {
-            $table->id();
-            $table->string('code')->nullable();
-            $table->bigInteger('area_id');
-            $table->bigInteger('client_id');
-            $table->bigInteger('vessel_id');
-            $table->bigInteger('agent_id');
-            $table->bigInteger('jetty_id');
-            $table->bigInteger('stevedoringcategory_id');
-            $table->bigInteger('checker_id')->nullable();
+            $table->integerIncrements('id');
+            $table->string('code', 6)->nullable();
+            $table->tinyInteger('area_id');
+            $table->smallInteger('client_id');
+            $table->smallInteger('vessel_id');
+            $table->smallInteger('agent_id');
+            $table->tinyInteger('jetty_id');
+            $table->tinyInteger('stevedoringcategory_id');
+            $table->smallInteger('checker_id')->nullable();
             $table->dateTime('entry_date');
             $table->dateTime('exit_date')->nullable();
-            $table->string('orign_port');
-            $table->string('destination_port');
+            $table->string('orign_port', 50);
+            $table->string('destination_port', 50);
             $table->string('command_document');
-            $table->string('wo_number');
+            $table->string('wo_number', 100);
             $table->decimal('plan_amount', $precision = 6, $scale = 2)->nullable();
             $table->decimal('final_amount', $precision = 6, $scale = 2)->nullable();
-            $table->string('doc_ptw');
-            $table->string('doc_pjsm');
-            $table->string('doc_lsap');
+            $table->string('doc_ptw', 200);
+            $table->string('doc_pjsm', 200);
+            $table->string('doc_lsap', 200);
             $table->dateTime('start_activity')->nullable();
             $table->dateTime('finish_activity')->nullable();
             $table->bigInteger('number_duration')->nullable();
-            $table->string('text_duration')->nullable();
+            $table->string('text_duration', 200)->nullable();
             $table->text('komentar')->nullable();
-            $table->string('status')->default('0');
+            $table->string('status', 2)->default('0');
             $table->timestamps();
         });
     }
