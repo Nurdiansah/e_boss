@@ -85,6 +85,16 @@
                     </a>
                 </li>
                 @endhasrole
+
+                @hasrole('spv_ops')
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.app.spv')}}">
+                        <i class="fas fas fa-truck-loading"></i>
+                        <p>Approval</p>
+                        <!-- <span class="badge badge-success">4</span> -->
+                    </a>
+                </li>
+                @endhasrole
                 <!-- </ul>
                     </div> -->
                 <!-- </li> -->

@@ -24,4 +24,10 @@ class StevedoringTallysheet extends Model
         'time',
         'origin_destination'
     ];
+
+    // FK relasi ke table 
+    public function itemmaster()
+    {
+        return $this->belongsTo(ItemMaster::class);
+    }
 }

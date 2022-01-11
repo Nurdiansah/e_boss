@@ -60,6 +60,12 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/stevedoring-lolo/{stevedoring:id}/updatelolo', [StevedoringController::class, 'updatelolo'])->name('stevedoring.updatelolo');
     });
 
+    Route::group(['middleware' => ['role:spv_ops']], function () {
+        Route::get('/stevedoring-app-spv', [StevedoringController::class, 'app_spv'])->name('stevedoring.app.spv');
+        Route::get('/stevedoring-app-spv/{stevedoring:id}', [StevedoringController::class, 'app_spv_detail'])->name('stevedoring.app.spv.detail');
+        Route::patch('/stevedoring-app-spv/{stevedoring:id}', [StevedoringController::class, 'app_spv_app'])->name('stevedoring.app.spv.app');
+    });
+
     Route::get('/permohonan-dana-cetak', [PermohonanDanaController::class, 'cetak'])->name('dana.cetak');
 
 

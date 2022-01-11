@@ -19,8 +19,14 @@ class ItemMaster extends Model
         'volume'
     ];
 
+    // PK relasi ke table lain
     public function stevedoringmanifest()
     {
         return $this->hasMany(StevedoringManifest::class);
+    }
+
+    public function stevedoringtallysheet()
+    {
+        return $this->hasMany(StevedoringTallysheet::class);
     }
 }
