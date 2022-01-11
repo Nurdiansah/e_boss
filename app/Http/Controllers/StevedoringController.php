@@ -452,6 +452,41 @@ class StevedoringController extends Controller
     }
 
 
+    // Stevedoring History
+    public function history()
+    {
+        return view('pages.stevedorings.stevedoring-history', [
+            'stevedorings' => Stevedoring::whereIn('status', ['6'])->get()
+        ]);
+    }
+
+    public function history_detail(Stevedoring $stevedoring)
+    {
+
+        $stevedoringmanifests = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->where('qty', '>', 0)->get();
+        $stevedoringtallysheets = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->get();
+
+        // dd($stevedoringtallysheets);
+
+        $cargoQuantity = $stevedoringmanifests->count();
+
+        return view('pages.stevedorings.stevedoring-history-detail', [
+            'stevedoring' => $stevedoring,
+            'stevedoringmanifests' => $stevedoringmanifests,
+            'stevedoringtallysheets' => $stevedoringtallysheets,
+            'cargoQuantity' => $cargoQuantity,
+            'areas' => Area::all(),
+            'clients' => Client::all(),
+            'vessels' => Vessel::all(),
+            'agents' => Agent::all(),
+            'ports' => Port::all(),
+            'jetties' => Jetty::all(),
+            'stevedoringcategories' => StevedoringCategory::all(),
+            'itemmasters' => ItemMaster::all(),
+            'checkers' => Checker::all()
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -51,6 +51,7 @@
                     </span>
                     <h4 class="text-section"> Stevedoring</h4>
                 </li>
+
                 @hasrole('superuser|admin_ops')
                 <li class="nav-item">
                     <a href="{{route('stevedoring.create')}}">
@@ -89,7 +90,7 @@
                 @hasrole('spv_ops')
                 <li class="nav-item">
                     <a href="{{route('stevedoring.app.spv')}}">
-                        <i class="fas fas fa-truck-loading"></i>
+                        <i class="fas fas fa-check"></i>
                         <p>Approval</p>
                         <!-- <span class="badge badge-success">4</span> -->
                     </a>
@@ -101,6 +102,16 @@
                     <a href="{{route('stevedoring.app.mgr')}}">
                         <i class="fas fas fa-check"></i>
                         <p>Approval</p>
+                        <!-- <span class="badge badge-success">4</span> -->
+                    </a>
+                </li>
+                @endhasrole
+
+                @hasrole('superuser|admin_ops|spv_ops|checker|manager|ops')
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.history')}}">
+                        <i class="fas fas fa-history"></i>
+                        <p>History</p>
                         <!-- <span class="badge badge-success">4</span> -->
                     </a>
                 </li>
