@@ -16,4 +16,9 @@ class Equipment extends Model
         'capacity',
         'status',
     ];
+
+    public function stevedoringuseequipment()
+    {
+        return $this->hasMany(StevedoringUseEquipment::class);
+    }
 }

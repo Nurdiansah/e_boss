@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\EquipmentApiController;
 use App\Http\Controllers\Api\StevedoringApiController;
 use App\Http\Controllers\Api\StevedoringManifestApiController;
 use Illuminate\Http\Request;
@@ -30,5 +31,8 @@ Route::put('/stevedoring/{stevedoring:id}/finish', [StevedoringApiController::cl
 // Stevedoring Manifest
 Route::get('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestApiController::class, 'show']);
 Route::put('/stevedoring-manifest/{stevedoring:id}/lolo', [StevedoringManifestApiController::class, 'lolo']);
+
+// Equipment
+Route::get('/equipment-by-category/{equipment:id}', [EquipmentApiController::class, 'showByCategory']);
 //     });
 // });

@@ -6,6 +6,8 @@ use App\Models\Agent;
 use App\Models\Area;
 use App\Models\Checker;
 use App\Models\Client;
+use App\Models\Equipment;
+use App\Models\EquipmentCategory;
 use App\Models\ItemMaster;
 use App\Models\Jetty;
 use App\Models\Port;
@@ -13,6 +15,7 @@ use App\Models\Stevedoring;
 use App\Models\StevedoringCategory;
 use App\Models\StevedoringManifest;
 use App\Models\StevedoringTallysheet;
+use App\Models\StevedoringUseEquipment;
 use App\Models\Vessel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -416,6 +419,7 @@ class StevedoringController extends Controller
         return view('pages.stevedorings.stevedoring-edit', [
             'stevedoring' => $stevedoring,
             'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
+            'stevedoringuseequipments' => StevedoringUseEquipment::where('stevedoring_id', $stevedoring->id)->get(),
             'areas' => Area::all(),
             'clients' => Client::all(),
             'vessels' => Vessel::all(),
@@ -424,7 +428,9 @@ class StevedoringController extends Controller
             'jetties' => Jetty::all(),
             'stevedoringcategories' => StevedoringCategory::all(),
             'itemmasters' => ItemMaster::all(),
-            'checkers' => Checker::all()
+            'checkers' => Checker::all(),
+            'equipmentcategories' => EquipmentCategory::all(),
+            'equipment' => Equipment::all()
         ]);
     }
 

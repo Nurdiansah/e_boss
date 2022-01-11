@@ -13,4 +13,15 @@ class StevedoringUseEquipment extends Model
         'stevedoring_id',
         'equipment_id'
     ];
+
+    // FK relasi ke table refrensi
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class);
+    }
+
+    public function stevedoring()
+    {
+        return $this->belongsTo(Stevedoring::class);
+    }
 }

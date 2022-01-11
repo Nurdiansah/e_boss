@@ -35,7 +35,8 @@ $jumlahData = count($stevedoringmanifests);
     <!-- Form Manifest -->
     <!--  -->
     <div class="row">
-        <div class="col-md-12">
+        <!-- Cargo Manifest -->
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
@@ -112,7 +113,7 @@ $jumlahData = count($stevedoringmanifests);
                     <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="modal-header no-bd">
+                                <div class="modal-header no-bd bg-primary">
                                     <h5 class="modal-title">
                                         <span class="fw-mediumbold">
                                             Tambah</span>
@@ -231,14 +232,16 @@ $jumlahData = count($stevedoringmanifests);
                                     <td>{{$stevedoringmanifest->ton}}</td>
                                     <td>{{$stevedoringmanifest->revton}}</td>
                                     <td>
-                                        <button class="btn btn-success btn-round ml-auto" data-toggle="modal" data-target="#addRowModal&id={{$stevedoringmanifest->id}}">
-                                            <i class="fa fa-edit"></i>
+                                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                            <button class="btn btn-success btn-round ml-auto" data-toggle="modal" data-target="#addRowModal&id={{$stevedoringmanifest->id}}">
+                                                <i class="fa fa-edit"></i>
 
-                                        </button>
-                                        <button class="btn btn-danger btn-round ml-auto" data-toggle="modal" data-target="#modalHapus&id={{$stevedoringmanifest->id}}">
-                                            <i class="fa fa-trash"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-round ml-auto" data-toggle="modal" data-target="#modalHapus&id={{$stevedoringmanifest->id}}">
+                                                <i class="fa fa-trash"></i>
 
-                                        </button>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -264,7 +267,7 @@ $jumlahData = count($stevedoringmanifests);
                                                 <input type="hidden" name="stevedoring_id" value="{{$stevedoring->id}}">
                                                 <div class="perhitungan">
                                                     <div class="modal-body">
-                                                        <p class="small">Tambahkan data cargo manifest, pada kolom di bawah ini</p>
+                                                        <p class="small">Edit data cargo manifest, pada kolom di bawah ini</p>
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="form-group form-group-default">
@@ -370,6 +373,244 @@ $jumlahData = count($stevedoringmanifests);
                                 @if($jumlahData == 0)
                                 <tr>
                                     <td colspan="11"><i class="fas fa-exclamation"></i> Tidak ada data tersedia</td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+
+        <!-- Alat Berat -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Using Equipment</h4>
+
+                        @if($stevedoring->status == '0')
+
+                        <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addEquipment">
+                            <i class="fa fa-plus"></i>
+                            <!-- Tambah -->
+                        </button>
+                        @endif
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Modal Tambah -->
+                    <div class="modal fade" id="addEquipment" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header no-bd bg-primary">
+                                    <h5 class="modal-title">
+                                        <span class="fw-mediumbold">
+                                            Tambah</span>
+                                        <span class="fw-light">
+                                            Data
+                                        </span>
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{{ route('stevedoring.use.equipment.store') }}" name="form" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="stevedoring_id" value="{{$stevedoring->id}}">
+                                    <div class="perhitungan">
+                                        <div class="modal-body">
+                                            <p class="small">Tambahkan data equipment, pada kolom di bawah ini</p>
+                                            <div class="row">
+                                                <!-- equip cgy -->
+                                                <div class="col-sm-12">
+                                                    <div class="form-group form-floating-label">
+                                                        <select class="form-control input-border-bottom equipmentcategory_id" id="selectFloatingLabel" name="equipmentcategory_id" required>
+                                                            <option value="">&nbsp;</option>
+                                                            @foreach($equipmentcategories as $key => $equipmentcategory)
+
+                                                            @if (old('equipmentcategory_id') == $equipmentcategory->id )
+                                                            <option value="{{ $equipmentcategory->id }}" selected>{{ $equipmentcategory->name }}</option>
+                                                            @else
+                                                            <option value="{{ $equipmentcategory->id }}">{{ $equipmentcategory->name }}</option>
+                                                            @endif
+
+                                                            @endforeach
+
+                                                        </select>
+                                                        <label for="selectFloatingLabel" class="placeholder">Select Equipment Category</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 kotakEquipment">
+                                                    <div class="form-group">
+                                                        <label id="tes" for="equipment_id" class="col-sm-offset-1 col-sm-3 control-label">Kode Anggaran</label>
+                                                        <!-- <div class="col-sm-5"> -->
+                                                        <select class="form-control select2 equipment_id" name="equipment_id" id="equipment_id" required>
+                                                            <option>--Kode Anggaran--</option>
+                                                        </select>
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer ">
+                                            <button type="submit" id="addRowButton" class="btn btn-primary"><i class="fa fa-save"></i> Tambah</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Modal Tambah -->
+
+                    <div class="table-responsive">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
+                            <!-- <table id="add-row" class="display table table-striped table-hover"> -->
+                            <thead>
+                                <tr>
+                                    <th class="align-top">Equipment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($stevedoringuseequipments as $key => $stevedoringuseequipment)
+
+                                <tr>
+                                    <td>{{$stevedoringuseequipment->equipment->name}}</td>
+                                </tr>
+
+                                <!-- Modal Edit -->
+                                <div class="modal fade" id="addRowModal&id={{$stevedoringmanifest->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header no-bd">
+                                                <h5 class="modal-title">
+                                                    <span class="fw-mediumbold">
+                                                        Edit</span>
+                                                    <span class="fw-light">
+                                                        Data
+                                                    </span>
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{ route('stevedoring.manifest.update', $stevedoringmanifest->id ) }}" name="form" method="POST">
+                                                @method('PUT')
+                                                @csrf
+                                                <input type="hidden" name="stevedoring_id" value="{{$stevedoring->id}}">
+                                                <div class="perhitungan">
+                                                    <div class="modal-body">
+                                                        <p class="small">Edit data cargo manifest, pada kolom di bawah ini</p>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Description</label>
+                                                                    <textarea id="addDescription" name="description" type="text" class="form-control" placeholder="Container 20 ft Premier Oil">{{$stevedoringmanifest->description}}</textarea>
+                                                                </div>
+                                                            </div>
+                                                            <!-- area -->
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-floating-label">
+                                                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="itemmaster_id" required>
+                                                                        <option value="">&nbsp;</option>
+                                                                        @foreach($itemmasters as $key => $itemmaster)
+
+                                                                        @if (old('itemmaster_id') == $itemmaster->id || $stevedoringmanifest->itemmaster_id == $itemmaster->id )
+                                                                        <option value="{{ $itemmaster->id }}" selected>{{ $itemmaster->name }}</option>
+                                                                        @else
+                                                                        <option value="{{ $itemmaster->id }}">{{ $itemmaster->name }}</option>
+                                                                        @endif
+
+                                                                        @endforeach
+
+                                                                    </select>
+                                                                    <label for="selectFloatingLabel" class="placeholder">Select Item</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Doc No</label>
+                                                                    <input id="addDocno" name="doc_no" value="{{$stevedoringmanifest->doc_no}}" type="text" class="form-control" placeholder="23870">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 pr-0">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>QTY</label>
+                                                                    <input id="addQty" name="qty" min="0" value="{{$stevedoringmanifest->qty}}" type="number" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>TON</label>
+                                                                    <input id="addTon" name="ton" min="0" step="any" value="{{$stevedoringmanifest->ton}}" type="number" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group form-group-default">
+                                                                    <label>Remarks</label>
+                                                                    <textarea id="addRemarks" name="remarks" value="{{$stevedoringmanifest->remarks}}" type="text" class="form-control" placeholder="Haliburton">{{$stevedoringmanifest->remarks}}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <button type="submit" id="addRowButton" class="btn btn-success"><i class="fa fa-save"></i> Update</button>
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Modal Edit -->
+
+                                <!-- Modal Hapus -->
+                                <div class="modal fade" id="modalHapus&id={{$stevedoringmanifest->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header no-bd bg danger">
+                                                <h5 class="modal-title">
+                                                    <span class="fw-mediumbold">
+                                                        Hapus</span>
+                                                    <span class="fw-light">
+                                                        Data
+                                                    </span>
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{ route('stevedoring.manifest.update', $stevedoringmanifest->id ) }}" name="form" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <input type="hidden" name="stevedoring_id" value="{{$stevedoring->id}}">
+                                                <div class="perhitungan">
+                                                    <div class="modal-body">
+                                                        <p class="small">Apa anda yakin ingin menghapus cargo {{$stevedoringmanifest->description}}?</p>
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <button type="submit" id="addRowButton" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Modal Hapus -->
+
+                                @endforeach
+
+                                @if($jumlahData == 0)
+                                <tr>
+                                    <td><i class="fas fa-exclamation"></i> Tidak ada data tersedia</td>
                                 </tr>
                                 @endif
                             </tbody>
@@ -631,6 +872,65 @@ $jumlahData = count($stevedoringmanifests);
 <script>
     $(document).ready(function() {
         $('#basic-datatables').DataTable({});
+    });
+
+    let host = "<?= apiLokal() ?>";
+    let token = "<?= Session::token() ?>";
+    // equipment
+    // $.ajaxSetup({
+
+    //     headers: {
+
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+    //     }
+
+    // });
+
+    $('.kotakEquipment').hide();
+
+    $('.equipmentcategory_id').on('change', function() {
+        let equipmentCategoryId = this.value;
+
+        if (equipmentCategoryId == '') {
+
+            $('.kotakEquipment').hide();
+
+        } else {
+
+            $('.kotakEquipment').show();
+
+            $.ajax({
+                url: host + 'equipment-by-category/' + equipmentCategoryId,
+                data: {
+                    id: equipmentCategoryId,
+                },
+                method: 'get',
+                dataType: 'json',
+                success: function(data) {
+                    // console.log(data);
+
+                    $('#equipment_id').empty();
+
+                    // (function() {
+                    // let no = 0;
+                    $.each(data, function(i, value) {
+                        // $('#me_id').val(data.data[0].id);
+                        $.each(value, function(key, val) {
+                            console.log(val.id);
+                            $('#equipment_id').append($('<option>').text(val.name).attr('value', val.id));
+
+                            // no++;
+                        });
+
+                    });
+                    // })();
+
+                }
+            });
+
+        }
+
     });
 </script>
 @endpush

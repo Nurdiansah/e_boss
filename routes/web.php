@@ -4,6 +4,8 @@ use App\Http\Controllers\PermohonanDanaController;
 use App\Http\Controllers\PermohonanDanaSubOneController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
+use App\Http\Controllers\StevedoringUseEquipmentController;
+use App\Models\StevedoringUseEquipment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +45,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/stevedoring-manifest', [StevedoringManifestController::class, 'store'])->name('stevedoring.manifest.store');
         Route::put('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'update'])->name('stevedoring.manifest.update');
         Route::delete('/stevedoring-manifest/{stevedoringmanifest:id}', [StevedoringManifestController::class, 'destroy'])->name('stevedoring.manifest.destroy');
+
+        // stevedoring use equipment
+        Route::post('/stevedoring-use-equipment', [StevedoringUseEquipmentController::class, 'store'])->name('stevedoring.use.equipment.store');
     });
 
     Route::group(['middleware' => ['role:checker']], function () {

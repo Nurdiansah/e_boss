@@ -72,4 +72,9 @@ class Stevedoring extends Model
     {
         return $this->belongsTo(Checker::class);
     }
+
+    public function stevedoringuseequipment()
+    {
+        return $this->hasMany(StevedoringUseEquipment::class);
+    }
 }

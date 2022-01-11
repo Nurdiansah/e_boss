@@ -35,7 +35,26 @@ class StevedoringUseEquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'stevedoring_id' => 'required',
+            'equipment_id' => 'required'
+        ]);
+
+        $result = StevedoringUseEquipment::create([
+            'stevedoring_id' => $request->stevedoring_id,
+            'equipment_id' => $request->equipment_id,
+            'created_at' => NOW(),
+            'updated_at' => NOW()
+        ]);
+
+        if ($result) {
+            # code...
+            toast('Data berhasil di tambah!', 'success');
+        } else {
+            # code...
+            toast('Data gagal di tambah!', 'error');
+        }
+        return back();
     }
 
     /**
