@@ -66,11 +66,12 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/stevedoring-app-spv/{stevedoring:id}', [StevedoringController::class, 'app_spv_app'])->name('stevedoring.app.spv.app');
     });
 
-    Route::get('/permohonan-dana-cetak', [PermohonanDanaController::class, 'cetak'])->name('dana.cetak');
+    Route::group(['middleware' => ['role:manager_ops']], function () {
+        Route::get('/stevedoring-app-mgr', [StevedoringController::class, 'app_mgr'])->name('stevedoring.app.mgr');
+        Route::get('/stevedoring-app-mgr/{stevedoring:id}', [StevedoringController::class, 'app_mgr_detail'])->name('stevedoring.app.mgr.detail');
+        Route::patch('/stevedoring-app-mgr/{stevedoring:id}', [StevedoringController::class, 'app_mgr_app'])->name('stevedoring.app.mgr.app');
+    });
 
-
-    Route::get('/form-permohonan-dana/{permohonandana:id}', [PermohonanDanaController::class, 'show'])->name('form.dana');
-    Route::post('/form-permohonan-dana', [PermohonanDanaSubOneController::class, 'store'])->name('subdanaone.store');
 
     Route::get('/form-old', function () {
         return view('form-old');

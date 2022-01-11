@@ -392,6 +392,65 @@ class StevedoringController extends Controller
         return redirect('/stevedoring-app-spv');
     }
 
+    // app manager ops
+    public function app_mgr()
+    {
+        return view('pages.stevedorings.stevedoring-app-mgr', [
+            'stevedorings' => Stevedoring::whereIn('status', ['5'])->get()
+        ]);
+    }
+
+    public function app_mgr_detail(Stevedoring $stevedoring)
+    {
+
+        $stevedoringmanifests = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->where('qty', '>', 0)->get();
+        $stevedoringtallysheets = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->get();
+
+        // dd($stevedoringtallysheets);
+
+        $cargoQuantity = $stevedoringmanifests->count();
+
+        return view('pages.stevedorings.stevedoring-app-mgr-detail', [
+            'stevedoring' => $stevedoring,
+            'stevedoringmanifests' => $stevedoringmanifests,
+            'stevedoringtallysheets' => $stevedoringtallysheets,
+            'cargoQuantity' => $cargoQuantity,
+            'areas' => Area::all(),
+            'clients' => Client::all(),
+            'vessels' => Vessel::all(),
+            'agents' => Agent::all(),
+            'ports' => Port::all(),
+            'jetties' => Jetty::all(),
+            'stevedoringcategories' => StevedoringCategory::all(),
+            'itemmasters' => ItemMaster::all(),
+            'checkers' => Checker::all()
+        ]);
+    }
+
+    public function app_mgr_app(Request $request, $id)
+    {
+
+        $validated = $request->validate([
+            'id' => 'required',
+        ]);
+
+
+        $result = Stevedoring::where('id', $id)->update([
+            "status" => '6'
+        ]);
+
+        if ($result) {
+            // var state = 'danger';
+            // var body = 'Updated';
+            cookieSuccess('Update');
+        } else {
+            # code...
+            toast('Data gagal di Approve!', 'error');
+        }
+
+        return redirect('/stevedoring-app-mgr');
+    }
+
 
     /**
      * Store a newly created resource in storage.

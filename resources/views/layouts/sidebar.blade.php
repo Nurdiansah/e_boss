@@ -95,6 +95,16 @@
                     </a>
                 </li>
                 @endhasrole
+
+                @hasrole('manager_ops')
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.app.mgr')}}">
+                        <i class="fas fas fa-check"></i>
+                        <p>Approval</p>
+                        <!-- <span class="badge badge-success">4</span> -->
+                    </a>
+                </li>
+                @endhasrole
                 <!-- </ul>
                     </div> -->
                 <!-- </li> -->
