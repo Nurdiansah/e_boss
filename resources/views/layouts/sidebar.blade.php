@@ -44,54 +44,50 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
-                    <h4 class="text-section">Stevedoring</h4>
+                    <h4 class="text-section"> Stevedoring</h4>
                 </li>
+                @hasrole('superuser|admin_ops')
                 <li class="nav-item">
-                    <a data-toggle="collapse" href="#forms">
+                    <a href="{{route('stevedoring.create')}}">
                         <i class="fas fas fa-ship"></i>
-                        <p>Stevedoring</p>
-                        <span class="caret"></span>
+                        <p>Create</p>
                     </a>
-                    <div class="collapse" id="forms">
-                        <ul class="nav nav-collapse">
-                            @hasrole('superuser|admin_ops')
-
-                            <li class="nav-item">
-                                <a href="{{route('stevedoring.create')}}">
-                                    <i class="fas fas fa-file"></i>Create
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{route('stevedoring.draft')}}">
-                                    <i class="fas fas fa-folder"></i>Draft
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{route('stevedoring.proses')}}">
-                                    <i class="fas fas fa-truck-loading"></i>Proses
-                                    <!-- <span class="badge badge-success">4</span> -->
-                                </a>
-                            </li>
-
-                            @endhasrole
-
-                            @hasrole('checker')
-                            <li class="nav-item">
-                                <a href="{{route('stevedoring.lolo')}}">
-                                    <i class="fas fas fa-truck-loading"></i>Proses
-                                    <!-- <span class="badge badge-success">4</span> -->
-                                </a>
-                            </li>
-                            @endhasrole
-                        </ul>
-                    </div>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.draft')}}">
+                        <i class="fas fas fa-folder"></i>
+                        <p>Draft</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.proses')}}">
+                        <i class="fas fas fa-truck-loading"></i>
+                        <p>Proses</p>
+                        <!-- <span class="badge badge-success">4</span> -->
+                    </a>
+                </li>
+
+                @endhasrole
+
+                @hasrole('checker')
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.lolo')}}">
+                        <i class="fas fas fa-truck-loading"></i>
+                        <p>Proses</p>
+                        <!-- <span class="badge badge-success">4</span> -->
+                    </a>
+                </li>
+                @endhasrole
+                <!-- </ul>
+                    </div> -->
+                <!-- </li> -->
                 <!-- <li class="nav-item">
                     <a data-toggle="collapse" href="#tables">
                         <i class="fas fa-table"></i>
