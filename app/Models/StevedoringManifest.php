@@ -24,6 +24,7 @@ class StevedoringManifest extends Model
         'row_version',
     ];
 
+    // FK relasi ke table 
     public function itemmaster()
     {
         return $this->belongsTo(ItemMaster::class);

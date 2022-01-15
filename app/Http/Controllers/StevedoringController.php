@@ -343,7 +343,7 @@ class StevedoringController extends Controller
             1,2,3 proses kegiatan
         */
 
-        if ($user->hasRole('admin_ops')) {
+        if ($user->hasRole('admin_ops|client')) {
             $stevedorings = Stevedoring::where('status', '>', 0)
                 ->where('status', '<=', 5)
                 ->get();
@@ -374,19 +374,32 @@ class StevedoringController extends Controller
 
     public function app_spv_detail(Stevedoring $stevedoring)
     {
+        $bookingCargo = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->sum('revton');
+        $realisasiCargo = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->where('origin_destination', '!=', 'Not Available')->sum('revton');
 
-        $stevedoringmanifests = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->where('qty', '>', 0)->get();
-        $stevedoringtallysheets = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->get();
+        $changeCargo = round(@($realisasiCargo / ($bookingCargo + $realisasiCargo) * 100), 0);
 
-        // dd($stevedoringtallysheets);
+        $stevedoringTimelineId = StevedoringTimeline::where('stevedoring_id', $stevedoring->id)->max('id');
+        $break = StevedoringTimeline::find($stevedoringTimelineId);
 
-        $cargoQuantity = $stevedoringmanifests->count();
+        // Group BY Ajaa dulu ye ga
+        $stevedoringtallysheets = DB::table('stevedoring_tallysheets')
+            ->join('item_masters', 'stevedoring_tallysheets.itemmaster_id', '=', 'item_masters.id')
+            ->select('stevedoring_tallysheets.id', 'stevedoring_id', 'stevedoringmanifest_id', DB::raw('sum(qty) as qty'), 'doc_no', 'description', 'remarks', 'itemmaster_id', 'long', 'widht', 'height', DB::raw('count(*) as total'), DB::raw('sum(m3) as m3'), DB::raw('sum(ton) as ton'), DB::raw('sum(revton) as revton'))
+            ->where('stevedoring_id', $stevedoring->id)
+            ->groupBy('stevedoringmanifest_id')
+            ->orderBy('stevedoringmanifest_id')
+            ->get();
 
         return view('pages.stevedorings.stevedoring-app-spv-detail', [
             'stevedoring' => $stevedoring,
-            'stevedoringmanifests' => $stevedoringmanifests,
+            'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
             'stevedoringtallysheets' => $stevedoringtallysheets,
-            'cargoQuantity' => $cargoQuantity,
+            'stevedoringuseequipments' => StevedoringUseEquipment::where('stevedoring_id', $stevedoring->id)->get(),
+            'bookingCargo' => $bookingCargo,
+            'realisasiCargo' => $realisasiCargo,
+            'changeCargo' => $changeCargo,
+            'break' => $break,
             'areas' => Area::all(),
             'clients' => Client::all(),
             'vessels' => Vessel::all(),
@@ -433,19 +446,33 @@ class StevedoringController extends Controller
 
     public function app_mgr_detail(Stevedoring $stevedoring)
     {
+        $bookingCargo = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->sum('revton');
+        $realisasiCargo = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->where('origin_destination', '!=', 'Not Available')->sum('revton');
 
-        $stevedoringmanifests = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->where('qty', '>', 0)->get();
-        $stevedoringtallysheets = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->get();
+        $changeCargo = round(@($realisasiCargo / ($bookingCargo + $realisasiCargo) * 100), 0);
 
-        // dd($stevedoringtallysheets);
+        $stevedoringTimelineId = StevedoringTimeline::where('stevedoring_id', $stevedoring->id)->max('id');
+        $break = StevedoringTimeline::find($stevedoringTimelineId);
 
-        $cargoQuantity = $stevedoringmanifests->count();
+        // Group BY Ajaa dulu ye ga
+        $stevedoringtallysheets = DB::table('stevedoring_tallysheets')
+            ->join('item_masters', 'stevedoring_tallysheets.itemmaster_id', '=', 'item_masters.id')
+            ->select('stevedoring_tallysheets.id', 'stevedoring_id', 'stevedoringmanifest_id', DB::raw('sum(qty) as qty'), 'doc_no', 'description', 'remarks', 'itemmaster_id', 'long', 'widht', 'height', DB::raw('count(*) as total'), DB::raw('sum(m3) as m3'), DB::raw('sum(ton) as ton'), DB::raw('sum(revton) as revton'))
+            ->where('stevedoring_id', $stevedoring->id)
+            ->groupBy('stevedoringmanifest_id')
+            ->orderBy('stevedoringmanifest_id')
+            ->get();
+
 
         return view('pages.stevedorings.stevedoring-app-mgr-detail', [
             'stevedoring' => $stevedoring,
-            'stevedoringmanifests' => $stevedoringmanifests,
+            'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
             'stevedoringtallysheets' => $stevedoringtallysheets,
-            'cargoQuantity' => $cargoQuantity,
+            'stevedoringuseequipments' => StevedoringUseEquipment::where('stevedoring_id', $stevedoring->id)->get(),
+            'bookingCargo' => $bookingCargo,
+            'realisasiCargo' => $realisasiCargo,
+            'changeCargo' => $changeCargo,
+            'break' => $break,
             'areas' => Area::all(),
             'clients' => Client::all(),
             'vessels' => Vessel::all(),
@@ -494,18 +521,32 @@ class StevedoringController extends Controller
     public function history_detail(Stevedoring $stevedoring)
     {
 
-        $stevedoringmanifests = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->where('qty', '>', 0)->get();
-        $stevedoringtallysheets = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->get();
+        $bookingCargo = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->sum('revton');
+        $realisasiCargo = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->where('origin_destination', '!=', 'Not Available')->sum('revton');
 
-        // dd($stevedoringtallysheets);
+        $changeCargo = round(@($realisasiCargo / ($bookingCargo + $realisasiCargo) * 100), 0);
 
-        $cargoQuantity = $stevedoringmanifests->count();
+        $stevedoringTimelineId = StevedoringTimeline::where('stevedoring_id', $stevedoring->id)->max('id');
+        $break = StevedoringTimeline::find($stevedoringTimelineId);
+
+        // Group BY Ajaa dulu ye ga
+        $stevedoringtallysheets = DB::table('stevedoring_tallysheets')
+            ->join('item_masters', 'stevedoring_tallysheets.itemmaster_id', '=', 'item_masters.id')
+            ->select('stevedoring_tallysheets.id', 'stevedoring_id', 'stevedoringmanifest_id', DB::raw('sum(qty) as qty'), 'doc_no', 'description', 'remarks', 'itemmaster_id', 'long', 'widht', 'height', DB::raw('count(*) as total'), DB::raw('sum(m3) as m3'), DB::raw('sum(ton) as ton'), DB::raw('sum(revton) as revton'))
+            ->where('stevedoring_id', $stevedoring->id)
+            ->groupBy('stevedoringmanifest_id')
+            ->orderBy('stevedoringmanifest_id')
+            ->get();
 
         return view('pages.stevedorings.stevedoring-history-detail', [
             'stevedoring' => $stevedoring,
-            'stevedoringmanifests' => $stevedoringmanifests,
+            'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
             'stevedoringtallysheets' => $stevedoringtallysheets,
-            'cargoQuantity' => $cargoQuantity,
+            'stevedoringuseequipments' => StevedoringUseEquipment::where('stevedoring_id', $stevedoring->id)->get(),
+            'bookingCargo' => $bookingCargo,
+            'realisasiCargo' => $realisasiCargo,
+            'changeCargo' => $changeCargo,
+            'break' => $break,
             'areas' => Area::all(),
             'clients' => Client::all(),
             'vessels' => Vessel::all(),
@@ -586,11 +627,22 @@ class StevedoringController extends Controller
 
         $stevedoringTimelineId = StevedoringTimeline::where('stevedoring_id', $stevedoring->id)->max('id');
         $break = StevedoringTimeline::find($stevedoringTimelineId);
-        // dd($break);
+
+        // Group BY Ajaa dulu ye ga
+        $stevedoringtallysheets = DB::table('stevedoring_tallysheets')
+            ->join('item_masters', 'stevedoring_tallysheets.itemmaster_id', '=', 'item_masters.id')
+            ->select('stevedoring_tallysheets.id', 'stevedoring_id', 'stevedoringmanifest_id', DB::raw('sum(qty) as qty'), 'doc_no', 'description', 'remarks', 'itemmaster_id', 'long', 'widht', 'height', DB::raw('count(*) as total'), DB::raw('sum(m3) as m3'), DB::raw('sum(ton) as ton'), DB::raw('sum(revton) as revton'))
+            ->where('stevedoring_id', $stevedoring->id)
+            ->groupBy('stevedoringmanifest_id')
+            ->orderBy('stevedoringmanifest_id')
+            ->get();
+
+        // dd($stevedoringtallysheets);
 
         return view('pages.stevedorings.stevedoring-show', [
             'stevedoring' => $stevedoring,
             'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
+            'stevedoringtallysheets' => $stevedoringtallysheets,
             'stevedoringuseequipments' => StevedoringUseEquipment::where('stevedoring_id', $stevedoring->id)->get(),
             'bookingCargo' => $bookingCargo,
             'realisasiCargo' => $realisasiCargo,

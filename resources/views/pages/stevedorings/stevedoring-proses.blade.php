@@ -60,6 +60,10 @@
                                         <span class="badge badge-success">Pekerjaan berlangsung</span>
                                         @elseif($stevedoring->status == 3)
                                         <span class="badge badge-warning">Pekerjaan berhenti</span>
+                                        @elseif($stevedoring->status == 4)
+                                        <span class="badge badge-success">Verifikasi Supervisor</span>
+                                        @elseif($stevedoring->status == 5)
+                                        <span class="badge badge-success">Verifikasi Manager</span>
                                         @endif
                                     </td>
                                     <td>
