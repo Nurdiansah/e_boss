@@ -38,7 +38,6 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'update'])->name('stevedoring.update');
         Route::get('/stevedoring/draft', [StevedoringController::class, 'draft'])->name('stevedoring.draft');
         Route::post('/stevedoring/release', [StevedoringController::class, 'release'])->name('stevedoring.release');
-        Route::get('/stevedoring/proses', [StevedoringController::class, 'proses'])->name('stevedoring.proses');
         Route::get('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'show'])->name('stevedoring.show');
 
         // Manifest stevedoring
@@ -72,10 +71,12 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/stevedoring-app-mgr/{stevedoring:id}', [StevedoringController::class, 'app_mgr_app'])->name('stevedoring.app.mgr.app');
     });
 
-    Route::group(['middleware' => ['role:superuser|admin_ops|checker|spv_ops|manager_ops']], function () {
+    Route::group(['middleware' => ['role:superuser|admin_ops|spv_ops|manager_ops|client']], function () {
 
         Route::get('/stevedoring-history', [StevedoringController::class, 'history'])->name('stevedoring.history');
         Route::get('/stevedoring-history/{stevedoring:id}', [StevedoringController::class, 'history_detail'])->name('stevedoring.history.detail');
+        Route::get('/stevedoring-proses', [StevedoringController::class, 'proses'])->name('stevedoring.proses');
+        Route::get('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'show'])->name('stevedoring.show');
     });
 
 

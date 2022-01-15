@@ -15,9 +15,12 @@ use App\Models\Stevedoring;
 use App\Models\StevedoringCategory;
 use App\Models\StevedoringManifest;
 use App\Models\StevedoringTallysheet;
+use App\Models\StevedoringTimeline;
 use App\Models\StevedoringUseEquipment;
+use App\Models\User;
 use App\Models\Vessel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -329,8 +332,36 @@ class StevedoringController extends Controller
 
     public function proses()
     {
+        $user = auth()->user();
+
+        /*
+            Status monitoring 
+            manager <= 4 
+            spv <=5 != 4
+            admin <=5
+            
+            1,2,3 proses kegiatan
+        */
+
+        if ($user->hasRole('admin_ops')) {
+            $stevedorings = Stevedoring::where('status', '>', 0)
+                ->where('status', '<=', 5)
+                ->get();
+        } else if ($user->hasRole('spv_ops')) {
+            $stevedorings = Stevedoring::where('status', '>', 0)
+                ->where('status', '<=', 5)
+                ->where('status', '!=', 4)
+                ->get();
+        } else if ($user->hasRole('manager_ops')) {
+            $stevedorings = Stevedoring::where('status', '>', 0)
+                ->where('status', '<=', 4)
+                ->get();
+        }
+
+
+
         return view('pages.stevedorings.stevedoring-proses', [
-            'stevedorings' => Stevedoring::Where('status', '>', 0)->get()
+            'stevedorings' => $stevedorings
         ]);
     }
 
@@ -546,9 +577,25 @@ class StevedoringController extends Controller
      */
     public function show(Stevedoring $stevedoring)
     {
+
+
+        $bookingCargo = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->sum('revton');
+        $realisasiCargo = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->where('origin_destination', '!=', 'Not Available')->sum('revton');
+
+        $changeCargo = round(@($realisasiCargo / ($bookingCargo + $realisasiCargo) * 100), 0);
+
+        $stevedoringTimelineId = StevedoringTimeline::where('stevedoring_id', $stevedoring->id)->max('id');
+        $break = StevedoringTimeline::find($stevedoringTimelineId);
+        // dd($break);
+
         return view('pages.stevedorings.stevedoring-show', [
             'stevedoring' => $stevedoring,
             'stevedoringmanifests' => StevedoringManifest::where('stevedoring_id', $stevedoring->id)->get(),
+            'stevedoringuseequipments' => StevedoringUseEquipment::where('stevedoring_id', $stevedoring->id)->get(),
+            'bookingCargo' => $bookingCargo,
+            'realisasiCargo' => $realisasiCargo,
+            'changeCargo' => $changeCargo,
+            'break' => $break,
             'areas' => Area::all(),
             'clients' => Client::all(),
             'vessels' => Vessel::all(),

@@ -30,16 +30,21 @@ $jumlahData = count($stevedoringmanifests);
         </ul>
     </div>
 
-
-
+    @if($stevedoring->status == '3')
+    <div class="alert alert-warning" role="alert">
+        Pekerjaan Stevedoring terjeda !
+        <span>{{$break->description}}</span>
+    </div>
+    @endif
     <!-- Form Manifest -->
     <!--  -->
     <div class="row">
-        <div class="col-md-12">
+
+        <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-danger">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">Cargo Manifest</h4>
+                        <h4 class="card-title text-light">Cargo Manifest</h4>
                     </div>
                 </div>
                 <div class="card-body">
@@ -93,6 +98,85 @@ $jumlahData = count($stevedoringmanifests);
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4">
+
+            <!-- start activity -->
+            <div class="card p-3">
+                <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-success mr-3">
+                        <i class="fa fa-play"></i>
+                    </span>
+                    <div>
+                        <h5 class="mb-1"><b><a href="#">Start Activity</a></b></h5>
+                        <small class="text-muted">{{ date("d F Y H:s", strtotime($stevedoring->start_activity))}}</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- progress -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5><b>Progress Kegiatan</b></h5>
+                            <p class="text-muted">Semua Kargo yang di bongkar/muat</p>
+                        </div>
+                        <h5 class="text-info fw-bold">{{$realisasiCargo}} TON/M<sup>2</sup></h5>
+                    </div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{$changeCargo}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$changeCargo}}%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <p class="text-muted mb-0">Perubahan</p>
+                        <p class="text-muted mb-0">{{$changeCargo}}%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- equipment -->
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title text-light">Using Equipment</h4>
+
+                    </div>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="table-responsive">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
+                            <!-- <table id="add-row" class="display table table-striped table-hover"> -->
+                            <thead>
+                                <tr>
+                                    <th class="align-top">Equipment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($stevedoringuseequipments as $key => $stevedoringuseequipment)
+
+                                <tr>
+                                    <td>{{$stevedoringuseequipment->equipment->name}}</td>
+                                </tr>
+
+
+                                @endforeach
+
+                                @if($jumlahData == 0)
+                                <tr>
+                                    <td><i class="fas fa-exclamation"></i> Tidak ada data tersedia</td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-sm-6 col-lg-3"> -->
+
+            <!-- </div> -->
+        </div>
     </div>
     <!--  -->
 
@@ -100,9 +184,9 @@ $jumlahData = count($stevedoringmanifests);
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-warning">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">Detail Stevedoring</h4>
+                        <h4 class="card-title text-light">Detail Stevedoring</h4>
                         <!-- <a href="{{route('stevedoring.create')}}" class="ml-auto "> -->
                         <span class="ml-auto  ">
                             <i class="fa fa-window-minimize"></i>
@@ -119,7 +203,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- area -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Area</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="area_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="area_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($areas as $key => $area)
 
@@ -140,7 +224,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- client -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Client</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="client_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="client_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($clients as $key => $client)
                                         @if (old('client_id') == $client->id || $stevedoring->client_id == $client->id)
@@ -159,7 +243,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- vessel -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Vessel</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="vessel_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="vessel_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($vessels as $key => $vessel)
                                         @if (old('vessel_id') == $vessel->id || $stevedoring->vessel_id == $vessel->id)
@@ -178,7 +262,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- agent -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Agent</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="agent_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="agent_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($agents as $key => $agent)
                                         @if (old('agent_id') == $agent->id || $stevedoring->agent_id == $agent->id)
@@ -196,7 +280,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- jetty -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Jetty</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="jetty_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="jetty_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($jetties as $key => $jetty)
                                         @if (old('jetty_id') == $jetty->id || $stevedoring->jetty_id == $jetty->id)
@@ -214,7 +298,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- stevedoringcategory -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Category</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="stevedoringcategory_id" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="stevedoringcategory_id" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($stevedoringcategories as $key => $stevedoringcategory)
                                         @if (old('stevedoringcategory_id') == $stevedoringcategory->id || $stevedoring->stevedoringcategory_id == $stevedoringcategory->id)
@@ -233,7 +317,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- orign port -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Orign Port</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="orign_port" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="orign_port" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($ports as $key => $port)
                                         @if (old('orign_port') == $port->name || $stevedoring->orign_port == $port->name)
@@ -252,7 +336,7 @@ $jumlahData = count($stevedoringmanifests);
                                 <!-- destination port -->
                                 <div class="form-group ">
                                     <label for="selectFloatingLabel" class="placeholder"> Destination Port</label>
-                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="destination_port" required readonly>
+                                    <select class="form-control input-border-bottom" id="selectFloatingLabel" name="destination_port" required disabled>
                                         <option value="">&nbsp;</option>
                                         @foreach($ports as $key => $port)
                                         @if (old('destination_port') == $port->name || $stevedoring->destination_port == $port->name)
@@ -271,7 +355,7 @@ $jumlahData = count($stevedoringmanifests);
                             <div class="col-md-6 col-lg-6">
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Entry Date</label>
-                                    <input id="inputFloatingLabel" value="{{ datetimeLocal($stevedoring->entry_date) }}" name="entry_date" type="datetime-local" class="form-control input-border-bottom" required readonly>
+                                    <input id="inputFloatingLabel" value="{{ datetimeLocal($stevedoring->entry_date) }}" name="entry_date" type="datetime-local" class="form-control input-border-bottom" required disabled>
                                 </div>
                                 @error('entry_date')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -279,14 +363,14 @@ $jumlahData = count($stevedoringmanifests);
 
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Exit Date</label>
-                                    <input id="inputFloatingLabel" name="exit_date" value="{{ datetimeLocal($stevedoring->exit_date) }}" type="datetime-local" class="form-control input-border-bottom" readonly>
+                                    <input id="inputFloatingLabel" name="exit_date" value="{{ datetimeLocal($stevedoring->exit_date) }}" type="datetime-local" class="form-control input-border-bottom" disabled>
                                 </div>
                                 @error('exit_date')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">Command Document</label>
-                                    <input id="inputFloatingLabel" name="command_document" value="{{ $stevedoring->command_document }}" type="text" class="form-control input-border-bottom" required readonly>
+                                    <input id="inputFloatingLabel" name="command_document" value="{{ $stevedoring->command_document }}" type="text" class="form-control input-border-bottom" required disabled>
                                 </div>
                                 @error('command_document')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -294,7 +378,7 @@ $jumlahData = count($stevedoringmanifests);
 
                                 <div class="form-group ">
                                     <label for="inputFloatingLabel" class="placeholder">WO Number</label>
-                                    <input id="inputFloatingLabel" name="wo_number" value="{{ $stevedoring->wo_number }}" type="text" class="form-control input-border-bottom" required readonly>
+                                    <input id="inputFloatingLabel" name="wo_number" value="{{ $stevedoring->wo_number }}" type="text" class="form-control input-border-bottom" required disabled>
                                 </div>
                                 @error('wo_number')
                                 <div class="alert alert-danger">{{ $message }}</div>

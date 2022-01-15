@@ -67,14 +67,6 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{route('stevedoring.proses')}}">
-                        <i class="fas fas fa-truck-loading"></i>
-                        <p>Proses</p>
-                        <!-- <span class="badge badge-success">4</span> -->
-                    </a>
-                </li>
-
                 @endhasrole
 
                 @hasrole('checker')
@@ -107,7 +99,17 @@
                 </li>
                 @endhasrole
 
-                @hasrole('superuser|admin_ops|spv_ops|checker|manager|ops')
+                @hasrole('superuser|admin_ops|spv_ops|manager_ops|client')
+
+                <li class="nav-item">
+                    <a href="{{route('stevedoring.proses')}}">
+                        <i class="fas fas fa-truck-loading"></i>
+                        <p>Proses</p>
+                        <!-- <span class="badge badge-success">4</span> -->
+                    </a>
+                </li>
+                @endhasrole
+
                 <li class="nav-item">
                     <a href="{{route('stevedoring.history')}}">
                         <i class="fas fas fa-history"></i>
@@ -115,7 +117,7 @@
                         <!-- <span class="badge badge-success">4</span> -->
                     </a>
                 </li>
-                @endhasrole
+
                 <!-- </ul>
                     </div> -->
                 <!-- </li> -->
