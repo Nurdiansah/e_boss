@@ -34,9 +34,45 @@ class StevedoringController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($year)
     {
-        //
+        $clients = Client::get();
+
+        $total = Stevedoring::whereYear('finish_activity', '=', $year)->sum('final_amount');
+
+
+        $januari = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '01')->sum('final_amount');
+        // dd($januari);
+        $februari = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '02')->sum('final_amount');
+        $maret = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '03')->sum('final_amount');
+        $april = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '04')->sum('final_amount');
+        $mei = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '05')->sum('final_amount');
+        $juni = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '06')->sum('final_amount');
+        $juli = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '07')->sum('final_amount');
+        $agustus = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '03')->sum('final_amount');
+        $september = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '09')->sum('final_amount');
+        $oktober = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '10')->sum('final_amount');
+        $november = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '11')->sum('final_amount');
+        $desember = Stevedoring::whereYear('finish_activity', '=', $year)->whereMonth('finish_activity', '12')->sum('final_amount');
+        // dd($januari);
+
+        return view('pages.stevedorings.stevedoring', [
+            'year' => $year,
+            'clients' => $clients,
+            'total' => $total,
+            'januari' => $januari,
+            'februari' => $februari,
+            'maret' => $maret,
+            'april' => $april,
+            'mei' => $mei,
+            'juni' => $juni,
+            'juli' => $juli,
+            'agustus' => $agustus,
+            'september' => $september,
+            'oktober' => $oktober,
+            'november' => $november,
+            'desember' => $desember
+        ]);
     }
 
     /**
@@ -833,6 +869,80 @@ class StevedoringController extends Controller
         //     'stevedoring' => Stevedoring::find(1),
         //     'tallysheets' => $this->getTallysheet('1')
         // ]);
+    }
+
+
+    public function stevedoringAnnual()
+    {
+
+        $clients = Client::get();
+        $clientJobOrders = [];
+        foreach ($clients as $client) {
+            $jobOrder = Stevedoring::where('client_id', $client->id)->whereYear('finish_activity', '=', getTahun())->sum('final_amount');
+            $clientJobOrders[] = [
+                'client' => $client->name,
+                'label' => $client->name . ' (' . $jobOrder . ')',
+                'totalCargo' => $jobOrder,
+                'color' => $client->color,
+
+            ];
+        }
+
+
+        // dd($clientJobOrders[0]['client']);
+        // dd($clientJobOrders);
+        return view('pages.stevedorings.stevedoring-annual', [
+            'now' => getTahun(),
+            'clientJobOrders' => $clientJobOrders,
+            'json' => json_encode((array)$clientJobOrders)
+        ])->with('i');
+    }
+
+    public function stevedoringClient(Request $req)
+    {
+
+        $clients = Client::get();
+
+        if ($req->client == 'all') {
+            return redirect()->to('stevedoring/all/' . $req->year);
+        } else {
+            $client = Client::where('client_id', $req->client)->first();
+            // $name = $client->nm_client2;
+            // $selected = $client->client_id;
+            $total = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->sum('final_amount');
+            $januari = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '01')->sum('final_amount');
+            $februari = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '02')->sum('final_amount');
+            $maret = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '03')->sum('final_amount');
+            $april = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '04')->sum('final_amount');
+            $mei = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '05')->sum('final_amount');
+            $juni = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '06')->sum('final_amount');
+            $juli = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '07')->sum('final_amount');
+            $agustus = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '03')->sum('final_amount');
+            $september = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '09')->sum('final_amount');
+            $oktober = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '10')->sum('final_amount');
+            $november = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '11')->sum('final_amount');
+            $desember = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '12')->sum('final_amount');
+            // dd($januari);
+
+            return view('pages.stevedoring.stevedoring-client', [
+                'clients' => $clients,
+                'client' => $client,
+                'year' => $req->year,
+                'total' => $total,
+                'januari' => $januari,
+                'februari' => $februari,
+                'maret' => $maret,
+                'april' => $april,
+                'mei' => $mei,
+                'juni' => $juni,
+                'juli' => $juli,
+                'agustus' => $agustus,
+                'september' => $september,
+                'oktober' => $oktober,
+                'november' => $november,
+                'desember' => $desember
+            ]);
+        }
     }
 
     public function getTallysheet($stevedoringId)

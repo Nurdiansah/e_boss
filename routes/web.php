@@ -24,8 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
-        // dd(auth()->user()->ia);
-        return view('home');
+        return redirect('stevedoring/all/' . getTahun());
     })->name('home');
 
     Route::get('/storage/{id}')->name('link');
@@ -86,16 +85,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/stevedoring-cetak-tallysheet/{id}', [StevedoringController::class, 'cetak_tallysheet'])->name('stevedoring.cetak.tallysheet');
 
-    Route::get('/cetak', function () {
-        // $pdf = App::make('dompdf.wrapper');
-        // $pdf->loadHTML('<h1>Test</h1>');
+    // baru
+    // OKE TINGGAL JS NYA AJA
+    Route::get('stevedoring/all/{year}', [StevedoringController::class, 'index'])->name('stevedoring');
+    Route::get('stevedoring/annual', [StevedoringController::class, 'stevedoringAnnual'])->name('stevedoring.annual');
 
-        // $pdf = PDF::loadView('pdf.invoice', $data);
-        $data = ['1', '2'];
-        $pdf = PDF::loadView('pdf.stevedoring-tallysheet-pdf', $data);
-
-        return $pdf->stream();
-    });
+    Route::post('stevedoring/client', [StevedoringController::class, 'stevedoringClient'])->name('stevedoring.client');
+    Route::post('stevedoring/anual/year', [StevedoringController::class, 'stevedoringAnnualYear'])->name('stevedoring.annual.year');
 
     Route::get('/form-old', function () {
         return view('form-old');

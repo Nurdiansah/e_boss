@@ -9,7 +9,7 @@ Stevedoring
         <div class="page-inner py-4">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                 <div class="">
-                    <h1 class="text-white  pb-2 fw-bold"><i class="fa fa-globe-asia"></i> <i>Monthly Stevedoring Vessel</i></h1>
+                    <h1 class="text-white  pb-2 fw-bold"><i class="fa fa-globe-asia"></i> <i>Monthly Stevedoring Vessel Client</i></h1>
                 </div>
             </div>
         </div>
@@ -43,10 +43,8 @@ Stevedoring
                             <div id="myChartLegend"></div>
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
-                            <div class="table-responsive  " style="height: 357px;overflow-y:scroll;">
-
-                                <table class="table table-sm mt--1 table-striped mt-3">
+                            <div class="table-responsive " style="height: 357px;overflow-y:scroll;">
+                                <table class="table mt--1 table-striped mt-3">
                                     <thead>
                                         <tr>
                                             <th scope="col">No</th>
@@ -117,12 +115,9 @@ Stevedoring
                                         </tr>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
@@ -139,26 +134,12 @@ Stevedoring
                             <a href="{{route('stevedoring.annual')}}" class="btn btn-block btn-muted border btn-sm "><i class="fa fa-calendar-alt"></i> Annual</a>
                         </div>
                     </div>
-
-
                 </div>
-                {{-- <div class="row">
-                                <div class="col">
-                                    
-                                </div>
-                            </div> --}}
-
-
                 <div class="card-body">
-
-                    {{-- <button class="btn btn-danger btn-block mb-2"><i class="fa fa-calendar-alt"></i>   Annual</button> --}}
-
-
                     <div class="card card-secondary">
                         <div class="card-body skew-shadow">
-                            <h1>All Client</h1>
-                            {{-- <h1>{{ request('year') }}</h1> --}}
-                            <h5 class="">{{ request('year') }}</h5>
+                            <h1>{{$client->nm_client2}}</h1>
+                            <h5 class="">{{$year}}</h5>
                             {{-- <div class="pull-right">
                                             <h3 class="fw-bold op-8">88%</h3>
                                         </div> --}}
@@ -172,10 +153,10 @@ Stevedoring
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="client">Client</label>
-                                    <select class="form-control form-control" id="client" name="client">
-                                        <option value="all" selected>All</option>
-                                        @foreach ($clients as $client)
-                                        <option value="{{$client->id_client}}">{{$client->nm_client2}}</option>
+                                    <select class="form-control form-control" id="client" name="client" required>
+                                        <option value="all">All</option>
+                                        @foreach ($clients as $item)
+                                        <option {{$item->id_client == $client->id_client ? 'selected' : ''}} value="{{$item->id_client}}">{{$item->nm_client2}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -183,7 +164,7 @@ Stevedoring
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="year">Year</label>
-                                    <select class="form-control form-control" id="year" name="year">
+                                    <select class="form-control form-control" id="year" name="year" required>
                                         <option {{$year == '2022' ? 'selected' : ''}} value="2022">2022</option>
                                         <option {{$year == '2021' ? 'selected' : ''}} value="2021">2021</option>
                                         <option {{$year == '2020' ? 'selected' : ''}} value="2020">2020</option>
@@ -200,12 +181,11 @@ Stevedoring
                     </form>
                     <hr>
                     {{-- <div class="row">
-                                    
 
                                     <div class="col-md-6">
                                     
                                         <div class="form-group">
-                                            <button class="btn btn-muted border btn-sm " data-toggle="tooltip" data-placement="top" title="Fitur ini belum tersedia"><i class="fa fa-print"></i>  Excel</button>
+                                            <button class="btn btn-muted border btn-sm  "><i class="fa fa-print"></i>  Excel</button>
                                         </div>
                                     
                                     </div>

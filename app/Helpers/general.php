@@ -19,6 +19,8 @@ function tanggal($tanggal)
     return $formatTanggal;
 }
 
+
+
 function tanggalHari($tanggal)
 {
     $hari = date("D", strtotime($tanggal));
@@ -83,6 +85,13 @@ function getHari($hari)
     }
 
     return  $hari_ini;
+}
+
+function getTahun()
+{
+    $formatTanggal = date("Y");
+
+    return $formatTanggal;
 }
 
 function cookieSuccess($kondisi)

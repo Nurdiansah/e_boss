@@ -9,7 +9,7 @@ Stevedoring
         <div class="page-inner py-4">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                 <div class="">
-                    <h1 class="text-white  pb-2 fw-bold"><i class="fa fa-globe-asia"></i> <i>Monthly Stevedoring Vessel</i></h1>
+                    <h1 class="text-white  pb-2 fw-bold"><i class="fa fa-globe-asia"></i> <i>Annual Stevedoring Vessel</i></h1>
                 </div>
             </div>
         </div>
@@ -20,45 +20,56 @@ Stevedoring
                 <div class="card">
                     {{-- <div class="card-header">
                                 <div class="card-title">Monthly Report Stevedoring Vessel</div>
-                                <a href="{{route('stevedoring.annual')}}" class="btn btn-danger btn-sm "><i class="fa fa-calendar-alt"></i> Annual</a>
-                </div> --}}
-                <div class="card-body">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Chart</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Table</a>
-                        </li>
+                                <a href="" class="btn btn-primary btn-sm "><i class="fa fa-calendar-alt"></i>   Monthly</a>
+                            </div> --}}
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Chart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Table</a>
+                            </li>
 
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            {{-- <div class="card-sub">
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                {{-- <div class="card-sub">
                                             All
                                         </div> --}}
-                            <div class="chart-container">
-                                <canvas id="htmlLegendsChart"></canvas>
+                                <div class="chart-container">
+                                    <canvas id="doughnutChart" style="width: 100%; height: 50%"></canvas>
+                                </div>
+                                {{-- <div class="chart-container">
+                                            <canvas id="pieChart" style="width: 50%; height: 50%"></canvas>
+                                        </div> --}}
                             </div>
-                            <div id="myChartLegend"></div>
-                        </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-                            <div class="table-responsive  " style="height: 357px;overflow-y:scroll;">
+                                <div class="table-responsive  " style="height: 357px;overflow-y:scroll;">
 
-                                <table class="table table-sm mt--1 table-striped mt-3">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">No</th>
-                                            <th scope="col">Month</th>
-                                            <th scope="col">Ton/M</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Januari</td>
-                                            <td>{{$januari}}</td>
+                                    <table class="table table-sm mt--1 table-striped mt-3">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No</th>
+                                                <th scope="col">Client</th>
+                                                <th scope="col">Ton/M</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($clientJobOrders as $job)
+                                            <tr>
+                                                <td>{{++$i}}</td>
+                                                <td>{{$job['client']}}</td>
+                                                <td>{{$job['totalCargo']}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        {{-- <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Januari</td>
+                                                        <td>{{$januari}}</td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -115,91 +126,62 @@ Stevedoring
                                             <td>Desember</td>
                                             <td>{{$desember}}</td>
                                         </tr>
-                                    </tbody>
-                                </table>
+                                        </tbody> --}}
+                                    </table>
 
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
-
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-
-                        <div class="col">
-                            <button class="btn border btn-block btn-danger btn-sm "><i class="fa fa-calendar-alt"></i> Monthly</button>
-                        </div>
-                        <div class="col">
-                            <a href="{{route('stevedoring.annual')}}" class="btn btn-block btn-muted border btn-sm "><i class="fa fa-calendar-alt"></i> Annual</a>
-                        </div>
-                    </div>
-
-
-                </div>
-                {{-- <div class="row">
-                                <div class="col">
-                                    
-                                </div>
-                            </div> --}}
-
-
-                <div class="card-body">
-
-                    {{-- <button class="btn btn-danger btn-block mb-2"><i class="fa fa-calendar-alt"></i>   Annual</button> --}}
-
-
-                    <div class="card card-secondary">
-                        <div class="card-body skew-shadow">
-                            <h1>All Client</h1>
-                            {{-- <h1>{{ request('year') }}</h1> --}}
-                            <h5 class="">{{ request('year') }}</h5>
-                            {{-- <div class="pull-right">
-                                            <h3 class="fw-bold op-8">88%</h3>
-                                        </div> --}}
-                        </div>
-                    </div>
-
-                    <hr>
-                    <form action="{{route('stevedoring.client')}}" method="POST">
-                        @csrf
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="client">Client</label>
-                                    <select class="form-control form-control" id="client" name="client">
-                                        <option value="all" selected>All</option>
-                                        @foreach ($clients as $client)
-                                        <option value="{{$client->id_client}}">{{$client->nm_client2}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="col">
+                                <a href="{{route('stevedoring', $now)}}" class="btn btn-block btn-muted border btn-sm "><i class="fa fa-calendar-alt"></i> Monthly</a>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="year">Year</label>
-                                    <select class="form-control form-control" id="year" name="year">
-                                        <option {{$year == '2022' ? 'selected' : ''}} value="2022">2022</option>
-                                        <option {{$year == '2021' ? 'selected' : ''}} value="2021">2021</option>
-                                        <option {{$year == '2020' ? 'selected' : ''}} value="2020">2020</option>
-                                        <option {{$year == '2019' ? 'selected' : ''}} value="2019">2019</option>
-                                    </select>
-                                </div>
+                            <div class="col">
+                                <button class="btn border btn-block btn-danger btn-sm "><i class="fa fa-calendar-alt"></i> Annual</button>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block">Check</button>
-                                </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card card-secondary">
+                            <div class="card-body skew-shadow">
+                                <h1>{{ $now }}</h1>
+                                <h5 class="">All Client</h5>
                             </div>
                         </div>
-                    </form>
-                    <hr>
-                    {{-- <div class="row">
+
+                        <hr>
+                        <form action="{{route('stevedoring.annual.year')}}" method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <select class="form-control form-control" id="year" name="year" required>
+                                            <option {{$now == '2022' ? 'selected' : ''}} value="2022">2022</option>
+                                            <option {{$now == '2021' ? 'selected' : ''}} value="2021">2021</option>
+                                            <option {{$now == '2020' ? 'selected' : ''}} value="2020">2020</option>
+                                            <option {{$now == '2019' ? 'selected' : ''}} value="2019">2019</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-block ">Check</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                        {{-- <div class="row">
                                     
 
                                     <div class="col-md-6">
@@ -210,16 +192,16 @@ Stevedoring
                                     
                                     </div>
                                 </div> --}}
-                    {{-- <div class="row">
+                        {{-- <div class="row">
                                     
                                 </div> --}}
 
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-    {{-- <div class="row">
+        </div>
+        {{-- <div class="row">
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-header">
@@ -303,7 +285,7 @@ Stevedoring
                         </div>
                     </div>
                 </div> --}}
-</div>
+    </div>
 </div>
 
 
@@ -313,22 +295,53 @@ Stevedoring
 <script>
     $(document).ready(function() {
 
-        var total = "{{$total}}";
-        var cargoJanuari = "{{$januari}}";
-        var cargoFebruari = '{{$februari}}';
-        var cargoMaret = '{{$maret}}';
-        var cargoApril = '{{$april}}';
-        var cargoMei = '{{$mei}}';
-        var cargoJuni = '{{$juni}}';
-        var cargoJuli = '{{$juli}}';
-        var cargoAgustus = '{{$agustus}}';
-        var cargoSeptember = '{{$september}}';
-        var cargoOktober = '{{$oktober}}';
-        var cargoNovember = '{{$november}}';
-        var cargoDesember = '{{$desember}}';
-        console.log(cargoDesember)
+        var doughnutChart = document.getElementById('doughnutChart').getContext('2d');
+
+        var clientJobOrders = @json($clientJobOrders);;
+        var client1 = "{{$clientJobOrders[0]['client']}}";
+        var client2 = "{{$clientJobOrders[1]['client']}}";
+        var label = [];
+        var cargo = [];
+        var color = [];
+        for (i = 0; i < clientJobOrders.length; i++) {
+
+            label.push(clientJobOrders[i]['label']);
+            cargo.push(clientJobOrders[i]['totalCargo']);
+            color.push(clientJobOrders[i]['color']);
+            // color.push('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
+        }
 
 
+        console.log(color)
+
+
+
+        var myDoughnutChart = new Chart(doughnutChart, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: cargo,
+                    backgroundColor: color
+                }],
+
+                labels: label
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom'
+                },
+                layout: {
+                    padding: {
+                        left: 20,
+                        right: 20,
+                        top: 20,
+                        bottom: 20
+                    }
+                }
+            }
+        });
 
 
 
