@@ -156,7 +156,7 @@ Stevedoring
                                     <select class="form-control form-control" id="client" name="client" required>
                                         <option value="all">All</option>
                                         @foreach ($clients as $item)
-                                        <option {{$item->id_client == $client->id_client ? 'selected' : ''}} value="{{$item->id_client}}">{{$item->nm_client2}}</option>
+                                        <option {{$item->id == $client->id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>

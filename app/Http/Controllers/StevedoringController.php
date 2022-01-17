@@ -900,13 +900,13 @@ class StevedoringController extends Controller
 
     public function stevedoringClient(Request $req)
     {
-
+        // dd($req);
         $clients = Client::get();
 
         if ($req->client == 'all') {
             return redirect()->to('stevedoring/all/' . $req->year);
         } else {
-            $client = Client::where('client_id', $req->client)->first();
+            $client = Client::where('id', $req->client)->first();
             // $name = $client->nm_client2;
             // $selected = $client->client_id;
             $total = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->sum('final_amount');
@@ -924,7 +924,7 @@ class StevedoringController extends Controller
             $desember = Stevedoring::where('client_id', $req->client)->whereYear('finish_activity', '=', $req->year)->whereMonth('finish_activity', '12')->sum('final_amount');
             // dd($januari);
 
-            return view('pages.stevedoring.stevedoring-client', [
+            return view('pages.stevedorings.stevedoring-client', [
                 'clients' => $clients,
                 'client' => $client,
                 'year' => $req->year,

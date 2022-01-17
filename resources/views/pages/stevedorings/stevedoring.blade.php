@@ -142,16 +142,9 @@ Stevedoring
 
 
                 </div>
-                {{-- <div class="row">
-                                <div class="col">
-                                    
-                                </div>
-                            </div> --}}
 
 
                 <div class="card-body">
-
-                    {{-- <button class="btn btn-danger btn-block mb-2"><i class="fa fa-calendar-alt"></i>   Annual</button> --}}
 
 
                     <div class="card card-secondary">
@@ -175,7 +168,7 @@ Stevedoring
                                     <select class="form-control form-control" id="client" name="client">
                                         <option value="all" selected>All</option>
                                         @foreach ($clients as $client)
-                                        <option value="{{$client->id_client}}">{{$client->nm_client2}}</option>
+                                        <option value="{{$client->id}}">{{$client->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -199,110 +192,14 @@ Stevedoring
                         </div>
                     </form>
                     <hr>
-                    {{-- <div class="row">
-                                    
 
-                                    <div class="col-md-6">
-                                    
-                                        <div class="form-group">
-                                            <button class="btn btn-muted border btn-sm " data-toggle="tooltip" data-placement="top" title="Fitur ini belum tersedia"><i class="fa fa-print"></i>  Excel</button>
-                                        </div>
-                                    
-                                    </div>
-                                </div> --}}
-                    {{-- <div class="row">
-                                    
-                                </div> --}}
 
                 </div>
             </div>
         </div>
 
     </div>
-    {{-- <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Table Monthly Report</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive ">
-                                    <table class="table  table-striped mt-3">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">No</th>
-                                                <th scope="col">Month</th>
-                                                <th scope="col">Ton/M</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
+
 </div>
 </div>
 
