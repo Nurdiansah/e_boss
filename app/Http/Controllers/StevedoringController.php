@@ -19,7 +19,9 @@ use App\Models\StevedoringTimeline;
 use App\Models\StevedoringUseEquipment;
 use App\Models\User;
 use App\Models\Vessel;
+use PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -521,6 +523,7 @@ class StevedoringController extends Controller
     public function history_detail(Stevedoring $stevedoring)
     {
 
+
         $bookingCargo = StevedoringManifest::where('stevedoring_id', $stevedoring->id)->sum('revton');
         $realisasiCargo = StevedoringTallysheet::where('stevedoring_id', $stevedoring->id)->where('origin_destination', '!=', 'Not Available')->sum('revton');
 
@@ -809,5 +812,38 @@ class StevedoringController extends Controller
     public function destroy(Stevedoring $stevedoring)
     {
         //
+    }
+
+    public function cetak_tallysheet($id)
+    {
+        $id = dekripRambo($id);
+
+        $data = [
+            'stevedoring' => Stevedoring::find($id),
+            'tallysheets' => $this->getTallysheet($id)
+        ];
+
+        $fileName = "Tallysheet-" . $id . ".pdf";
+
+        $pdf = PDF::loadView('pages.pdf.stevedoring-tallysheet-pdf', $data)->setPaper('a4', 'landscape');
+
+        return $pdf->stream($fileName);
+
+        // return view('pages.pdf.stevedoring-tallysheet-pdf', [
+        //     'stevedoring' => Stevedoring::find(1),
+        //     'tallysheets' => $this->getTallysheet('1')
+        // ]);
+    }
+
+    public function getTallysheet($stevedoringId)
+    {
+        // Group BY Ajaa dulu ye ga
+        return DB::table('stevedoring_tallysheets')
+            ->join('item_masters', 'stevedoring_tallysheets.itemmaster_id', '=', 'item_masters.id')
+            ->select('stevedoring_tallysheets.id', 'stevedoring_id', 'stevedoringmanifest_id', DB::raw('sum(qty) as qty'), 'doc_no', 'description', 'remarks', 'origin_destination', 'itemmaster_id', 'long', 'widht', 'height', DB::raw('count(*) as total'), DB::raw('sum(m3) as m3'), DB::raw('sum(ton) as ton'), DB::raw('sum(revton) as revton'))
+            ->where('stevedoring_id', $stevedoringId)
+            ->groupBy('stevedoringmanifest_id')
+            ->orderBy('stevedoringmanifest_id')
+            ->get();
     }
 }

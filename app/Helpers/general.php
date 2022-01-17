@@ -1,5 +1,17 @@
 <?php
 
+
+function enkripRambo($data)
+{
+
+    return $data = base64_encode(base64_encode(base64_encode($data)));
+}
+
+function dekripRambo($data)
+{
+    return $data = base64_decode(base64_decode(base64_decode($data)));
+}
+
 function tanggal($tanggal)
 {
     $formatTanggal = date("d F Y", strtotime($tanggal));

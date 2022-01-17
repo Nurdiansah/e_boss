@@ -143,7 +143,12 @@ $jumlahData = count($stevedoringmanifests);
         <div class="card">
             <div class="card-header bg-success">
                 <div class="d-flex align-items-center">
-                    <h4 class="card-title text-light">Cargo Tally Sheet</h4>
+                    <div class="col-sm-6">
+                        <h4 class="card-title text-light">Cargo Tally Sheet</h4>
+                    </div>
+                    <div class="col-sm-6">
+                        <a target="_blank" href="{{route('stevedoring.cetak.tallysheet', enkripRambo($stevedoring->id) )}}"><button class="btn btn-secondary float-right"><i class="fa fa-file-pdf"></i> Print</button></a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">

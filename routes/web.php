@@ -6,6 +6,7 @@ use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
 use App\Models\StevedoringUseEquipment;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,6 +83,19 @@ Route::middleware(['auth'])->group(function () {
     // All
     Route::get('/stevedoring-history', [StevedoringController::class, 'history'])->name('stevedoring.history');
     Route::get('/stevedoring-history/{stevedoring:id}', [StevedoringController::class, 'history_detail'])->name('stevedoring.history.detail');
+
+    Route::get('/stevedoring-cetak-tallysheet/{id}', [StevedoringController::class, 'cetak_tallysheet'])->name('stevedoring.cetak.tallysheet');
+
+    Route::get('/cetak', function () {
+        // $pdf = App::make('dompdf.wrapper');
+        // $pdf->loadHTML('<h1>Test</h1>');
+
+        // $pdf = PDF::loadView('pdf.invoice', $data);
+        $data = ['1', '2'];
+        $pdf = PDF::loadView('pdf.stevedoring-tallysheet-pdf', $data);
+
+        return $pdf->stream();
+    });
 
     Route::get('/form-old', function () {
         return view('form-old');
