@@ -86,7 +86,9 @@ class AgentController extends Controller
      */
     public function edit(Agent $agent)
     {
-        //
+        return view('pages.agents.agent-edit', [
+            'agent' => $agent
+        ]);
     }
 
     /**
@@ -98,7 +100,31 @@ class AgentController extends Controller
      */
     public function update(Request $request, Agent $agent)
     {
-        //
+
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $update = Agent::where('id', $agent->id)->update([
+            "name" => $request->name,
+            "updated_at" => now()
+        ]);
+
+        if ($update) {
+
+            DB::commit();
+
+            cookieSuccess('Updated');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Ubah!', 'error');
+        }
+
+        return back();
     }
 
     /**

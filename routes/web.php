@@ -40,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [AgentController::class, 'index'])->name('agents');
             Route::get('/{agent:id}', [AgentController::class, 'show'])->name('agent.show');
             Route::post('/', [AgentController::class, 'store'])->name('agent.store');
+            Route::get('edit/{agent:id}', [AgentController::class, 'edit'])->name('agent.edit');
+            Route::put('/{agent:id}', [AgentController::class, 'update'])->name('agent.update');
         });
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');

@@ -88,7 +88,7 @@
                                     <td>
                                         <!-- route('agent.edit', $agent->id -->
                                         <a href="">
-                                            <button class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                            <a href="{{route('agent.edit', $agent->id)}}"><button class="btn btn-success"><i class="fa fa-edit"></i></button></a>
                                             <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                         </a>
                                     </td>
