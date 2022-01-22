@@ -14,7 +14,27 @@ class AgentController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.agents.agent', [
+            'agents' => Agent::all()
+        ]);
+
+        // return view('pages.stevedorings.stevedoring', [
+        //     'year' => $year,
+        //     'clients' => $clients,
+        //     'total' => $total,
+        //     'januari' => $januari,
+        //     'februari' => $februari,
+        //     'maret' => $maret,
+        //     'april' => $april,
+        //     'mei' => $mei,
+        //     'juni' => $juni,
+        //     'juli' => $juli,
+        //     'agustus' => $agustus,
+        //     'september' => $september,
+        //     'oktober' => $oktober,
+        //     'november' => $november,
+        //     'desember' => $desember
+        // ]);
     }
 
     /**

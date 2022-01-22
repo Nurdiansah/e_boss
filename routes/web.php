@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgentController;
 use App\Http\Controllers\PermohonanDanaController;
 use App\Http\Controllers\PermohonanDanaSubOneController;
 use App\Http\Controllers\StevedoringController;
@@ -30,6 +31,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/storage/{id}')->name('link');
 
     Route::group(['middleware' => ['role:superuser|admin_ops']], function () {
+
+        // Master Data
+
+        // Agent
+        Route::prefix('agents')->group(function () {
+            // Matches The "/agent/show" URL
+            Route::get('/', [AgentController::class, 'index'])->name('agents');
+        });
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
 
