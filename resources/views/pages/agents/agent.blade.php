@@ -89,10 +89,44 @@
                                         <!-- route('agent.edit', $agent->id -->
                                         <a href="">
                                             <a href="{{route('agent.edit', $agent->id)}}"><button class="btn btn-success"><i class="fa fa-edit"></i></button></a>
-                                            <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                            <button class="btn btn-danger" data-toggle="modal" data-target="#modalDelete&id={{ $agent->id }}"><i class="fa fa-trash"></i></button>
                                         </a>
                                     </td>
                                 </tr>
+
+                                <!-- Modal Delete -->
+                                <div class="modal fade" id="modalDelete&id={{ $agent->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header no-bd bg-danger">
+                                                <h5 class="modal-title">
+                                                    <span class="fw-mediumbold">
+                                                        Delete Agent</span>
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{route('agent.delete', $agent->id)}}" name="form" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <input type="hidden" name="id" value="">
+                                                <div class="perhitungan">
+                                                    <div class="modal-body">
+                                                        <h4 class="text-center">Apakah anda yakin ingin menghapus agent {{$agent->name}} ?</h4>
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <button type="submit" id="addRowButton" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-window-close"></i> Close</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Modal Delete -->
+
                                 @endforeach
                             </tbody>
                             <tfoot>

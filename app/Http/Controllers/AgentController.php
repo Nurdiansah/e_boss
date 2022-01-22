@@ -135,6 +135,23 @@ class AgentController extends Controller
      */
     public function destroy(Agent $agent)
     {
-        //
+
+        DB::beginTransaction();
+
+        $delete = Agent::destroy($agent->id);
+
+        if ($delete) {
+
+            DB::commit();
+
+            cookieSuccess('Deleted');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Hapus!', 'error');
+        }
+
+        return back();
     }
 }
