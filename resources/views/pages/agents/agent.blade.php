@@ -15,7 +15,7 @@
                 <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Index</a>
+                <a href="{{route('home')}}">Index</a>
             </li>
         </ul>
     </div>
@@ -49,7 +49,7 @@
                             <tbody>
                                 @foreach ($agents as $key => $agent)
                                 <tr>
-                                    <td>{{$agent->name}}</td>
+                                    <td> <a href="{{route('agent.show', $agent->id)}}"> {{$agent->name}} </a></td>
                                     <td>{{$agent->created_at}}</td>
                                     <td>{{$agent->updated_at}}</td>
                                     <td>

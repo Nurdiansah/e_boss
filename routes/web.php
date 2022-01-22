@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('agents')->group(function () {
             // Matches The "/agent/show" URL
             Route::get('/', [AgentController::class, 'index'])->name('agents');
+            Route::get('/{agent:id}', [AgentController::class, 'show'])->name('agent.show');
         });
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');

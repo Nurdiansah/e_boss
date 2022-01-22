@@ -17,24 +17,6 @@ class AgentController extends Controller
         return view('pages.agents.agent', [
             'agents' => Agent::all()
         ]);
-
-        // return view('pages.stevedorings.stevedoring', [
-        //     'year' => $year,
-        //     'clients' => $clients,
-        //     'total' => $total,
-        //     'januari' => $januari,
-        //     'februari' => $februari,
-        //     'maret' => $maret,
-        //     'april' => $april,
-        //     'mei' => $mei,
-        //     'juni' => $juni,
-        //     'juli' => $juli,
-        //     'agustus' => $agustus,
-        //     'september' => $september,
-        //     'oktober' => $oktober,
-        //     'november' => $november,
-        //     'desember' => $desember
-        // ]);
     }
 
     /**
@@ -66,7 +48,9 @@ class AgentController extends Controller
      */
     public function show(Agent $agent)
     {
-        //
+        return view('pages.agents.agent-show', [
+            'agent' => $agent
+        ]);
     }
 
     /**
