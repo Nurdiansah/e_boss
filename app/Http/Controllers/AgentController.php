@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AgentController extends Controller
 {
@@ -37,7 +38,31 @@ class AgentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $insert = Agent::create([
+            "name" => $request->name,
+            "created_at" => now(),
+            "updated_at" => now()
+        ]);
+
+        if ($insert) {
+
+            DB::commit();
+
+            cookieSuccess('Added');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Tambah!', 'error');
+        }
+
+        return back();
     }
 
     /**

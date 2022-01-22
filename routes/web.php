@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
             // Matches The "/agent/show" URL
             Route::get('/', [AgentController::class, 'index'])->name('agents');
             Route::get('/{agent:id}', [AgentController::class, 'show'])->name('agent.show');
+            Route::post('/', [AgentController::class, 'store'])->name('agent.store');
         });
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');

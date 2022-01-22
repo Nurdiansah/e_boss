@@ -25,19 +25,52 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Daftar Agent</h4>
-                        <a href="{{route('stevedoring.create')}}" class="ml-auto ">
-                            <button class="btn btn-primary btn-round ">
-                                <i class="fa fa-plus"></i>
-                                Tambah
-                            </button>
-                        </a>
+                        <button class="btn btn-primary btn-round float-right ml-auto " data-toggle="modal" data-target="#modalAdd" ">
+                            <i class=" fa fa-plus"></i>
+                            Tambah
+                        </button>
+
+                        <!-- Modal Tambah -->
+                        <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header no-bd bg-primary">
+                                        <h5 class="modal-title">
+                                            <span class="fw-mediumbold">
+                                                Add Agent</span>
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="{{route('agent.store')}}" name="form" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="">
+                                        <div class="perhitungan">
+                                            <div class="modal-body">
+                                                <div class="form-group ">
+                                                    <label for="inputFloatingLabel" class="placeholder">Name</label>
+                                                    <input id="inputFloatingLabel" name="name" value="" type="text" class="form-control input-border-bottom" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer ">
+                                                <button type="submit" id="addRowButton" class="btn btn-primary"><i class="fa fa-submit"></i> Save</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-window-close"></i> Close</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Modal Tambah -->
                     </div>
                 </div>
                 <div class="card-body">
                     <!-- Modal -->
 
                     <div class="table-responsive">
-                        <table id="add-row" class="display table table-striped table-hover">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>Nama</th>
@@ -81,3 +114,11 @@
 
 
 @endsection
+
+@push('js-footer')
+<script>
+    $(document).ready(function() {
+        $('#basic-datatables').DataTable({});
+    });
+</script>
+@endpush
