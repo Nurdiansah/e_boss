@@ -45,6 +45,8 @@
                     </a>
                 </li>
 
+                @hasrole('superuser|admin_ops')
+
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
@@ -66,7 +68,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('areas')}}">
                                     <span class="sub-item">Areas</span>
                                 </a>
                             </li>
@@ -126,7 +128,7 @@
                     <h4 class="text-section"> Stevedoring</h4>
                 </li>
 
-                @hasrole('superuser|admin_ops')
+
                 <li class="nav-item">
                     <a href="{{route('stevedoring.create')}}">
                         <i class="fas fas fa-ship"></i>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\PermohonanDanaController;
 use App\Http\Controllers\PermohonanDanaSubOneController;
 use App\Http\Controllers\StevedoringController;
@@ -44,6 +45,17 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{agent:id}', [AgentController::class, 'update'])->name('agent.update');
             Route::delete('/{agent:id}', [AgentController::class, 'destroy'])->name('agent.delete');
         });
+
+        Route::prefix('areas')->group(function () {
+            // Matches The "/area/show" URL
+            Route::get('/', [AreaController::class, 'index'])->name('areas');
+            Route::get('/{area:id}', [AreaController::class, 'show'])->name('area.show');
+            Route::post('/', [AreaController::class, 'store'])->name('area.store');
+            Route::get('edit/{area:id}', [AreaController::class, 'edit'])->name('area.edit');
+            Route::put('/{area:id}', [AreaController::class, 'update'])->name('area.update');
+            Route::delete('/{area:id}', [AreaController::class, 'destroy'])->name('area.delete');
+        });
+
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
 
