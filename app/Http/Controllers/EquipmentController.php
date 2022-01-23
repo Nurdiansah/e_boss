@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EquipmentController extends Controller
 {
@@ -14,7 +15,9 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.equipments.equipment', [
+            'equipments' => Equipment::all()
+        ]);
     }
 
     /**
@@ -35,7 +38,31 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $insert = Equipment::create([
+            "name" => $request->name,
+            "created_at" => now(),
+            "updated_at" => now()
+        ]);
+
+        if ($insert) {
+
+            DB::commit();
+
+            cookieSuccess('Added');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Tambah!', 'error');
+        }
+
+        return back();
     }
 
     /**
@@ -46,7 +73,9 @@ class EquipmentController extends Controller
      */
     public function show(Equipment $equipment)
     {
-        //
+        return view('pages.equipments.equipment-show', [
+            'equipment' => $equipment
+        ]);
     }
 
     /**
@@ -57,7 +86,9 @@ class EquipmentController extends Controller
      */
     public function edit(Equipment $equipment)
     {
-        //
+        return view('pages.equipments.equipment-edit', [
+            'equipment' => $equipment
+        ]);
     }
 
     /**
@@ -69,7 +100,31 @@ class EquipmentController extends Controller
      */
     public function update(Request $request, Equipment $equipment)
     {
-        //
+
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $update = Equipment::where('id', $equipment->id)->update([
+            "name" => $request->name,
+            "updated_at" => now()
+        ]);
+
+        if ($update) {
+
+            DB::commit();
+
+            cookieSuccess('Updated');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Ubah!', 'error');
+        }
+
+        return back();
     }
 
     /**
@@ -80,6 +135,23 @@ class EquipmentController extends Controller
      */
     public function destroy(Equipment $equipment)
     {
-        //
+
+        DB::beginTransaction();
+
+        $delete = Equipment::destroy($equipment->id);
+
+        if ($delete) {
+
+            DB::commit();
+
+            cookieSuccess('Deleted');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Hapus!', 'error');
+        }
+
+        return back();
     }
 }

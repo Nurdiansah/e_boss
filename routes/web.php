@@ -4,6 +4,7 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
@@ -77,6 +78,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{client:id}', [ClientController::class, 'edit'])->name('client.edit');
             Route::put('/{client:id}', [ClientController::class, 'update'])->name('client.update');
             Route::delete('/{client:id}', [ClientController::class, 'destroy'])->name('client.delete');
+        });
+
+        // Equipment
+        Route::prefix('equipments')->group(function () {
+            // Matches The "/equipment/show" URL
+            Route::get('/', [EquipmentController::class, 'index'])->name('equipments');
+            Route::get('/{equipment:id}', [EquipmentController::class, 'show'])->name('equipment.show');
+            Route::post('/', [EquipmentController::class, 'store'])->name('equipment.store');
+            Route::get('edit/{equipment:id}', [EquipmentController::class, 'edit'])->name('equipment.edit');
+            Route::put('/{equipment:id}', [EquipmentController::class, 'update'])->name('equipment.update');
+            Route::delete('/{equipment:id}', [EquipmentController::class, 'destroy'])->name('equipment.delete');
         });
 
         // Stevedoring
