@@ -78,7 +78,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('clients')}}">
                                     <span class="sub-item">Clients</span>
                                 </a>
                             </li>

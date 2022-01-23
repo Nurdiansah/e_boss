@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CheckerController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
@@ -67,6 +68,17 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{checker:id}', [CheckerController::class, 'destroy'])->name('checker.delete');
         });
 
+        // Client
+        Route::prefix('clients')->group(function () {
+            // Matches The "/client/show" URL
+            Route::get('/', [ClientController::class, 'index'])->name('clients');
+            Route::get('/{client:id}', [ClientController::class, 'show'])->name('client.show');
+            Route::post('/', [ClientController::class, 'store'])->name('client.store');
+            Route::get('edit/{client:id}', [ClientController::class, 'edit'])->name('client.edit');
+            Route::put('/{client:id}', [ClientController::class, 'update'])->name('client.update');
+            Route::delete('/{client:id}', [ClientController::class, 'destroy'])->name('client.delete');
+        });
+
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
 
@@ -109,7 +121,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
 
-    // Not Checker
+    // Not Checker semua user
     Route::group(['middleware' => ['role:superuser|admin_ops|spv_ops|manager_ops|client']], function () {
 
         Route::get('/stevedoring-proses', [StevedoringController::class, 'proses'])->name('stevedoring.proses');
