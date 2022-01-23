@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Checker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CheckerController extends Controller
 {
@@ -14,7 +15,9 @@ class CheckerController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.checkers.checker', [
+            'checkers' => Checker::all()
+        ]);
     }
 
     /**
@@ -35,7 +38,31 @@ class CheckerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $insert = Checker::create([
+            "name" => $request->name,
+            "created_at" => now(),
+            "updated_at" => now()
+        ]);
+
+        if ($insert) {
+
+            DB::commit();
+
+            cookieSuccess('Added');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Tambah!', 'error');
+        }
+
+        return back();
     }
 
     /**
@@ -46,7 +73,9 @@ class CheckerController extends Controller
      */
     public function show(Checker $checker)
     {
-        //
+        return view('pages.checkers.checker-show', [
+            'checker' => $checker
+        ]);
     }
 
     /**
@@ -57,7 +86,9 @@ class CheckerController extends Controller
      */
     public function edit(Checker $checker)
     {
-        //
+        return view('pages.checkers.checker-edit', [
+            'checker' => $checker
+        ]);
     }
 
     /**
@@ -69,7 +100,31 @@ class CheckerController extends Controller
      */
     public function update(Request $request, Checker $checker)
     {
-        //
+
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $update = Checker::where('id', $checker->id)->update([
+            "name" => $request->name,
+            "updated_at" => now()
+        ]);
+
+        if ($update) {
+
+            DB::commit();
+
+            cookieSuccess('Updated');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Ubah!', 'error');
+        }
+
+        return back();
     }
 
     /**
@@ -80,6 +135,23 @@ class CheckerController extends Controller
      */
     public function destroy(Checker $checker)
     {
-        //
+
+        DB::beginTransaction();
+
+        $delete = Checker::destroy($checker->id);
+
+        if ($delete) {
+
+            DB::commit();
+
+            cookieSuccess('Deleted');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Hapus!', 'error');
+        }
+
+        return back();
     }
 }

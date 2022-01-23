@@ -2,8 +2,7 @@
 
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AreaController;
-use App\Http\Controllers\PermohonanDanaController;
-use App\Http\Controllers\PermohonanDanaSubOneController;
+use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
@@ -46,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{agent:id}', [AgentController::class, 'destroy'])->name('agent.delete');
         });
 
+        // Areas
         Route::prefix('areas')->group(function () {
             // Matches The "/area/show" URL
             Route::get('/', [AreaController::class, 'index'])->name('areas');
@@ -54,6 +54,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{area:id}', [AreaController::class, 'edit'])->name('area.edit');
             Route::put('/{area:id}', [AreaController::class, 'update'])->name('area.update');
             Route::delete('/{area:id}', [AreaController::class, 'destroy'])->name('area.delete');
+        });
+
+        // Checker
+        Route::prefix('checkers')->group(function () {
+            // Matches The "/checker/show" URL
+            Route::get('/', [CheckerController::class, 'index'])->name('checkers');
+            Route::get('/{checker:id}', [CheckerController::class, 'show'])->name('checker.show');
+            Route::post('/', [CheckerController::class, 'store'])->name('checker.store');
+            Route::get('edit/{checker:id}', [CheckerController::class, 'edit'])->name('checker.edit');
+            Route::put('/{checker:id}', [CheckerController::class, 'update'])->name('checker.update');
+            Route::delete('/{checker:id}', [CheckerController::class, 'destroy'])->name('checker.delete');
         });
 
         // Stevedoring

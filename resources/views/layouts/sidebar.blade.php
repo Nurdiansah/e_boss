@@ -73,7 +73,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('checkers')}}">
                                     <span class="sub-item">Checkers</span>
                                 </a>
                             </li>
