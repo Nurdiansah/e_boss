@@ -93,7 +93,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('itemmasters')}}">
                                     <span class="sub-item">Item Masters</span>
                                 </a>
                             </li>

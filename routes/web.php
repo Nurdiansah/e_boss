@@ -6,6 +6,7 @@ use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\ItemMasterController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
@@ -93,7 +94,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{equipment:id}', [EquipmentController::class, 'destroy'])->name('equipment.delete');
         });
 
-        // Equipment
+        // Equipment Categorie
         Route::prefix('equipment-categories')->group(function () {
             // Matches The "/equipment/show" URL
             Route::get('/', [EquipmentCategoryController::class, 'index'])->name('equipmentcategories');
@@ -102,6 +103,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{equipmentcategory:id}', [EquipmentCategoryController::class, 'edit'])->name('equipmentcategory.edit');
             Route::put('/{equipmentcategory:id}', [EquipmentCategoryController::class, 'update'])->name('equipmentcategory.update');
             Route::delete('/{equipmentcategory:id}', [EquipmentCategoryController::class, 'destroy'])->name('equipmentcategory.delete');
+        });
+
+        // Item Master
+        Route::prefix('item-masters')->group(function () {
+            // Matches The "/equipment/show" URL
+            Route::get('/', [ItemMasterController::class, 'index'])->name('itemmasters');
+            Route::get('/{itemmaster:id}', [ItemMasterController::class, 'show'])->name('itemmaster.show');
+            Route::post('/', [ItemMasterController::class, 'store'])->name('itemmaster.store');
+            Route::get('edit/{itemmaster:id}', [ItemMasterController::class, 'edit'])->name('itemmaster.edit');
+            Route::put('/{itemmaster:id}', [ItemMasterController::class, 'update'])->name('itemmaster.update');
+            Route::delete('/{itemmaster:id}', [ItemMasterController::class, 'destroy'])->name('itemmaster.delete');
         });
 
         // Stevedoring
