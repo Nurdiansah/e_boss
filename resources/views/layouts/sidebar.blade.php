@@ -108,7 +108,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('users')}}">
                                     <span class="sub-item">Users</span>
                                 </a>
                             </li>

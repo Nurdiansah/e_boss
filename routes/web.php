@@ -12,6 +12,7 @@ use App\Http\Controllers\PortController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
+use App\Http\Controllers\UserController;
 use App\Models\EquipmentCategory;
 use App\Models\StevedoringUseEquipment;
 use Barryvdh\DomPDF\PDF;
@@ -139,6 +140,18 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{port:id}', [PortController::class, 'update'])->name('port.update');
             Route::delete('/{port:id}', [PortController::class, 'destroy'])->name('port.delete');
         });
+
+        // User
+        Route::prefix('users')->group(function () {
+            // Matches The "/equipment/show" URL
+            Route::get('/', [UserController::class, 'index'])->name('users');
+            Route::get('/{user:id}', [UserController::class, 'show'])->name('user.show');
+            Route::post('/', [UserController::class, 'store'])->name('user.store');
+            Route::get('edit/{user:id}', [UserController::class, 'edit'])->name('user.edit');
+            Route::put('/{user:id}', [UserController::class, 'update'])->name('user.update');
+            Route::delete('/{user:id}', [UserController::class, 'destroy'])->name('user.delete');
+        });
+
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
 
