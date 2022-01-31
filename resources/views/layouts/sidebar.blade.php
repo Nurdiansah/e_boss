@@ -98,7 +98,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('jetties')}}">
                                     <span class="sub-item">Jetties</span>
                                 </a>
                             </li>

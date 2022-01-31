@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jetty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JettyController extends Controller
 {
@@ -14,7 +15,9 @@ class JettyController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.jetties.jetty', [
+            'jetties' => Jetty::all()
+        ]);
     }
 
     /**
@@ -35,7 +38,31 @@ class JettyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $insert = Jetty::create([
+            "name" => $request->name,
+            "created_at" => now(),
+            "updated_at" => now()
+        ]);
+
+        if ($insert) {
+
+            DB::commit();
+
+            cookieSuccess('Added');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Tambah!', 'error');
+        }
+
+        return back();
     }
 
     /**
@@ -46,7 +73,9 @@ class JettyController extends Controller
      */
     public function show(Jetty $jetty)
     {
-        //
+        return view('pages.jetties.jetty-show', [
+            'jetty' => $jetty
+        ]);
     }
 
     /**
@@ -57,7 +86,9 @@ class JettyController extends Controller
      */
     public function edit(Jetty $jetty)
     {
-        //
+        return view('pages.jetties.jetty-edit', [
+            'jetty' => $jetty
+        ]);
     }
 
     /**
@@ -69,7 +100,31 @@ class JettyController extends Controller
      */
     public function update(Request $request, Jetty $jetty)
     {
-        //
+
+        $validated = $request->validate([
+            'name' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        $update = Jetty::where('id', $jetty->id)->update([
+            "name" => $request->name,
+            "updated_at" => now()
+        ]);
+
+        if ($update) {
+
+            DB::commit();
+
+            cookieSuccess('Updated');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Ubah!', 'error');
+        }
+
+        return back();
     }
 
     /**
@@ -80,6 +135,23 @@ class JettyController extends Controller
      */
     public function destroy(Jetty $jetty)
     {
-        //
+
+        DB::beginTransaction();
+
+        $delete = Jetty::destroy($jetty->id);
+
+        if ($delete) {
+
+            DB::commit();
+
+            cookieSuccess('Deleted');
+        } else {
+
+            DB::rollBack();
+
+            toast('Data gagal di Hapus!', 'error');
+        }
+
+        return back();
     }
 }

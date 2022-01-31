@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ItemMasterController;
+use App\Http\Controllers\JettyController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
@@ -114,6 +115,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{itemmaster:id}', [ItemMasterController::class, 'edit'])->name('itemmaster.edit');
             Route::put('/{itemmaster:id}', [ItemMasterController::class, 'update'])->name('itemmaster.update');
             Route::delete('/{itemmaster:id}', [ItemMasterController::class, 'destroy'])->name('itemmaster.delete');
+        });
+
+        // Jetty
+        Route::prefix('jetties')->group(function () {
+            // Matches The "/equipment/show" URL
+            Route::get('/', [JettyController::class, 'index'])->name('jetties');
+            Route::get('/{jetty:id}', [JettyController::class, 'show'])->name('jetty.show');
+            Route::post('/', [JettyController::class, 'store'])->name('jetty.store');
+            Route::get('edit/{jetty:id}', [JettyController::class, 'edit'])->name('jetty.edit');
+            Route::put('/{jetty:id}', [JettyController::class, 'update'])->name('jetty.update');
+            Route::delete('/{jetty:id}', [JettyController::class, 'destroy'])->name('jetty.delete');
         });
 
         // Stevedoring
