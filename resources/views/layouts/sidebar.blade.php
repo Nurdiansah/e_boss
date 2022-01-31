@@ -103,7 +103,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('ports')}}">
                                     <span class="sub-item">Port</span>
                                 </a>
                             </li>

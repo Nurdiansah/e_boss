@@ -8,6 +8,7 @@ use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\ItemMasterController;
 use App\Http\Controllers\JettyController;
+use App\Http\Controllers\PortController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
@@ -128,6 +129,16 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{jetty:id}', [JettyController::class, 'destroy'])->name('jetty.delete');
         });
 
+        // Port
+        Route::prefix('ports')->group(function () {
+            // Matches The "/equipment/show" URL
+            Route::get('/', [PortController::class, 'index'])->name('ports');
+            Route::get('/{port:id}', [PortController::class, 'show'])->name('port.show');
+            Route::post('/', [PortController::class, 'store'])->name('port.store');
+            Route::get('edit/{port:id}', [PortController::class, 'edit'])->name('port.edit');
+            Route::put('/{port:id}', [PortController::class, 'update'])->name('port.update');
+            Route::delete('/{port:id}', [PortController::class, 'destroy'])->name('port.delete');
+        });
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
 
