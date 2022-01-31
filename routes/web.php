@@ -4,10 +4,12 @@ use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CheckerController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
+use App\Models\EquipmentCategory;
 use App\Models\StevedoringUseEquipment;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Route;
@@ -89,6 +91,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{equipment:id}', [EquipmentController::class, 'edit'])->name('equipment.edit');
             Route::put('/{equipment:id}', [EquipmentController::class, 'update'])->name('equipment.update');
             Route::delete('/{equipment:id}', [EquipmentController::class, 'destroy'])->name('equipment.delete');
+        });
+
+        // Equipment
+        Route::prefix('equipment-categories')->group(function () {
+            // Matches The "/equipment/show" URL
+            Route::get('/', [EquipmentCategoryController::class, 'index'])->name('equipmentcategories');
+            Route::get('/{equipmentcategory:id}', [EquipmentCategoryController::class, 'show'])->name('equipmentcategory.show');
+            Route::post('/', [EquipmentCategoryController::class, 'store'])->name('equipmentcategory.store');
+            Route::get('edit/{equipmentcategory:id}', [EquipmentCategoryController::class, 'edit'])->name('equipmentcategory.edit');
+            Route::put('/{equipmentcategory:id}', [EquipmentCategoryController::class, 'update'])->name('equipmentcategory.update');
+            Route::delete('/{equipmentcategory:id}', [EquipmentCategoryController::class, 'destroy'])->name('equipmentcategory.delete');
         });
 
         // Stevedoring

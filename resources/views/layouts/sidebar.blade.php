@@ -88,7 +88,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('equipmentcategories')}}">
                                     <span class="sub-item">Equipment Categories</span>
                                 </a>
                             </li>
