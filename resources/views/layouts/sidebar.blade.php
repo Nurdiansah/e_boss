@@ -113,7 +113,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('vessels')}}">
                                     <span class="sub-item">Vessels</span>
                                 </a>
                             </li>

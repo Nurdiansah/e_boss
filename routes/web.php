@@ -13,6 +13,7 @@ use App\Http\Controllers\StevedoringController;
 use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VesselController;
 use App\Models\EquipmentCategory;
 use App\Models\StevedoringUseEquipment;
 use Barryvdh\DomPDF\PDF;
@@ -38,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/storage/{id}')->name('link');
 
-    Route::group(['middleware' => ['role:superuser|admin_ops']], function () {
+    Route::group(['middleware' => ['role:supervessel|admin_ops']], function () {
 
         // Master Data
 
@@ -152,6 +153,17 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{user:id}', [UserController::class, 'destroy'])->name('user.delete');
         });
 
+        // Vessel
+        Route::prefix('vessels')->group(function () {
+            // Matches The "/equipment/show" URL
+            Route::get('/', [VesselController::class, 'index'])->name('vessels');
+            Route::get('/{vessel:id}', [VesselController::class, 'show'])->name('vessel.show');
+            Route::post('/', [VesselController::class, 'store'])->name('vessel.store');
+            Route::get('edit/{vessel:id}', [VesselController::class, 'edit'])->name('vessel.edit');
+            Route::put('/{vessel:id}', [VesselController::class, 'update'])->name('vessel.update');
+            Route::delete('/{vessel:id}', [VesselController::class, 'destroy'])->name('vessel.delete');
+        });
+
         // Stevedoring
         Route::get('/stevedoring/create', [StevedoringController::class, 'create'])->name('stevedoring.create');
 
@@ -194,8 +206,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
 
-    // Not Checker semua user
-    Route::group(['middleware' => ['role:superuser|admin_ops|spv_ops|manager_ops|client']], function () {
+    // Not Checker semua vessel
+    Route::group(['middleware' => ['role:supervessel|admin_ops|spv_ops|manager_ops|client']], function () {
 
         Route::get('/stevedoring-proses', [StevedoringController::class, 'proses'])->name('stevedoring.proses');
         Route::get('/stevedoring/{stevedoring:id}', [StevedoringController::class, 'show'])->name('stevedoring.show');
