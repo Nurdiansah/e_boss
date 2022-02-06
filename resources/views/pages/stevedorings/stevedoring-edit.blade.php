@@ -446,10 +446,10 @@ $jumlahData = count($stevedoringmanifests);
 
                                                 <div class="col-sm-12 kotakEquipment">
                                                     <div class="form-group">
-                                                        <label id="tes" for="equipment_id" class="col-sm-offset-1 col-sm-3 control-label">Kode Anggaran</label>
+                                                        <label id="tes" for="equipment_id" class="col-sm-offset-1 col-sm-3 control-label">Equipment</label>
                                                         <!-- <div class="col-sm-5"> -->
                                                         <select class="form-control select2 equipment_id" name="equipment_id" id="equipment_id" required>
-                                                            <option>--Kode Anggaran--</option>
+                                                            <option>--Equipment--</option>
                                                         </select>
                                                         <!-- </div> -->
                                                     </div>

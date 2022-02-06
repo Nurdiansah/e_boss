@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -74,6 +75,16 @@ class UserController extends Controller
     public function show(User $user)
     {
         return view('pages.users.user-show', [
+            'user' => $user
+        ]);
+    }
+
+    public function showProfile()
+    {
+
+        $user = User::find(Auth::user()->id);
+
+        return view('pages.users.user-profile', [
             'user' => $user
         ]);
     }

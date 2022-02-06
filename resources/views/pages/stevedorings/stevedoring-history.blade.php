@@ -49,6 +49,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if($stevedorings->count()==0)
+                                <x-data-empty column="7" />
+                                @else
                                 @foreach ($stevedorings as $key => $stevedoring)
                                 <tr>
                                     <td>{{tanggalWaktu($stevedoring->entry_date)}}</td>
@@ -63,6 +66,7 @@
                                     </td>
                                 </tr>
                                 @endforeach
+                                @endif
                             <tfoot>
                                 <tr>
                                     <th>Tanggal Masuk</th>

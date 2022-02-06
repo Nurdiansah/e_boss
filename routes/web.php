@@ -14,9 +14,6 @@ use App\Http\Controllers\StevedoringManifestController;
 use App\Http\Controllers\StevedoringUseEquipmentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VesselController;
-use App\Models\EquipmentCategory;
-use App\Models\StevedoringUseEquipment;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('home');
 
     Route::get('/storage/{id}')->name('link');
+
+    Route::get('user-profile', [UserController::class, 'showProfile'])->name('user.profile');
 
     Route::group(['middleware' => ['role:supervessel|admin_ops']], function () {
 
@@ -152,6 +151,8 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{user:id}', [UserController::class, 'update'])->name('user.update');
             Route::delete('/{user:id}', [UserController::class, 'destroy'])->name('user.delete');
         });
+
+
 
         // Vessel
         Route::prefix('vessels')->group(function () {

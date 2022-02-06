@@ -4,37 +4,15 @@
         <div class="sidebar-content">
             <div class="user">
                 <div class="avatar-sm float-left mr-2">
-                    <img src="{{asset('/img/profile.jpeg')}}" alt="..." class="avatar-img rounded-circle">
+                    <img src="{{asset('/img/profile-gua.jpg')}}" alt="..." class="avatar-img rounded-circle">
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
                             {{auth()->user()->name}}
-                            <!-- <span class="user-level">Administrator</span> -->
-                            <span class="caret"></span>
                         </span>
                     </a>
                     <div class="clearfix"></div>
-
-                    <div class="collapse in" id="collapseExample">
-                        <ul class="nav">
-                            <li>
-                                <a href="#profile">
-                                    <span class="link-collapse">My Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#edit">
-                                    <span class="link-collapse">Edit Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#settings">
-                                    <span class="link-collapse">Settings</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <ul class="nav nav-primary">
@@ -144,13 +122,12 @@
                 </li>
 
                 @endhasrole
-
                 @hasrole('checker')
                 <li class="nav-item">
                     <a href="{{route('stevedoring.lolo')}}">
                         <i class="fas fas fa-truck-loading"></i>
                         <p>Proses</p>
-                        <!-- <span class="badge badge-success">4</span> -->
+                        <span class="badge badge-success">1</span>
                     </a>
                 </li>
                 @endhasrole
@@ -160,7 +137,6 @@
                     <a href="{{route('stevedoring.app.spv')}}">
                         <i class="fas fas fa-check"></i>
                         <p>Approval</p>
-                        <!-- <span class="badge badge-success">4</span> -->
                     </a>
                 </li>
                 @endhasrole
