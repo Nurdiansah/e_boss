@@ -301,6 +301,10 @@
             box-shadow: inset 0 0 0 2px #a7e245;
             transform: translateX(30%);
         }
+
+        .cerror {
+            color: red;
+        }
     </style>
 
 
@@ -318,6 +322,11 @@
                     <span class="underline"></span>
                 </button>
                 <form class="form form-login" method="POST" action="{{ route('login') }}">
+                    <!-- Session Status -->
+                    <x-auth-session-status class="mb-4" :status="session('status')" />
+
+                    <!-- Validation Errors -->
+                    <x-auth-validation-errors class="mb-4 cerror" :errors="$errors" />
                     @csrf
                     <fieldset>
                         <legend>Please, enter your email and password for login.</legend>

@@ -2,12 +2,18 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+// use ValidateRequests;
+// use Illuminate\Http\Validation;
+
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 
 class LoginRequest extends FormRequest
 {
@@ -45,11 +51,23 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+
+
+        if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
+            $isEmail =  User::where('email', $this->email)->first();
+
+            if ($isEmail) {
+                $pesan =  'Maaf! Password tidak cocok!';
+            } else {
+                $pesan = 'Login Gagal! Silahkan Periksa Email dan Password!';
+            }
+            // dd($isEmail);
+
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => $pesan,
+                // 'email' => ['required', 'string', 'email'],
             ]);
         }
 
@@ -65,7 +83,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited()
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -88,6 +106,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::lower($this->input('email')).'|'.$this->ip();
+        return Str::lower($this->input('email')) . '|' . $this->ip();
     }
 }
